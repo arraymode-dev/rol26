@@ -4,6 +4,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
+      input: { app: "index.html", traffic: "insights/traffic/index.html" },
       output: {
         onlyExplicitManualChunks: true,
         manualChunks(id) {
