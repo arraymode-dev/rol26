@@ -1,3 +1,5 @@
+import { UserLocationMarker } from "./UserLocationMarker";
+import type { TrailLocationStore } from "../lib/trail-location";
 import { loadMap } from "../lib/map-loader";
 import { useTouchCamera } from "../lib/use-touch-camera";
 import { panelViewOffset } from "../lib/touch-camera";
@@ -9,7 +11,6 @@ import {
 import { approachArtwork, faceArtworkSurface } from "../lib/artwork-camera";
 import wappingSite from "../data/wapping-gate.json" with { type: "json" };
 import { WAPPING_GATE } from "./WappingGate";
-import { KINGS_PLATFORM } from "./KingsParade";
 import { EventLighting } from "./EventLighting";
 import { useIdleOrbit } from "../lib/use-idle-orbit";
 import { TOWN_HALL, TOWN_HALL_FORECOURT } from "./TownHall";
@@ -55,6 +56,7 @@ export interface SceneProps {
   selected: string | null;
   seen: ReadonlySet<string>;
   trail: boolean;
+  trailLocation: TrailLocationStore;
   command: Command;
   reducedMotion: boolean;
   onSelect: (id: string) => void;
@@ -210,6 +212,7 @@ function Content({
           reducedMotion={props.reducedMotion}
         />
       )}
+      {props.trail && <UserLocationMarker store={props.trailLocation} />}
       <CameraRig {...props} />
       {import.meta.env.DEV &&
         new URLSearchParams(location.search).has("profile") && (
@@ -350,7 +353,6 @@ function CameraRig({
     const anchors: Record<string, { x: number; z: number }> = {
       "the-anooki": TOWN_HALL,
       together: WAPPING_GATE,
-      "the-stars-come-out-at-night": KINGS_PLATFORM,
       unity: GEORGES_DOCK,
       "today-i-love-you": CHURCH_GARDENS,
       loop: ST_PAULS,

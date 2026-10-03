@@ -1,3 +1,5 @@
+import { createTrailLocation } from "./lib/trail-location";
+import { TrailLocationStatus } from "./components/TrailLocationStatus";
 import { TrailGuide } from "./components/TrailGuide";
 import { loadMap } from "./lib/map-loader";
 import { PRIMARY } from "./lib/palette";
@@ -58,6 +60,7 @@ class SceneBoundary extends Component<
   }
 }
 export default function App() {
+  const [trailLocation] = useState(createTrailLocation);
   const [seen, setSeen] = useState<Set<string>>(() => {
     try {
       return parseSeenArtworks(
@@ -267,6 +270,7 @@ export default function App() {
                 selected={selected}
                 seen={seen}
                 trail={trail}
+                trailLocation={trailLocation}
                 command={command}
                 reducedMotion={reducedMotion}
                 onSelect={choose}
@@ -313,7 +317,8 @@ export default function App() {
           <Info size={20} />
         </button>
       </header>
-      <div className="top-meta">
+      {trail && <TrailLocationStatus store={trailLocation} />}
+      <div className="top-meta" hidden={trail}>
         <span>
           <span className="live-dot" /> A CITY BROUGHT TOGETHER
         </span>

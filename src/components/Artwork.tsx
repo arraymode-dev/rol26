@@ -12,7 +12,6 @@ import { project } from "../lib/geo";
 import { ATTRACTION_RADIUS } from "../lib/attraction-boundary";
 import { AnookiOnColumns, TOWN_HALL, TOWN_HALL_FORECOURT } from "./TownHall";
 import { WAPPING_GATE } from "./WappingGate";
-import { KINGS_PLATFORM } from "./KingsParade";
 import { GEORGES_DOCK } from "./GeorgesDock";
 import { EXCHANGE } from "./ExchangeFlags";
 import { CHURCH_GARDENS } from "./ChurchGardens";
@@ -130,17 +129,15 @@ export const Artwork = memo(function Artwork({
       ? [TOWN_HALL_FORECOURT.x, TOWN_HALL_FORECOURT.z]
       : item.id === "together"
         ? [WAPPING_GATE.x, WAPPING_GATE.z]
-        : item.id === "the-stars-come-out-at-night"
-          ? [KINGS_PLATFORM.x, KINGS_PLATFORM.z]
-          : item.id === "unity"
-            ? [GEORGES_DOCK.x, GEORGES_DOCK.z]
-            : item.id === "today-i-love-you"
-              ? [CHURCH_GARDENS.x, CHURCH_GARDENS.z]
-              : item.id === "loop"
-                ? [ST_PAULS.x, ST_PAULS.z]
-                : item.id === "flower-power"
-                  ? [EXCHANGE.x, EXCHANGE.z]
-                  : project(...item.coordinates);
+        : item.id === "unity"
+          ? [GEORGES_DOCK.x, GEORGES_DOCK.z]
+          : item.id === "today-i-love-you"
+            ? [CHURCH_GARDENS.x, CHURCH_GARDENS.z]
+            : item.id === "loop"
+              ? [ST_PAULS.x, ST_PAULS.z]
+              : item.id === "flower-power"
+                ? [EXCHANGE.x, EXCHANGE.z]
+                : project(...item.coordinates);
   const [detail, setDetail] = useState<ArtworkDetail>("overview");
   const detailRef = useRef<ArtworkDetail>("overview");
   const sampled = useRef(0);
@@ -219,11 +216,9 @@ export const Artwork = memo(function Artwork({
               ? CHURCH_GARDENS.elevation
               : item.id === "unity"
                 ? 2.15
-                : item.id === "the-stars-come-out-at-night"
-                  ? KINGS_PLATFORM.level
-                  : item.id === "the-anooki"
-                    ? 0
-                    : 0.6,
+                : item.id === "the-anooki"
+                  ? 0
+                  : 0.6,
             0,
           ]}
           onClick={(e) => {
