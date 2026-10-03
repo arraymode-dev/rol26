@@ -1,0 +1,41 @@
+{
+  "installationId": "the-stars-come-out-at-night",
+  "date": "2026-10-03",
+  "positionStatus": "provisional",
+  "notes": "Project owner found an unrelated statue at the previous quay placement and supplied these Anchor Courtyard photographs. GPS fix aligns with saved courtyard footway 1359903548. Use this courtyard provisionally pending the promised model and final installation confirmation. Earlier batch 09 platform images are retained as references but removed from this artwork gallery.",
+  "originalDirectory": "references/incoming/09-anchor-courtyard",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "caption": "Anchor Courtyard gateway looking out towards the heart sculpture"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "caption": "Palm planting and warehouse wall in Anchor Courtyard"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "caption": "Escape Hunt entrance, steps and palms inside Anchor Courtyard"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "caption": "Inner courtyard with warehouse wings, steps and seating"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "caption": "Lower brick courtyard wing and Bar Glue entrance"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "caption": "Circular stone paving detail in the courtyard"
+    },
+    {
+      "file": "7-Photo-7.jpg",
+      "caption": "Courtyard entrance framed by stone gateposts"
+    },
+    {
+      "file": "8-Photo-8.jpg",
+      "caption": "Anchor Courtyard name sign and entrance beside Albert Dock warehouse"
+    }
+  ]
+}

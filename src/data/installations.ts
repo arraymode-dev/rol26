@@ -11,15 +11,16 @@ const sitePositions: Record<string, [number, number]> = {
   "today-i-love-you": [-185, -321],
   "coloured-peonies": [-169.96, -159],
   unity: [-146, -101],
-  // User-marked Salthouse Quay, north of the original Kings Parade platform.
-  "the-stars-come-out-at-night": [135, 487],
+  // Provisional Anchor Courtyard placement from the October 3 field fix and photos.
+  // The exact installation position is still awaiting confirmation.
+  "the-stars-come-out-at-night": [88.78793599859713, 488.0921362052487],
   together: TOGETHER_POSITION,
   // The small fountain beside Chavasse Park, beyond the bus station.
   paradigm: [186, 159],
   "dream-herd": [116, -111],
   pop: [588, -278],
 };
-const survey = surveyData as Survey;
+const survey = surveyData as unknown as Survey;
 type Seed = [
   string,
   string,

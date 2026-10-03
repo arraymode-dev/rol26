@@ -17,12 +17,12 @@
   {
     "from": "today-i-love-you",
     "to": "invisible-cities",
-    "metres": 219
+    "metres": 254
   },
   {
     "from": "invisible-cities",
     "to": "coloured-peonies",
-    "metres": 310
+    "metres": 344
   },
   {
     "from": "coloured-peonies",
@@ -37,12 +37,12 @@
   {
     "from": "colour-rush",
     "to": "the-stars-come-out-at-night",
-    "metres": 278
+    "metres": 282
   },
   {
     "from": "the-stars-come-out-at-night",
     "to": "together",
-    "metres": 129
+    "metres": 182
   },
   {
     "from": "together",

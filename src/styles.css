@@ -2323,9 +2323,6 @@ kbd {
   padding: 10px 14px;
   font-size: 12px;
 }
-.gps-debug-entry {
-  margin-top: 18px;
-}
 .gps-debug .gps-capture {
   width: 100%;
   justify-content: center;
@@ -2364,14 +2361,6 @@ kbd {
   font-size: 11px;
   color: #aab5c4;
   overflow-wrap: anywhere;
-}
-.gps-debug-link {
-  background: none;
-  border: none;
-  color: #a9b5c4;
-  font-size: 11px;
-  min-height: 44px;
-  margin-top: 8px;
 }
 @media (max-width: 700px) {
   .gps-debug .about-scroll {

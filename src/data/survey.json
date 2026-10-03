@@ -505,76 +505,6 @@
       "kind": "site"
     },
     {
-      "installationId": "the-stars-come-out-at-night",
-      "src": "/photos/the-stars-come-out-at-night-1-photo-1.webp",
-      "alt": "Measurement reference at the recessed platform steps; overlay appears to show 22½ inches",
-      "credit": "Photo supplied by project owner",
-      "kind": "site"
-    },
-    {
-      "installationId": "the-stars-come-out-at-night",
-      "src": "/photos/the-stars-come-out-at-night-2-photo-2.webp",
-      "alt": "Concentric platform cobbles with the wheel and arena beyond",
-      "credit": "Photo supplied by project owner",
-      "kind": "site"
-    },
-    {
-      "installationId": "the-stars-come-out-at-night",
-      "src": "/photos/the-stars-come-out-at-night-3-photo-3.webp",
-      "alt": "View towards the warehouse, entrance road, bollards and Albert Dock totem",
-      "credit": "Photo supplied by project owner",
-      "kind": "site"
-    },
-    {
-      "installationId": "the-stars-come-out-at-night",
-      "src": "/photos/the-stars-come-out-at-night-4-photo-4.webp",
-      "alt": "Low sloping cobbled platform edge and globe lamps facing the wheel",
-      "credit": "Photo supplied by project owner",
-      "kind": "site"
-    },
-    {
-      "installationId": "the-stars-come-out-at-night",
-      "src": "/photos/the-stars-come-out-at-night-5-photo-5.webp",
-      "alt": "Globe lamp, waterfront railings, chains and lifebuoy on King’s Parade",
-      "credit": "Photo supplied by project owner",
-      "kind": "site"
-    },
-    {
-      "installationId": "the-stars-come-out-at-night",
-      "src": "/photos/the-stars-come-out-at-night-6-photo-6.webp",
-      "alt": "Albert Dock entrance totem with the arena and river beyond",
-      "credit": "Photo supplied by project owner",
-      "kind": "site"
-    },
-    {
-      "installationId": "the-stars-come-out-at-night",
-      "src": "/photos/the-stars-come-out-at-night-7-photo-7.webp",
-      "alt": "Tree-lined approach and wheel across the red road",
-      "credit": "Photo supplied by project owner",
-      "kind": "site"
-    },
-    {
-      "installationId": "the-stars-come-out-at-night",
-      "src": "/photos/the-stars-come-out-at-night-8-photo-8.webp",
-      "alt": "Rounded warehouse corner and red road between stone gate piers",
-      "credit": "Photo supplied by project owner",
-      "kind": "site"
-    },
-    {
-      "installationId": "the-stars-come-out-at-night",
-      "src": "/photos/the-stars-come-out-at-night-9-photo-9.webp",
-      "alt": "Recessed granite steps through the platform rim beside the river",
-      "credit": "Photo supplied by project owner",
-      "kind": "site"
-    },
-    {
-      "installationId": "the-stars-come-out-at-night",
-      "src": "/photos/the-stars-come-out-at-night-10-photo-10.webp",
-      "alt": "Circular platform with concentric cobbles, low raised edge and waterfront railings",
-      "credit": "Photo supplied by project owner",
-      "kind": "site"
-    },
-    {
       "installationId": "together",
       "src": "/photos/together-1-photo-1.webp",
       "alt": "South face of the stone arch with recessed upper panel and paved passage",
@@ -629,9 +559,70 @@
       "alt": "Dockside benches, bin, globe lamp and draped chains beside the promenade",
       "credit": "Photo supplied by project owner",
       "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-anchor-courtyard-1.webp",
+      "alt": "Anchor Courtyard gateway looking out towards the heart sculpture",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-anchor-courtyard-2.webp",
+      "alt": "Palm planting and warehouse wall in Anchor Courtyard",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-anchor-courtyard-3.webp",
+      "alt": "Escape Hunt entrance, steps and palms inside Anchor Courtyard",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-anchor-courtyard-4.webp",
+      "alt": "Inner courtyard with warehouse wings, steps and seating",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-anchor-courtyard-5.webp",
+      "alt": "Lower brick courtyard wing and Bar Glue entrance",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-anchor-courtyard-6.webp",
+      "alt": "Circular stone paving detail in the courtyard",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-anchor-courtyard-7.webp",
+      "alt": "Courtyard entrance framed by stone gateposts",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-anchor-courtyard-8.webp",
+      "alt": "Anchor Courtyard name sign and entrance beside Albert Dock warehouse",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
     }
   ],
-  "installationOverrides": [],
+  "installationOverrides": [
+    {
+      "id": "invisible-cities",
+      "coordinates": [-2.9977405515358697, 53.405812152486924]
+    }
+  ],
   "buildingOverrides": [],
   "additionalTrees": [],
   "notes": "Batches 01–10 received. See references/*-batch-*.json. Site images inform approximate surroundings and galleries. Final artwork placements and actual installation images will be supplied later. Camera GPS is not subject coordinates."

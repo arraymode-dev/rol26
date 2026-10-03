@@ -612,7 +612,6 @@ export default function App() {
               setList(true);
               setTrailGuide(false);
             }}
-            onGPSDebug={() => setGPSDebug(true)}
             onCertificate={() => setCertificate(true)}
           />
         )}
@@ -682,15 +681,6 @@ export default function App() {
               >
                 Visit the official event website <ArrowUpRight size={18} />
               </a>
-              <button
-                className="gps-secondary gps-debug-entry"
-                onClick={() => {
-                  setInfo(false);
-                  setGPSDebug(true);
-                }}
-              >
-                GPS debug · field log
-              </button>
               <div className="legal-disclaimer">
                 <strong>Unofficial project disclaimer</strong>
                 <p>

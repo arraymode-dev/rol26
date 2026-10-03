@@ -187,7 +187,7 @@ test("04 to 05 crosses directly from the church to Pier Head", () => {
       sum + (i ? Math.hypot(p[0] - path[i - 1][0], p[1] - path[i - 1][1]) : 0),
     0,
   );
-  assert.ok(length < 230, `04 to 05 is ${length} metres`);
+  assert.ok(length < 280, `04 to 05 is ${length} metres`);
   const exit = path.findIndex(
     ([x, z]: number[]) => x === -195.5 && z === -285.9,
   );
@@ -196,6 +196,7 @@ test("04 to 05 crosses directly from the church to Pier Head", () => {
     [-195.5, -285.9],
     [-270.5, -259.55],
     [-345.5, -233.2],
+    [-377.5, -219.8],
   ]);
 });
 
@@ -265,12 +266,29 @@ test("11 is viewed from the passing path and 12 follows the outside of the circl
   );
 });
 
-test("09 uses the northern Salthouse quay anchor and connected walking approaches", () => {
+test("05 uses the confirmed field position with a nearby connected approach", () => {
+  const item = installations.find((i) => i.number === 5)!;
+  assert.deepEqual(item.coordinates, [-2.9977405515358697, 53.405812152486924]);
+  assert.equal(item.positionStatus, "surveyed");
+  const [x, z] = project(...item.coordinates);
+  const route = JSON.parse(readFileSync("public/data/trail.json", "utf8"));
+  const approach = route.segments[3].at(-1);
+  assert.ok(Math.hypot(approach[0] - x, approach[1] - z) < 20);
+  assert.deepEqual(approach, route.segments[4][0]);
+});
+
+test("09 provisionally uses Anchor Courtyard and its entrance footpath", () => {
   const item = installations.find((i) => i.number === 9)!;
   const [x, z] = project(...item.coordinates);
-  assert.ok(Math.abs(x - 135) < 0.01 && Math.abs(z - 487) < 0.01);
+  assert.ok(Math.abs(x - 88.78794) < 0.01 && Math.abs(z - 488.09214) < 0.01);
+  assert.equal(item.positionStatus, "approximate");
   const route = JSON.parse(readFileSync("public/data/trail.json", "utf8"));
   const approach = route.segments[7].at(-1);
-  assert.ok(Math.hypot(approach[0] - x, approach[1] - z) < 30);
+  assert.ok(Math.hypot(approach[0] - x, approach[1] - z) < 1);
+  assert.deepEqual(route.segments[7].slice(-3), [
+    [107.6, 490.3],
+    [102.4, 492.4],
+    [89.4, 488.2],
+  ]);
   assert.deepEqual(approach, route.segments[8][0]);
 });

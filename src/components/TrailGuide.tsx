@@ -22,7 +22,6 @@ export function TrailGuide({
   onSeen,
   onCertificate,
   onReview,
-  onGPSDebug,
 }: {
   items: Installation[];
   seen: ReadonlySet<string>;
@@ -34,7 +33,6 @@ export function TrailGuide({
   onSeen: (id: string) => void;
   onCertificate: () => void;
   onReview: () => void;
-  onGPSDebug: () => void;
 }) {
   const returnRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -167,9 +165,6 @@ export function TrailGuide({
           </button>
         </>
       )}
-      <button className="gps-debug-link" onClick={onGPSDebug}>
-        GPS debug · field log
-      </button>
     </section>
   );
 }

@@ -38,7 +38,7 @@ import { installations } from "../data/installations";
 import { project } from "../lib/geo";
 import type { MapData, Survey } from "../types";
 import surveyData from "../data/survey.json" with { type: "json" };
-const survey = surveyData as Survey;
+const survey = surveyData as unknown as Survey;
 function applySurvey(data: MapData): MapData {
   return {
     ...data,
