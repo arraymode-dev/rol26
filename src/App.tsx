@@ -520,7 +520,7 @@ export default function App() {
               <div className="eyebrow">A DIFFERENT PERSPECTIVE</div>
               <h2 id="about-title">A city. A little wonder.</h2>
               <p>
-                An independent exploration of River of Light 2026. Discover the
+                An unofficial exploration of River of Light 2026. Discover the
                 full collection of thirteen artworks across Liverpool’s
                 waterfront and city centre.
               </p>
@@ -538,15 +538,15 @@ export default function App() {
               >
                 Visit the official event website <ArrowUpRight size={18} />
               </a>
-              <div className="controls-help">
-                <strong>Make yourself at home</strong>
+              <div className="legal-disclaimer">
+                <strong>Unofficial project disclaimer</strong>
                 <p>
-                  Drag to pan · Scroll to zoom · Right-drag to rotate
-                  <br />
-                  On touch: drag to pan, pinch to zoom, twist to rotate. Drag
-                  two fingers up or down to tilt.
-                  <br />
-                  Focus the map and use arrow keys to pan, + / − to zoom.
+                  This project is not affiliated with, endorsed by, sponsored by
+                  or authorised by Liverpool City Council, Culture Liverpool,
+                  Arts Council England, the River of Light organisers or the
+                  participating artists. Artwork images, names and trademarks
+                  belong to their respective owners. This concept map is for
+                  general reference and is not an official event guide.
                 </p>
               </div>
             </div>

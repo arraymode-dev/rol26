@@ -677,16 +677,16 @@ kbd {
   font-size: 11px;
   margin-top: 25px;
 }
-.controls-help {
+.legal-disclaimer {
   margin-top: 25px;
   padding-top: 23px;
   border-top: 1px solid var(--border);
 }
-.controls-help strong {
+.legal-disclaimer strong {
   font-size: 11px;
   font-weight: 500;
 }
-.controls-help p {
+.legal-disclaimer p {
   font-size: 10px;
 }
 .image-lightbox {
@@ -1563,19 +1563,19 @@ kbd {
 .about-modal .primary-button {
   margin-top: 22px;
 }
-.about-modal .controls-help {
+.about-modal .legal-disclaimer {
   margin-top: 26px;
   padding: 18px;
   border: 1px solid #c7b9e520;
   border-radius: 16px;
   background: #c7b9e504;
 }
-.about-modal .controls-help strong {
+.about-modal .legal-disclaimer strong {
   font-size: 14px;
   font-weight: 500;
   color: #b7a6df;
 }
-.about-modal .controls-help p {
+.about-modal .legal-disclaimer p {
   font-size: 12px;
   margin: 10px 0 0;
 }
@@ -1593,6 +1593,10 @@ kbd {
   .list-heading,
   .about-scroll {
     padding: 26px 20px 22px;
+  }
+  .about-modal .primary-button {
+    width: 100%;
+    justify-content: space-between;
   }
   .list-panel .collection-search {
     width: calc(100% - 40px);
@@ -1647,7 +1651,7 @@ kbd {
     );
   }
   .list-panel.popup-shell {
-    height: 56dvh;
+    height: calc(100dvh - 176px - env(safe-area-inset-bottom, 0px));
     max-height: calc(100dvh - 176px - env(safe-area-inset-bottom, 0px));
   }
   .list-panel .collection-search input {
