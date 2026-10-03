@@ -156,24 +156,24 @@ test("07 to 08 takes the dockside bridges in order without doubling back", () =>
   assert.ok(!nodes.includes("-123.5,-22.8"), "avoid the detour east of 07");
 });
 
-test("04 to 05 crosses directly from the church to Pier Head", () => {
-  const path = JSON.parse(readFileSync("public/data/trail.json", "utf8"))
-    .segments[3];
-  const length = path.reduce(
-    (sum: number, p: number[], i: number) =>
-      sum + (i ? Math.hypot(p[0] - path[i - 1][0], p[1] - path[i - 1][1]) : 0),
-    0,
+test("04 to 05 reaches the relocated northern waterfront stop and 05 to 06 continues from it", () => {
+  const route = JSON.parse(readFileSync("public/data/trail.json", "utf8"));
+  const target = project(
+    ...installations.find((i) => i.id === "invisible-cities")!.coordinates,
   );
-  assert.ok(length < 230, `04 to 05 is ${length} metres`);
-  const exit = path.findIndex(
-    ([x, z]: number[]) => x === -195.5 && z === -285.9,
+  const incoming = route.segments[3],
+    outgoing = route.segments[4];
+  assert.ok(
+    target[0] < -450 && target[1] < -490,
+    "05 is in the user-marked northern waterfront space",
   );
-  assert.ok(exit > 0);
-  assert.deepEqual(path.slice(exit), [
-    [-195.5, -285.9],
-    [-270.5, -259.55],
-    [-345.5, -233.2],
-  ]);
+  assert.ok(
+    Math.hypot(incoming.at(-1)[0] - target[0], incoming.at(-1)[1] - target[1]) <
+      35,
+    "mapped walking approach reaches the new location",
+  );
+  assert.deepEqual(incoming.at(-1), outgoing[0]);
+  assert.ok(incoming.some(([x, z]: number[]) => x < -400 && z < -500));
 });
 
 test("route corner rounding stays within the walking corridor and preserves endpoints", () => {

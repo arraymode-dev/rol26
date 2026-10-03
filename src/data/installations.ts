@@ -9,6 +9,8 @@ const sitePositions: Record<string, [number, number]> = {
   "flower-power": [-1.59, -398.48],
   loop: [-154, -714],
   "today-i-love-you": [-185, -321],
+  // User-marked open waterfront space north of the cruise-terminal buildings.
+  "invisible-cities": [-474, -519],
   "coloured-peonies": [-169.96, -159],
   unity: [-146, -101],
   "the-stars-come-out-at-night": [-80.25, 615.1],

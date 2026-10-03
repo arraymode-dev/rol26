@@ -166,7 +166,7 @@ export const Artwork = memo(function Artwork({
     item.id === "today-i-love-you" ? CHURCH_GARDENS.elevation + 0.08 : 0.65;
   return (
     <group position={[x, 0, z]}>
-      {!seen && near && (
+      {!seen && (
         <AttractionBeam
           show={showBeam}
           spillColor={treatment.colour}
@@ -286,7 +286,7 @@ export const Artwork = memo(function Artwork({
         zIndexRange={[20, 5]}
       >
         <button
-          className={`art-marker ${selected ? "selected" : ""}${seen ? " is-seen" : ""}${near ? "" : " overview-marker"}`}
+          className={`art-marker ${selected ? "selected" : ""}${seen ? " is-seen" : ""}`}
           style={
             { "--art-color": seen ? "#747f8b" : PRIMARY } as React.CSSProperties
           }
