@@ -2323,6 +2323,9 @@ kbd {
   padding: 10px 14px;
   font-size: 12px;
 }
+.gps-debug-entry {
+  margin-top: 18px;
+}
 .gps-debug .gps-capture {
   width: 100%;
   justify-content: center;

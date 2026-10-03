@@ -20,4 +20,4 @@ The supplied field fixes are observations, not a single translation to apply to 
 
 The 09 gallery now uses the new courtyard photographs. The old platform images remain as source references, not as gallery evidence for this placement. No new detailed courtyard model is inferred from these photographs; the owner plans to supply a better model.
 
-The field log remains lazy-loaded at `?debug=gps`, with no public buttons in About or Suggested trail. This unlisted URL is not authentication. High-accuracy tracking still runs only while Suggested trail is active.
+The field log remains lazy-loaded at `?debug=gps`. Following the owner’s subsequent request, About also has a field-log button; Suggested trail has no debug entry. The direct URL is not authentication. High-accuracy tracking still runs only while Suggested trail is active.

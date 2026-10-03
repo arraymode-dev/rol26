@@ -139,10 +139,6 @@ export function TrailGuide({
           >
             Walking directions <ArrowUpRight size={16} />
           </a>
-          <p className="trail-caveat">
-            Suggested route · check crossings and access on site. Walking times
-            exclude stops.
-          </p>
         </>
       ) : complete ? (
         <>
