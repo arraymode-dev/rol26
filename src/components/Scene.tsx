@@ -53,6 +53,7 @@ export interface SceneProps {
   lowQuality: boolean;
   night: boolean;
   selected: string | null;
+  seen: ReadonlySet<string>;
   trail: boolean;
   command: Command;
   reducedMotion: boolean;
@@ -195,6 +196,7 @@ function Content({
           selectionSequence={props.selectionSequence}
           night={props.night}
           selected={props.selected === item.id}
+          seen={props.seen.has(item.id)}
           showBeam={!highlightedBeam || highlightedBeam === item.id}
           beamOrigin={beamOrigin}
           onHover={onHover}

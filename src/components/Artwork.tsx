@@ -152,6 +152,7 @@ export const Artwork = memo(function Artwork({
   item,
   night,
   selected,
+  seen,
   showBeam,
   beamOrigin,
   onHover,
@@ -164,6 +165,7 @@ export const Artwork = memo(function Artwork({
   item: Installation;
   night: boolean;
   selected: boolean;
+  seen: boolean;
   showBeam: boolean;
   beamOrigin: [number, number] | null;
   onHover: (id: string, active: boolean) => void;
@@ -190,18 +192,20 @@ export const Artwork = memo(function Artwork({
     item.id === "today-i-love-you" ? CHURCH_GARDENS.elevation + 0.08 : 0.65;
   return (
     <group position={[x, 0, z]}>
-      <AttractionBeam
-        show={showBeam}
-        spillColor={treatment.colour}
-        spillSecondary={treatment.secondary}
-        // Retain the last focus as the radial origin after hover-off.
-        distance={
-          beamOrigin ? Math.hypot(x - beamOrigin[0], z - beamOrigin[1]) : 0
-        }
-        floor={floor}
-        night={night}
-        reducedMotion={reducedMotion}
-      />
+      {!seen && (
+        <AttractionBeam
+          show={showBeam}
+          spillColor={treatment.colour}
+          spillSecondary={treatment.secondary}
+          // Retain the last focus as the radial origin after hover-off.
+          distance={
+            beamOrigin ? Math.hypot(x - beamOrigin[0], z - beamOrigin[1]) : 0
+          }
+          floor={floor}
+          night={night}
+          reducedMotion={reducedMotion}
+        />
+      )}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, floor, 0]}
@@ -212,7 +216,11 @@ export const Artwork = memo(function Artwork({
         }}
       >
         <circleGeometry args={[ATTRACTION_RADIUS, 96]} />
-        <BoundaryMaterial color={PRIMARY} opacity={night ? 0.5 : 0.32} radial />
+        <BoundaryMaterial
+          color={seen ? "#88939e" : PRIMARY}
+          opacity={seen ? 0.18 : night ? 0.5 : 0.32}
+          radial
+        />
       </mesh>
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
@@ -222,7 +230,10 @@ export const Artwork = memo(function Artwork({
         <ringGeometry
           args={[ATTRACTION_RADIUS - 0.65, ATTRACTION_RADIUS, 96]}
         />
-        <BoundaryMaterial color={PRIMARY} opacity={selected ? 0.85 : 0.3} />
+        <BoundaryMaterial
+          color={seen ? "#88939e" : PRIMARY}
+          opacity={selected ? 0.85 : 0.3}
+        />
       </mesh>
       {item.artworkPlacement !== "pending" && (
         <group
@@ -301,15 +312,17 @@ export const Artwork = memo(function Artwork({
         zIndexRange={[20, 5]}
       >
         <button
-          className={`art-marker ${selected ? "selected" : ""}`}
-          style={{ "--art-color": PRIMARY } as React.CSSProperties}
+          className={`art-marker ${selected ? "selected" : ""}${seen ? " is-seen" : ""}`}
+          style={
+            { "--art-color": seen ? "#747f8b" : PRIMARY } as React.CSSProperties
+          }
           onPointerEnter={(event) => {
             if (event.pointerType !== "touch") onHover(item.id, true);
           }}
           onPointerLeave={() => onHover(item.id, false)}
           onPointerCancel={() => onHover(item.id, false)}
           onClick={() => onSelect(item.id)}
-          aria-label={`Explore ${item.name}`}
+          aria-label={`Explore ${item.name}${seen ? ", seen" : ""}`}
         >
           <span>{String(item.number).padStart(2, "0")}</span>
           <strong>{item.name}</strong>

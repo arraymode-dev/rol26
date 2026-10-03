@@ -1,6 +1,11 @@
 import { loadMap } from "./lib/map-loader";
 import { PRIMARY } from "./lib/palette";
 import {
+  parseSeenArtworks,
+  toggleSeenArtwork,
+  SEEN_STORAGE_KEY,
+} from "./lib/seen-artworks";
+import {
   Component,
   Suspense,
   lazy,
@@ -51,6 +56,25 @@ class SceneBoundary extends Component<
   }
 }
 export default function App() {
+  const [seen, setSeen] = useState<Set<string>>(() => {
+    try {
+      return parseSeenArtworks(
+        localStorage.getItem(SEEN_STORAGE_KEY),
+        installations.map((item) => item.id),
+      );
+    } catch {
+      return new Set();
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem(SEEN_STORAGE_KEY, JSON.stringify([...seen]));
+    } catch {
+      /* Check-offs still work when storage is unavailable. */
+    }
+  }, [seen]);
+  const toggleSeen = (id: string) =>
+    setSeen((current) => toggleSeenArtwork(current, id));
   const [selected, setSelected] = useState<string | null>(null),
     [trail, setTrail] = useState(false),
     [list, setList] = useState(false),
@@ -218,6 +242,7 @@ export default function App() {
                 lowQuality={lowQuality}
                 night={true}
                 selected={selected}
+                seen={seen}
                 trail={trail}
                 command={command}
                 reducedMotion={reducedMotion}
@@ -362,9 +387,20 @@ export default function App() {
             <button onClick={() => next(-1)}>
               <ChevronLeft size={17} /> Back
             </button>
-            <span>
-              {active.number} of {installations.length}
-            </span>
+            <div className="detail-progress">
+              <button
+                className="seen-toggle"
+                aria-pressed={seen.has(active.id)}
+                aria-label={`Mark ${active.name} as seen`}
+                onClick={() => toggleSeen(active.id)}
+              >
+                <Check size={16} />{" "}
+                {seen.has(active.id) ? "Seen!" : "I've seen it!"}
+              </button>
+              <span>
+                {active.number} of {installations.length}
+              </span>
+            </div>
             <button onClick={() => next(1)}>
               Next <ChevronRight size={17} />
             </button>
@@ -393,6 +429,15 @@ export default function App() {
             <h2>
               Find your light.<span>13 artworks across Liverpool</span>
             </h2>
+            <div className="collection-progress">
+              <span role="status">
+                {seen.size} of {installations.length} seen
+                {seen.size === installations.length ? " — well done!" : ""}
+              </span>
+              <button disabled={!seen.size} onClick={() => setSeen(new Set())}>
+                Reset all
+              </button>
+            </div>
           </div>
           <div className="search-wrap collection-search">
             <Search size={18} />
@@ -423,20 +468,29 @@ export default function App() {
               </p>
             )}
             {filtered.map((i) => (
-              <button
-                className="list-item"
+              <div
+                className={`list-entry${seen.has(i.id) ? " is-seen" : ""}`}
                 key={i.id}
-                onClick={() => choose(i.id)}
               >
-                <span className="list-number">
-                  {String(i.number).padStart(2, "0")}
-                </span>
-                <span>
-                  <strong>{i.name}</strong>
-                  <small>{i.location}</small>
-                </span>
-                <ArrowUpRight size={18} />
-              </button>
+                <button className="list-item" onClick={() => choose(i.id)}>
+                  <span className="list-number">
+                    {String(i.number).padStart(2, "0")}
+                  </span>
+                  <span>
+                    <strong>{i.name}</strong>
+                    <small>{i.location}</small>
+                  </span>
+                  <ArrowUpRight size={18} />
+                </button>
+                <button
+                  className="seen-toggle list-seen-toggle"
+                  aria-pressed={seen.has(i.id)}
+                  aria-label={`Mark ${i.name} as seen`}
+                  onClick={() => toggleSeen(i.id)}
+                >
+                  <Check size={20} />
+                </button>
+              </div>
             ))}
           </div>
         </section>
@@ -545,8 +599,7 @@ export default function App() {
                   or authorised by Liverpool City Council, Culture Liverpool,
                   Arts Council England, the River of Light organisers or the
                   participating artists. Artwork images, names and trademarks
-                  belong to their respective owners. This concept map is for
-                  general reference and is not an official event guide.
+                  belong to their respective owners.
                 </p>
               </div>
             </div>

@@ -410,6 +410,85 @@ kbd {
 .art-marker:hover {
   z-index: 40;
 }
+.art-marker.is-seen {
+  border-color: #89939e80;
+}
+.collection-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 12px;
+  color: #c3bbd8;
+}
+.collection-progress button {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 24px;
+  background: #25313e;
+}
+.collection-progress button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.list-entry {
+  position: relative;
+}
+.list-panel .list-entry .list-item {
+  padding-right: 62px;
+}
+.list-entry .list-item > svg {
+  display: none;
+}
+.list-entry.is-seen .list-item strong {
+  text-decoration: line-through;
+  color: #98a3af;
+}
+.list-entry.is-seen .list-number {
+  background: #747f8b;
+  color: white;
+}
+.seen-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  border: 1px solid #c7b9e540;
+  border-radius: 24px;
+  background: #25313e;
+  color: #ddd5f6;
+}
+.seen-toggle[aria-pressed="true"] {
+  background: #626e7c;
+  color: white;
+  border-color: #a6b1bd;
+}
+.list-seen-toggle {
+  position: absolute;
+  right: 10px;
+  top: calc(50% - 4px);
+  transform: translateY(-50%);
+  width: 44px;
+  padding: 0;
+}
+.list-seen-toggle[aria-pressed="false"] svg {
+  visibility: hidden;
+}
+.detail-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.detail-progress > span {
+  font-size: 10px;
+  color: #a8a1ba;
+}
+.detail-pagination .seen-toggle {
+  padding: 9px 10px;
+}
 .loading {
   position: absolute;
   left: 50%;
