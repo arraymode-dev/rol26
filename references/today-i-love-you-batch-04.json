@@ -1,0 +1,80 @@
+{
+  "installationId": "today-i-love-you",
+  "officialNumber": 4,
+  "originalDirectory": "references/incoming/04-today-i-love-you",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Church tower above the street retaining wall and iron fence"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "External stone stair entrance with central handrail and retaining walls"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Upper garden curved path, planted beds, lawn and mature trees"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Lawn and lower waterfront terrace above street level"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Church Gothic facade, garden lawn and timber bench row"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Timber bench and litter-bin details along the church-side path"
+    },
+    {
+      "file": "7-Photo-7.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Internal steps down to the Garden of Reflection terrace"
+    },
+    {
+      "file": "8-Photo-8.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Curved garden path, flower beds, trees and benches"
+    },
+    {
+      "file": "9-Photo-9.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Multi-stem strap-leaf planting and ornamental grasses beside the church"
+    },
+    {
+      "file": "10-Photo-10.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Gated side entrance with pointed stone piers beside the church"
+    }
+  ],
+  "observed": [
+    "Courtyard above street level with multiple entries",
+    "High retaining wall and iron fence",
+    "External stair, internal terrace stair and gated side entry",
+    "Gothic church, lawns, curved paving, timber benches, bins and layered planting"
+  ],
+  "positionMethod": "Saved OSM church, lawns, retaining-wall and path geometry; photo-informed elevations and detail. No camera GPS used as artwork coordinates.",
+  "unverified": [
+    "Exact elevations and dimensions",
+    "Access suitability and complete entry network",
+    "Final installation position, orientation, dimensions and actual installation photographs"
+  ],
+  "artworkPlacement": "pending"
+}

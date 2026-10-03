@@ -1,0 +1,87 @@
+{
+  "installationId": "the-anooki",
+  "officialNumber": 1,
+  "received": "2026-10-02",
+  "location": "Liverpool Town Hall, Water Street",
+  "originalDirectory": "references/incoming/01-the-anooki",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "numbering-reference",
+      "caption": "Official River of Light installation numbering \u2014 supplied screenshot"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "site",
+      "caption": "Town Hall oblique fa\u00e7ade: portico, clock dome and sandstone details"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "site",
+      "caption": "Water Street approach: shopfronts, paving and corner buildings"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "site",
+      "caption": "Town Hall and the Water Street approach from Castle Street"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "site",
+      "caption": "Castle Street caf\u00e9 seating and green barrier blocks"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "kind": "site",
+      "caption": "Town Hall entrance, portico columns and street junction"
+    },
+    {
+      "file": "7-Photo-7.jpg",
+      "kind": "site",
+      "caption": "Castle Street corner looking toward the Town Hall fa\u00e7ade"
+    },
+    {
+      "file": "8-Photo-8.jpg",
+      "kind": "site",
+      "caption": "Town Hall flank, adjacent stone building and approach bollards"
+    },
+    {
+      "file": "9-Photo-9.jpg",
+      "kind": "site",
+      "caption": "Riva Blu red-brick corner and neighbouring stone fa\u00e7ade"
+    },
+    {
+      "file": "10-Photo-10.jpg",
+      "kind": "site",
+      "caption": "Town Hall front elevation: four columns, pediment and dome"
+    },
+    {
+      "file": "11-Photo-11.jpg",
+      "kind": "artwork-visualisation",
+      "caption": "Supplied Anooki artwork visualisation: two figures around Town Hall columns at night"
+    }
+  ],
+  "modelling": {
+    "observed": [
+      "Four front portico columns above three ground-floor entrance arches",
+      "Triangular pediment, balustrades, central drum, clock and dome",
+      "Sandstone fa\u00e7ade with tall arched windows",
+      "Castle Street outdoor seating, green blocks and bollards"
+    ],
+    "referenceOnly": [
+      "Anooki figures wrapped around portico columns are shown in the supplied artwork visualisation, not the daytime photographs"
+    ],
+    "unverified": [
+      "Exact dimensions and artwork placement",
+      "Rear elevation and roof plan",
+      "Whether approach furniture remains during the event"
+    ],
+    "treeEvidence": "No tree positions established by this batch.",
+    "implemented": [
+      "Town Hall portico, arched windows, pediment, clock dome and railings",
+      "Anooki column poses derived from supplied artwork visualisation",
+      "Near-view green kerb blocks, black/yellow bollards, bistro tables and chairs, caf\u00e9 windbreaks and parasols"
+    ],
+    "detailVisibility": "Street furniture appears within 230 scene metres, with hysteresis; indicative placement only."
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "installationId": "loop",
+  "officialNumber": 3,
+  "originalDirectory": "references/incoming/03-loop",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "St Paul\u2019s Square approach: caf\u00e9 picnic tables, trees and angular stone seating"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Raised red-stone planter: tall strap-leaf plants, grasses and smaller branching trees"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Courtyard overview: tree spacing, cycle stands, lamps and picnic tables"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Broadleaf tree, modern lamp head, parasols and caf\u00e9 planter detail"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Pink-stone fa\u00e7ade with glazed atrium and exposed diagonal steelwork"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Courtyard overview with angular seating, tree pits and glass office fa\u00e7ades"
+    },
+    {
+      "file": "7-Photo-7.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Angular stone seat profile and cycle-stand relationships"
+    },
+    {
+      "file": "8-Photo-8.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Segmented stone bench and stainless cycle stands"
+    },
+    {
+      "file": "9-Photo-9.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Stone seating detail: angular joints, tapering ends and surface finish"
+    },
+    {
+      "file": "10-Photo-10.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Planted island, broadleaf tree, cycle parking and glazed entrance"
+    }
+  ],
+  "modelling": {
+    "observed": [
+      "Broadleaf trees in individual square pits",
+      "Tall branching strap-leaf plants and grasses in red-stone raised beds",
+      "Angular segmented red-stone benches",
+      "Stainless inverted-U cycle stands",
+      "Modern tapered lamps with shallow circular heads",
+      "Black picnic tables, parasols and dark caf\u00e9 planters",
+      "Pink stone/glass fa\u00e7ade with exposed diagonal bracing",
+      "Glazed office fa\u00e7ades"
+    ],
+    "unverified": [
+      "Exact tree counts, species, coordinates and dimensions",
+      "Furniture positions and event-day changes",
+      "Final LOOP sculpture layout"
+    ],
+    "positionMethod": "OSM building/plaza footprints anchor the scene. Planting and furniture are manually interpreted approximate positions, not camera GPS.",
+    "implemented": [
+      "Broadleaf tree forms, strap-leaf crowns and grass mounds",
+      "Raised planting beds and angular segmented seating",
+      "Close-range picnic furniture, cycle stands and tapered disc-head lamps",
+      "Photo-informed fa\u00e7ade colours, glazing and diagonal atrium braces"
+    ],
+    "detailVisibility": "Small street furniture within 230 scene metres, with hysteresis."
+  }
+}

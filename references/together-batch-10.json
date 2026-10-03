@@ -1,0 +1,101 @@
+{
+  "installationId": "together",
+  "officialNumber": 10,
+  "originalDirectory": "references/incoming/10-together",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "South face of the stone arch with recessed upper panel and paved passage",
+      "sha256": "16498a25a78cfb7dc730633dfd97d3c7e7313be8ec92a8a692bc08b0e26e72ab"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Dock entrance gate pier, open iron gates and bridge approach",
+      "sha256": "b16da956583bed871733296814a80349504f9ff468e795ce74f2c222f6dfb633"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Oblique arch face with dressed jambs, wall basin and tapered bollard",
+      "sha256": "67a2a61aec8a7a9e7702d02b9e4a045a3a07eb76bf8a2a7ed5a6fb14e897bcc4"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "North arch face with commemorative plaque above the opening",
+      "sha256": "0eb3301a85adcda351f01679baf1088b814f24a3c49e1ccb20b4c783d672934c"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Stone wall thickness, arch jamb and projecting tapered buttress",
+      "sha256": "a55e766ee17ab3171028cb2379820062ec924c3d7e18eb56e7bd77e8ebf952d4"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Buttressed wall wing, cobbled forecourt, globe lamp and utility cabinet",
+      "sha256": "b5778841fbe5ee2171023ee1ed4c94901f78b8aa23c4221861ea77769701b34e"
+    },
+    {
+      "file": "7-Photo-7.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Full gabled wall and arch framing the road beyond the slab-paved promenade",
+      "sha256": "70fa16400a1702526517f2a64eabe7d64bbac246d4ff924876a73ced544a143a"
+    },
+    {
+      "file": "8-Photo-8.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Dockside benches, bin, globe lamp and draped chains beside the promenade",
+      "sha256": "c7699d311b2df03b75dc914f0a17108a7093c369e35a89a668fecab74ce153b7"
+    }
+  ],
+  "positionMethod": "Photo-matched stone arch on saved OSM wall 511054673 and passage node 4999872828. Nearby gates, benches, planter and road retain mapped positions. Scene focus uses the arch; catalogue coordinates and routing are unchanged.",
+  "observed": [
+    "Freestanding gabled rubble-stone wall with open dressed-stone arch",
+    "Recessed south-face panel and north-face plaque",
+    "Tapered buttresses, stone gate piers and open iron gates",
+    "Central slab paving, cobbled side areas and inset ground lights",
+    "Dockside benches, bin, globe lamps and draped chains"
+  ],
+  "unverified": [
+    "Wall heights, opening dimensions and stonework proportions",
+    "Exact furniture dimensions and gate opening angles",
+    "Final artwork position, orientation and event-day access arrangements"
+  ],
+  "artworkPlacement": "pending"
+}

@@ -1,0 +1,54 @@
+{
+  "category": "shared-waterfront-landmarks",
+  "installationId": null,
+  "officialNumber": null,
+  "originalDirectory": "references/incoming/waterfront-links-02",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Cobbled promenade, curved lawn edge, black chain posts and Victorian lamps",
+      "sha256": "ab510d5ad1cb97664ef7175bac53b417ab65765403d851e57310cbe5a0832f47"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Standing bronze figure on a circular stone plinth beside red brick buildings",
+      "sha256": "764f83950a11951382d23a9efd0f20798528cf947467849ed2bdeae7ebe90d72"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Lawn with circular cobbled inset, distant figure group and riverside seating",
+      "sha256": "4f7e5cbb70586fb36254939a78287a8c63729dc1c187acbb5989b48b793328a8"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Octagonal stone hut with door, broad roof, finial and weather vane",
+      "sha256": "df814d96139584491875973d29e44f422b966d9a1a54dea744c3bfb7721abdad"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Reverse bridge view towards Pier Head, showing railings, portal and lifebuoy",
+      "sha256": "31e0507cdaaf2b139fa7038e1ec922bb8f9b85efbf5a03fac6b65faead49b98a",
+      "duplicateOf": "waterfront-links-01/10-Photo-10.jpg"
+    }
+  ],
+  "positionMethod": "Saved OSM Billy Fury and Legacy Sculpture nodes, grass boundary and building footprints; furniture and elevations estimated from photos.",
+  "notes": [
+    "Empty cobbled circular inset retained as photographed; no sculpture inferred from the Raleigh map node.",
+    "Southern octagonal hut roof refined from photo 4.",
+    "No new festival installation, gallery or route changes."
+  ],
+  "unverified": [
+    "Statue likeness, pose orientation and dimensions",
+    "Exact furniture locations and event-day access"
+  ]
+}

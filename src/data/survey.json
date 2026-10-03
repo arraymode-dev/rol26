@@ -1,0 +1,638 @@
+{
+  "photos": [
+    {
+      "installationId": "the-anooki",
+      "src": "/photos/the-anooki-2-photo-2.webp",
+      "alt": "Town Hall oblique façade: portico, clock dome and sandstone details",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-anooki",
+      "src": "/photos/the-anooki-3-photo-3.webp",
+      "alt": "Water Street approach: shopfronts, paving and corner buildings",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-anooki",
+      "src": "/photos/the-anooki-4-photo-4.webp",
+      "alt": "Town Hall and the Water Street approach from Castle Street",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-anooki",
+      "src": "/photos/the-anooki-5-photo-5.webp",
+      "alt": "Castle Street café seating and green barrier blocks",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-anooki",
+      "src": "/photos/the-anooki-6-photo-6.webp",
+      "alt": "Town Hall entrance, portico columns and street junction",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-anooki",
+      "src": "/photos/the-anooki-7-photo-7.webp",
+      "alt": "Castle Street corner looking toward the Town Hall façade",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-anooki",
+      "src": "/photos/the-anooki-8-photo-8.webp",
+      "alt": "Town Hall flank, adjacent stone building and approach bollards",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-anooki",
+      "src": "/photos/the-anooki-9-photo-9.webp",
+      "alt": "Riva Blu red-brick corner and neighbouring stone façade",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-anooki",
+      "src": "/photos/the-anooki-10-photo-10.webp",
+      "alt": "Town Hall front elevation: four columns, pediment and dome",
+      "credit": "Field photograph supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-anooki",
+      "src": "/photos/the-anooki-11-photo-11.webp",
+      "alt": "Supplied Anooki artwork visualisation: two figures around Town Hall columns at night",
+      "credit": "Artwork visualisation supplied by project owner · Inook / event reference",
+      "kind": "artwork"
+    },
+    {
+      "installationId": "flower-power",
+      "src": "/photos/flower-power-1-photo-1.webp",
+      "alt": "Exchange Passage East approach: café planters, paving and lanterns",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "flower-power",
+      "src": "/photos/flower-power-2-photo-2.webp",
+      "alt": "Exchange Flags courtyard: enclosing façades, monument and banner lamp posts",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "flower-power",
+      "src": "/photos/flower-power-3-photo-3.webp",
+      "alt": "Western courtyard: monument, picnic tables and temporary container",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "flower-power",
+      "src": "/photos/flower-power-4-photo-4.webp",
+      "alt": "Temporary container detail beside the monument; event-day presence unconfirmed",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "flower-power",
+      "src": "/photos/flower-power-5-photo-5.webp",
+      "alt": "Monument front: circular plinth, bronze figures and relief panels",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "flower-power",
+      "src": "/photos/flower-power-6-photo-6.webp",
+      "alt": "Monument rear: sculpture silhouette, circular base and surrounding paving",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "loop",
+      "src": "/photos/loop-1-photo-1.webp",
+      "alt": "St Paul’s Square approach: café picnic tables, trees and angular stone seating",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "loop",
+      "src": "/photos/loop-2-photo-2.webp",
+      "alt": "Raised red-stone planter: tall strap-leaf plants, grasses and smaller branching trees",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "loop",
+      "src": "/photos/loop-3-photo-3.webp",
+      "alt": "Courtyard overview: tree spacing, cycle stands, lamps and picnic tables",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "loop",
+      "src": "/photos/loop-4-photo-4.webp",
+      "alt": "Broadleaf tree, modern lamp head, parasols and café planter detail",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "loop",
+      "src": "/photos/loop-5-photo-5.webp",
+      "alt": "Pink-stone façade with glazed atrium and exposed diagonal steelwork",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "loop",
+      "src": "/photos/loop-6-photo-6.webp",
+      "alt": "Courtyard overview with angular seating, tree pits and glass office façades",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "loop",
+      "src": "/photos/loop-7-photo-7.webp",
+      "alt": "Angular stone seat profile and cycle-stand relationships",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "loop",
+      "src": "/photos/loop-8-photo-8.webp",
+      "alt": "Segmented stone bench and stainless cycle stands",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "loop",
+      "src": "/photos/loop-9-photo-9.webp",
+      "alt": "Stone seating detail: angular joints, tapering ends and surface finish",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "loop",
+      "src": "/photos/loop-10-photo-10.webp",
+      "alt": "Planted island, broadleaf tree, cycle parking and glazed entrance",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "today-i-love-you",
+      "src": "/photos/today-i-love-you-1-photo-1.webp",
+      "alt": "Church tower above the street retaining wall and iron fence",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "today-i-love-you",
+      "src": "/photos/today-i-love-you-2-photo-2.webp",
+      "alt": "External stone stair entrance with central handrail and retaining walls",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "today-i-love-you",
+      "src": "/photos/today-i-love-you-3-photo-3.webp",
+      "alt": "Upper garden curved path, planted beds, lawn and mature trees",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "today-i-love-you",
+      "src": "/photos/today-i-love-you-4-photo-4.webp",
+      "alt": "Lawn and lower waterfront terrace above street level",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "today-i-love-you",
+      "src": "/photos/today-i-love-you-5-photo-5.webp",
+      "alt": "Church Gothic facade, garden lawn and timber bench row",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "today-i-love-you",
+      "src": "/photos/today-i-love-you-6-photo-6.webp",
+      "alt": "Timber bench and litter-bin details along the church-side path",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "today-i-love-you",
+      "src": "/photos/today-i-love-you-7-photo-7.webp",
+      "alt": "Internal steps down to the Garden of Reflection terrace",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "today-i-love-you",
+      "src": "/photos/today-i-love-you-8-photo-8.webp",
+      "alt": "Curved garden path, flower beds, trees and benches",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "today-i-love-you",
+      "src": "/photos/today-i-love-you-9-photo-9.webp",
+      "alt": "Multi-stem strap-leaf planting and ornamental grasses beside the church",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "today-i-love-you",
+      "src": "/photos/today-i-love-you-10-photo-10.webp",
+      "alt": "Gated side entrance with pointed stone piers beside the church",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "invisible-cities",
+      "src": "/photos/invisible-cities-1-photo-1.webp",
+      "alt": "Pier Head lawn, equestrian statue, tree-lined approach and modern lamps",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "invisible-cities",
+      "src": "/photos/invisible-cities-2-photo-2.webp",
+      "alt": "Mersey Ferries terminal: angled stone facade, overhang and glazing",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "invisible-cities",
+      "src": "/photos/invisible-cities-3-photo-3.webp",
+      "alt": "Canal opening, stone parapet, railings and distant steel bridge",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "invisible-cities",
+      "src": "/photos/invisible-cities-4-photo-4.webp",
+      "alt": "Ferry terminal entrance, sloping glazed end and open paved forecourt",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "invisible-cities",
+      "src": "/photos/invisible-cities-5-photo-5.webp",
+      "alt": "Lower canal-side walk, integrated stone seating, railings and litter bin",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "invisible-cities",
+      "src": "/photos/invisible-cities-6-photo-6.webp",
+      "alt": "Stone parapet and tree-lined street below the Royal Liver Building",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "invisible-cities",
+      "src": "/photos/invisible-cities-7-photo-7.webp",
+      "alt": "Lawn edge, lamp detail and equestrian statue with waterfront landmarks",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "invisible-cities",
+      "src": "/photos/invisible-cities-8-photo-8.webp",
+      "alt": "Equestrian statue and stepped stone plinth on the lawn",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "coloured-peonies",
+      "src": "/photos/coloured-peonies-1-photo-1.webp",
+      "alt": "Pier Head wayfinding totem beside the Cunard Building corner",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "coloured-peonies",
+      "src": "/photos/coloured-peonies-2-photo-2.webp",
+      "alt": "Pale stone bench blocks, tiered planter and Cunard entrance façade",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "coloured-peonies",
+      "src": "/photos/coloured-peonies-3-photo-3.webp",
+      "alt": "Striped paving, cycle track and tree-lined Strand approach",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "coloured-peonies",
+      "src": "/photos/coloured-peonies-4-photo-4.webp",
+      "alt": "Tiered black municipal planter with cascading red and white flowers",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "coloured-peonies",
+      "src": "/photos/coloured-peonies-5-photo-5.webp",
+      "alt": "Ship-name stone benches, entrance steps and globe lamps",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "coloured-peonies",
+      "src": "/photos/coloured-peonies-6-photo-6.webp",
+      "alt": "Broadleaf tree, ground grate and inset lights beside the bench row",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "coloured-peonies",
+      "src": "/photos/coloured-peonies-7-photo-7.webp",
+      "alt": "Southward view of the tree avenue, planters and modern street lamps",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "coloured-peonies",
+      "src": "/photos/coloured-peonies-8-photo-8.webp",
+      "alt": "Northward view along the Cunard forecourt towards the Liver Building",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "coloured-peonies",
+      "src": "/photos/coloured-peonies-9-photo-9.webp",
+      "alt": "Britannia and Niagara benches with planter and neighbouring landmark",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "coloured-peonies",
+      "src": "/photos/coloured-peonies-10-photo-10.webp",
+      "alt": "Curved timber-slat bench with central divider beside the cycle track",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "unity",
+      "src": "/photos/unity-1-photo-1.webp",
+      "alt": "Stepped entrance to the raised platform between green-and-gold lamps",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "unity",
+      "src": "/photos/unity-2-photo-2.webp",
+      "alt": "Stone block, low green rail and raised platform edge beside the Cunard Building",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "unity",
+      "src": "/photos/unity-3-photo-3.webp",
+      "alt": "Circular green metal cover on a low stone base, viewed towards the Port of Liverpool Building",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "unity",
+      "src": "/photos/unity-4-photo-4.webp",
+      "alt": "Another entrance between paired lamps, with the Cunard façade beyond",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "unity",
+      "src": "/photos/unity-5-photo-5.webp",
+      "alt": "Low green boundary rail, retaining edge and adjacent street",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "unity",
+      "src": "/photos/unity-6-photo-6.webp",
+      "alt": "Ornamental lamp detail, stone block and additional entrance across the platform",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "unity",
+      "src": "/photos/unity-7-photo-7.webp",
+      "alt": "Circular cover and two-tone platform paving, viewed towards the Strand",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "unity",
+      "src": "/photos/unity-8-photo-8.webp",
+      "alt": "Ventilation building façade and narrow paved edge beside the platform",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "colour-rush",
+      "src": "/photos/colour-rush-1-photo-1.webp",
+      "alt": "Cobbled approach to the Pump House beside museum hoardings and dockside stalls",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "colour-rush",
+      "src": "/photos/colour-rush-2-photo-2.webp",
+      "alt": "Pump House gable, round chimney, square tower and bollards",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "colour-rush",
+      "src": "/photos/colour-rush-3-photo-3.webp",
+      "alt": "Dockside carousel and ticket booth beside the red road",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "colour-rush",
+      "src": "/photos/colour-rush-4-photo-4.webp",
+      "alt": "Broadleaf trees, chain posts and cream-and-red ice-cream vehicle beside the water",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "colour-rush",
+      "src": "/photos/colour-rush-5-photo-5.webp",
+      "alt": "Pump House tower, slate roof, timber entrance porch and steps",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "colour-rush",
+      "src": "/photos/colour-rush-6-photo-6.webp",
+      "alt": "Freestanding Pump House sign and trees beside the dock",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "colour-rush",
+      "src": "/photos/colour-rush-7-photo-7.webp",
+      "alt": "Tree-lined corner with chimney, bollards and dock guardrails",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "colour-rush",
+      "src": "/photos/colour-rush-8-photo-8.webp",
+      "alt": "Pump House and tree group viewed across the red road",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "colour-rush",
+      "src": "/photos/colour-rush-9-photo-9.webp",
+      "alt": "Broad cobbled slipway descending towards the dock",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "colour-rush",
+      "src": "/photos/colour-rush-10-photo-10.webp",
+      "alt": "Wide view of the chimney and trees across the road with temporary works beyond",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-1-photo-1.webp",
+      "alt": "Measurement reference at the recessed platform steps; overlay appears to show 22½ inches",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-2-photo-2.webp",
+      "alt": "Concentric platform cobbles with the wheel and arena beyond",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-3-photo-3.webp",
+      "alt": "View towards the warehouse, entrance road, bollards and Albert Dock totem",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-4-photo-4.webp",
+      "alt": "Low sloping cobbled platform edge and globe lamps facing the wheel",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-5-photo-5.webp",
+      "alt": "Globe lamp, waterfront railings, chains and lifebuoy on King’s Parade",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-6-photo-6.webp",
+      "alt": "Albert Dock entrance totem with the arena and river beyond",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-7-photo-7.webp",
+      "alt": "Tree-lined approach and wheel across the red road",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-8-photo-8.webp",
+      "alt": "Rounded warehouse corner and red road between stone gate piers",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-9-photo-9.webp",
+      "alt": "Recessed granite steps through the platform rim beside the river",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "src": "/photos/the-stars-come-out-at-night-10-photo-10.webp",
+      "alt": "Circular platform with concentric cobbles, low raised edge and waterfront railings",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "together",
+      "src": "/photos/together-1-photo-1.webp",
+      "alt": "South face of the stone arch with recessed upper panel and paved passage",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "together",
+      "src": "/photos/together-2-photo-2.webp",
+      "alt": "Dock entrance gate pier, open iron gates and bridge approach",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "together",
+      "src": "/photos/together-3-photo-3.webp",
+      "alt": "Oblique arch face with dressed jambs, wall basin and tapered bollard",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "together",
+      "src": "/photos/together-4-photo-4.webp",
+      "alt": "North arch face with commemorative plaque above the opening",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "together",
+      "src": "/photos/together-5-photo-5.webp",
+      "alt": "Stone wall thickness, arch jamb and projecting tapered buttress",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "together",
+      "src": "/photos/together-6-photo-6.webp",
+      "alt": "Buttressed wall wing, cobbled forecourt, globe lamp and utility cabinet",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "together",
+      "src": "/photos/together-7-photo-7.webp",
+      "alt": "Full gabled wall and arch framing the road beyond the slab-paved promenade",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    },
+    {
+      "installationId": "together",
+      "src": "/photos/together-8-photo-8.webp",
+      "alt": "Dockside benches, bin, globe lamp and draped chains beside the promenade",
+      "credit": "Photo supplied by project owner",
+      "kind": "site"
+    }
+  ],
+  "installationOverrides": [],
+  "buildingOverrides": [],
+  "additionalTrees": [],
+  "notes": "Batches 01–10 received. See references/*-batch-*.json. Site images inform approximate surroundings and galleries. Final artwork placements and actual installation images will be supplied later. Camera GPS is not subject coordinates."
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "church-to-pier-head",
+    "source": "User-directed illustrative crossing from the church to Pier Head; verify access on site",
+    "kind": "footway",
+    "walkable": true,
+    "public": true,
+    "points": [
+      [-195.5, -285.9],
+      [-270.5, -259.55],
+      [-345.5, -233.2]
+    ]
+  },
+  {
+    "id": "town-hall-clearance",
+    "source": "Illustrative forecourt route clear of the detailed Town Hall model; verify access on site",
+    "kind": "footway",
+    "walkable": true,
+    "public": true,
+    "points": [
+      [39, -316],
+      [59, -335],
+      [32, -388],
+      [24.9, -397.5]
+    ]
+  },
+  {
+    "id": "exchange-flags-through-route",
+    "source": "Illustrative route through Exchange Flags without circling the monument; verify access on site",
+    "kind": "footway",
+    "walkable": true,
+    "public": true,
+    "points": [
+      [7.1, -399.1],
+      [7.8, -423.4],
+      [22.9, -462.8]
+    ]
+  },
+  {
+    "id": "derby-square-approach",
+    "source": "Illustrative direct plaza approach to the outer circle; verify access on site",
+    "kind": "footway",
+    "walkable": true,
+    "public": true,
+    "points": [
+      [113.4, -74.1],
+      [125.5, -96.9]
+    ]
+  }
+]

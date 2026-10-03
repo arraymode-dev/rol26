@@ -1,0 +1,81 @@
+{
+  "installationId": "coloured-peonies",
+  "officialNumber": 6,
+  "originalDirectory": "references/incoming/06-coloured-peonies",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Pier Head wayfinding totem beside the Cunard Building corner"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Pale stone bench blocks, tiered planter and Cunard entrance fa\u00e7ade"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Striped paving, cycle track and tree-lined Strand approach"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Tiered black municipal planter with cascading red and white flowers"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Ship-name stone benches, entrance steps and globe lamps"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Broadleaf tree, ground grate and inset lights beside the bench row"
+    },
+    {
+      "file": "7-Photo-7.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Southward view of the tree avenue, planters and modern street lamps"
+    },
+    {
+      "file": "8-Photo-8.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Northward view along the Cunard forecourt towards the Liver Building"
+    },
+    {
+      "file": "9-Photo-9.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Britannia and Niagara benches with planter and neighbouring landmark"
+    },
+    {
+      "file": "10-Photo-10.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Curved timber-slat bench with central divider beside the cycle track"
+    }
+  ],
+  "positionMethod": "Saved OSM Cunard footprint, bench runs and tree positions; other furniture positions and dimensions are photo-informed estimates. Photo GPS is not used as artwork coordinates.",
+  "observed": [
+    "Rusticated stone fa\u00e7ade with arched lower windows and globe lamps",
+    "Long ship-name stone benches with inset metal patterns",
+    "Tiered municipal flowering planters, distinct from the proposed artwork",
+    "Striped paving, tree grates, inset lights and timber bench",
+    "Pier Head wayfinding totem and neighbouring cycle track"
+  ],
+  "unverified": [
+    "Final artwork placement and dimensions",
+    "Exact furniture dimensions, planter locations and fa\u00e7ade proportions",
+    "Event-day access and temporary obstacles"
+  ],
+  "artworkPlacement": "pending"
+}

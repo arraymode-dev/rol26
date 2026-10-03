@@ -1,0 +1,99 @@
+{
+  "source": "https://www.instagram.com/p/DdbI9FYiP8p/",
+  "publisher": "VisitLiverpool / Culture Liverpool",
+  "retrieved": "2026-10-02",
+  "usage": "Primary artwork thumbnails and first gallery slides. Existing gallery images retained in their original relative order.",
+  "files": [
+    {
+      "installationId": "the-anooki",
+      "carouselSlide": 10,
+      "originalFilename": "815535880_18630840832015420_7281132708624714977_n.jpg",
+      "localPath": "public/photos/instagram/the-anooki.jpg",
+      "sha256": "d02e92aaa43dd09f4599cb6ff30cb37a8cb16f9a043d47f8945b87c89cce1d80"
+    },
+    {
+      "installationId": "flower-power",
+      "carouselSlide": 11,
+      "originalFilename": "815061334_18630840916015420_8728833910363751885_n.jpg",
+      "localPath": "public/photos/instagram/flower-power.jpg",
+      "sha256": "cf80027a98076221ea64cdee657737b1734cffe4cac60fe36ad95ba90615a0f6"
+    },
+    {
+      "installationId": "loop",
+      "carouselSlide": 12,
+      "originalFilename": "816087438_18630840907015420_5623982073033639435_n.jpg",
+      "localPath": "public/photos/instagram/loop.jpg",
+      "sha256": "c8b4302fced3ceaf282c01f1ab4be50b81c1c9d353b517e9fc85e01c62cc74dd"
+    },
+    {
+      "installationId": "today-i-love-you",
+      "carouselSlide": 5,
+      "originalFilename": "815098278_18630840838015420_8660160723336540005_n.jpg",
+      "localPath": "public/photos/instagram/today-i-love-you.jpg",
+      "sha256": "85b530991dfd59cc634565ede703f24a988760526d7f5af95159614728fc6a6f"
+    },
+    {
+      "installationId": "invisible-cities",
+      "carouselSlide": 8,
+      "originalFilename": "814629505_18630840811015420_3962218160679006329_n.jpg",
+      "localPath": "public/photos/instagram/invisible-cities.jpg",
+      "sha256": "8ba0a31995d415cc30a36651e986ce6a96858956aedda4cbfa43e441412ff39c"
+    },
+    {
+      "installationId": "coloured-peonies",
+      "carouselSlide": 6,
+      "originalFilename": "814971325_18630840835015420_764594834124634649_n.jpg",
+      "localPath": "public/photos/instagram/coloured-peonies.jpg",
+      "sha256": "234839aebda73e1c7c5e5b7708459dcce44f4f6b08c25a1a1d508e898f1cc89e"
+    },
+    {
+      "installationId": "unity",
+      "carouselSlide": 4,
+      "originalFilename": "814831691_18630840790015420_6515357518650764918_n.jpg",
+      "localPath": "public/photos/instagram/unity.jpg",
+      "sha256": "f75f9189ed919fc990603fd5655be7d30ad6e251ac81b9c94a0adec06205a12b"
+    },
+    {
+      "installationId": "colour-rush",
+      "carouselSlide": 9,
+      "originalFilename": "814908126_18630840808015420_3459281784514527393_n.jpg",
+      "localPath": "public/photos/instagram/colour-rush.jpg",
+      "sha256": "fe151db09e95c9e0f71cbaca316d00efa55ae54c9548bda8da889223c4bf0b97"
+    },
+    {
+      "installationId": "the-stars-come-out-at-night",
+      "carouselSlide": 3,
+      "originalFilename": "814086116_18630840763015420_2898499578395975148_n.jpg",
+      "localPath": "public/photos/instagram/the-stars-come-out-at-night.jpg",
+      "sha256": "c5985c06f75b34ad1dd468c89307651ed1c2f1ccadd72684d09dc0567328ff6f"
+    },
+    {
+      "installationId": "together",
+      "carouselSlide": 2,
+      "originalFilename": "815798031_18630840766015420_8262268130169705901_n.jpg",
+      "localPath": "public/photos/instagram/together.jpg",
+      "sha256": "eb5216c2b6ec0fa1a67e0cbdb310667c6e462426d3a28934cc7c8049afadf3fb"
+    },
+    {
+      "installationId": "paradigm",
+      "carouselSlide": 7,
+      "originalFilename": "815098274_18630840793015420_6898646232045787647_n.jpg",
+      "localPath": "public/photos/instagram/paradigm.jpg",
+      "sha256": "fe9cf7bd290046565ebe3b7be5ba1f1dc356d93a3977e92ca7e9149c96de6621"
+    },
+    {
+      "installationId": "dream-herd",
+      "carouselSlide": 14,
+      "originalFilename": "814873606_18630840934015420_1640137940136672283_n.jpg",
+      "localPath": "public/photos/instagram/dream-herd.jpg",
+      "sha256": "33eba9180c31053a111168ffe435c95a093f887bd6630af51a88089d7fd04016"
+    },
+    {
+      "installationId": "pop",
+      "carouselSlide": 13,
+      "originalFilename": "815138729_18630840931015420_8526860404449746152_n.jpg",
+      "localPath": "public/photos/instagram/pop.jpg",
+      "sha256": "4bfee02fa81aea385ff524f2f3acf18a3cf430e52c6fffb331acfa6c31734784"
+    }
+  ]
+}

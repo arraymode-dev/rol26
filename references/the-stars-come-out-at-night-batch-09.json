@@ -1,0 +1,122 @@
+{
+  "installationId": "the-stars-come-out-at-night",
+  "officialNumber": 9,
+  "originalDirectory": "references/incoming/09-the-stars-come-out-at-night",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Measurement reference at the recessed platform steps; overlay appears to show 22\u00bd inches",
+      "sha256": "f88a1f1b24bf364000b4f85abccf90ecca7c27b895eb7ae291a83f682b402cc7"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Concentric platform cobbles with the wheel and arena beyond",
+      "sha256": "12164c0fa54916bd9fec0799a4e47480d8b8c6d5bc360a0df05230ed7a23e7e8"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "View towards the warehouse, entrance road, bollards and Albert Dock totem",
+      "sha256": "6164fc5c6a32ca062479957c9b6931cec48872982af2b1611c3e894d117475b3"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Low sloping cobbled platform edge and globe lamps facing the wheel",
+      "sha256": "915527a1cf4cd3777f43f338bba2e3d67f13730fe4e75e692cd85ec044c5a130"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Globe lamp, waterfront railings, chains and lifebuoy on King\u2019s Parade",
+      "sha256": "2234cd308775dc9b4af5eb330599241e82fa958da32a76a5411140e1c2b3a29f"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Albert Dock entrance totem with the arena and river beyond",
+      "sha256": "fc612f85be8b8521c947f54bbd504f84fbac426c2cf653d9f0af1ac9b8b3a848"
+    },
+    {
+      "file": "7-Photo-7.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Tree-lined approach and wheel across the red road",
+      "sha256": "f5eea4078975db7c52a1ca14246068786d11e18274ab5753ed4b3c491b1795c2"
+    },
+    {
+      "file": "8-Photo-8.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Rounded warehouse corner and red road between stone gate piers",
+      "sha256": "a9d7e7371b026efbaf3415ebf86e6a960355d6518242c1bfab6d3bf95c36dee4"
+    },
+    {
+      "file": "9-Photo-9.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Recessed granite steps through the platform rim beside the river",
+      "sha256": "cca2c00ead93a2fd7a36149d68e13785e196e44f31a810e1a3a1d67a63baa11b"
+    },
+    {
+      "file": "10-Photo-10.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Circular platform with concentric cobbles, low raised edge and waterfront railings",
+      "sha256": "207739e3e94478397846029013faffc8bdc76bdf4730231222b0b671c928a2d8"
+    }
+  ],
+  "positionMethod": "Photo-matched circular feature on King\u2019s Parade: saved OSM way 1512682728, with surrounding chain, bollard and road geometry. Scene focus uses this platform without marking artwork coordinates surveyed or changing routing.",
+  "observed": [
+    "Slightly raised circular platform with concentric cobbles",
+    "Sloped cobbled rim interrupted by recessed stone steps",
+    "Globe lamps, black railings, draped chains and lifebuoy",
+    "Red road, entrance totem and warehouse gate piers",
+    "Wheel, arena and tree-lined lawn"
+  ],
+  "unverified": [
+    "Platform diameter and exact stair bearing",
+    "Phone measurement appears to read 22.5 inches, about 0.57 m; not a survey",
+    "Final artwork orientation and placement on the platform",
+    "Step-free and event-day access"
+  ],
+  "artworkPlacement": "pending"
+}

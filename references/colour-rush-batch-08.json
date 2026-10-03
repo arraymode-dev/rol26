@@ -1,0 +1,122 @@
+{
+  "installationId": "colour-rush",
+  "officialNumber": 8,
+  "originalDirectory": "references/incoming/08-colour-rush",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Cobbled approach to the Pump House beside museum hoardings and dockside stalls",
+      "sha256": "bd51126d357b99e92c148d74b0db95c754955125947d400d9b3c3e5ef617d9e8"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Pump House gable, round chimney, square tower and bollards",
+      "sha256": "f355d5a6a6811dad45f0d37be82b01f9daa2c1ce517889f1d719fd563f0b2d4b"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Dockside carousel and ticket booth beside the red road",
+      "sha256": "e0fd93aa057f2c7f5659d3faf7e91a0dddd1fd7cfa48e067c26d25902b9e4788"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Broadleaf trees, chain posts and cream-and-red ice-cream vehicle beside the water",
+      "sha256": "a655f7a071971b6ed59156bd149947bf4d56854e2fb20c0208e0b5e5d5ea0762"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Pump House tower, slate roof, timber entrance porch and steps",
+      "sha256": "24d0a12fc802c5ae925488571eb54da93845d1089e514cd36ef6368d4284cbe1"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Freestanding Pump House sign and trees beside the dock",
+      "sha256": "38fd4ef2ab8ba3cf9f6c5ad0ac5e70c2a0e460fe8b2623580b75bc3a35a30199"
+    },
+    {
+      "file": "7-Photo-7.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Tree-lined corner with chimney, bollards and dock guardrails",
+      "sha256": "f37449f3d187d31aa083ca3de80ca6ff526562063dcd09914140100cd2a027e0"
+    },
+    {
+      "file": "8-Photo-8.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Pump House and tree group viewed across the red road",
+      "sha256": "4a730b4aa2821d07c759068cd5c04e4584e2912dfa650d59f016d5c47840d2cf"
+    },
+    {
+      "file": "9-Photo-9.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Broad cobbled slipway descending towards the dock",
+      "sha256": "fa9621d1c57af248277722ec3fda78221ba43288a8738ea821847adb29787c0b"
+    },
+    {
+      "file": "10-Photo-10.jpg",
+      "kind": "site",
+      "uses": [
+        "modelling-reference",
+        "location-gallery"
+      ],
+      "caption": "Wide view of the chimney and trees across the road with temporary works beyond",
+      "sha256": "20068ed9520b940b8ab05f5cee544689da7cfa432251ffa63688d27f5e22e616"
+    }
+  ],
+  "positionMethod": "Saved OSM Pump House footprint 85413004, chimney 1513986077, carousel 1272565499, tree nodes, Salthouse Quay road and slipway 256914541. Elevations and details interpret supplied photographs.",
+  "observed": [
+    "Brick Pump House with slate gables, square tower, chimney and timber porch",
+    "Broadleaf tree group, bollards and dock-edge chains",
+    "Red road with white markings",
+    "Carousel and cobbled approaches",
+    "Broad cobbled slipway into dock"
+  ],
+  "unverified": [
+    "Final artwork placement",
+    "Building and furniture dimensions; mapped chimney height is itself an estimate",
+    "Slipway gradient and access suitability",
+    "Event-day vendors, temporary works and restrictions"
+  ],
+  "artworkPlacement": "pending"
+}

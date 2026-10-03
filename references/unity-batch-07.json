@@ -1,0 +1,70 @@
+{
+  "installationId": "unity",
+  "officialNumber": 7,
+  "originalDirectory": "references/incoming/07-unity",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Stepped entrance to the raised platform between green-and-gold lamps"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Stone block, low green rail and raised platform edge beside the Cunard Building"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Circular green metal cover on a low stone base, viewed towards the Port of Liverpool Building"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Another entrance between paired lamps, with the Cunard fa\u00e7ade beyond"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Low green boundary rail, retaining edge and adjacent street"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Ornamental lamp detail, stone block and additional entrance across the platform"
+    },
+    {
+      "file": "7-Photo-7.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Circular cover and two-tone platform paving, viewed towards the Strand"
+    },
+    {
+      "file": "8-Photo-8.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Ventilation building fa\u00e7ade and narrow paved edge beside the platform"
+    }
+  ],
+  "positionMethod": "Saved OSM retaining-wall geometry bounds the photographed northern forecourt of George\u2019s Dock Building; building footprint from relation 9074112. Heights, entry widths and furniture positions are photo-informed estimates.",
+  "observed": [
+    "Raised platform with multiple stepped entrances",
+    "Green and gold ornamental lamps on stone pedestals",
+    "Low green perimeter rails with entrance gaps",
+    "Circular green metal cover on a stone base",
+    "Two large stone blocks and contrasting paving",
+    "Adjacent ventilation-building and Cunard fa\u00e7ades"
+  ],
+  "unverified": [
+    "Final artwork placement",
+    "Platform heights, dimensions and exact entry geometry",
+    "Step-free routes and event-day access"
+  ],
+  "artworkPlacement": "pending"
+}

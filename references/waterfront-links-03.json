@@ -1,0 +1,89 @@
+{
+  "category": "shared-waterfront-landmarks",
+  "installationId": null,
+  "officialNumber": null,
+  "originalDirectory": "references/incoming/waterfront-links-03",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Albert Dock wayfinding totem beside Tate and brick gate lodge",
+      "sha256": "06be6970a9c176df2663e34177d5f0c789e20b5539b7483ae20c9335cfecf1a0"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Reverse wayfinding face, map panel and Piermaster\u2019s House windows",
+      "sha256": "4de5c5cdc7a594c21aadd45ec7b49ee6ce0796bb56f00f831b678f0ab05866d6"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Wayfinding face towards Pier Head with garden fence and tall dock sign",
+      "sha256": "7d2bb08c29948b1b4bea51515d26496135f56a4a87d15f0a839efb8e5870ef39"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Hartley\u2019s Bridge towards museum: low curved railings and white deck strips",
+      "sha256": "ae1d4f0d3916e2afed0baa88b1b842c2ee03014b41e54ecc1e6621cf20c34b24"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Five coloured rock stack beside Tate and Mermaid House",
+      "sha256": "0a0c8996cb19bda078d8a02abff8346f075083554ebd889f83d9380bfd64ed28"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Courtyard brick wing with external black steel staircase",
+      "sha256": "3586094b34274dcd4f1091bd739b99e4b7db6ea429b177cb64fd2da50aa13667"
+    },
+    {
+      "file": "7-Photo-7.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Coloured rocks and Tate brick facade close view",
+      "sha256": "d24f39c1014fa441db1dff5afd999d8eb12bede0de51b315c97321e813c9c6a2"
+    },
+    {
+      "file": "8-Photo-8.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Reverse rock stack view with warehouse windows and wall crane",
+      "sha256": "1955dfc446302bd3e9eecb6a91a4229de65945003e24877435f74dc0589b5abe"
+    },
+    {
+      "file": "9-Photo-9.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Mermaid House front, hipped roof, chimney and adjoining wing",
+      "sha256": "926ef6e4b1c4533f9639f75c3d6ad007f56667695bcf109a34f55697541f5bde"
+    },
+    {
+      "file": "10-Photo-10.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Reverse Hartley\u2019s Bridge approach with gate lodges and Piermaster\u2019s House",
+      "sha256": "c32315adf3b600931e9561be39cc13523d6e08fc44fb8787e5f21418a80ac24e"
+    }
+  ],
+  "positionMethod": "Saved OSM Hartley\u2019s Bridge centreline, Liverpool Mountain node and warehouse/house footprints; elevations and unmapped furniture estimated from photos.",
+  "notes": [
+    "Liverpool Mountain is an existing landmark, not a numbered festival stop.",
+    "Totem faces are represented as one shared sign, not three separate objects.",
+    "Temporary scaffolding and barriers are not treated as event-day access restrictions.",
+    "No artwork placement, gallery or routing changes."
+  ],
+  "unverified": [
+    "Exact dimensions, sign and staircase placement, gate lodge footprints",
+    "Current signage, event-day access and temporary works"
+  ]
+}

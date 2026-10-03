@@ -1,0 +1,68 @@
+{
+  "installationId": "flower-power",
+  "officialNumber": 2,
+  "received": "2026-10-02",
+  "originalDirectory": "references/incoming/02-flower-power",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Exchange Passage East approach: caf\u00e9 planters, paving and lanterns"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Exchange Flags courtyard: enclosing fa\u00e7ades, monument and banner lamp posts"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Western courtyard: monument, picnic tables and temporary container"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Temporary container detail beside the monument; event-day presence unconfirmed"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Monument front: circular plinth, bronze figures and relief panels"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Monument rear: sculpture silhouette, circular base and surrounding paving"
+    }
+  ],
+  "modelling": {
+    "observed": [
+      "Stone courtyard fa\u00e7ades with vertical columns, window grids and corner towers",
+      "Monument with stepped circular base and dark sculptural group",
+      "Black heritage lanterns with hanging banners",
+      "Picnic benches and tables",
+      "Green caf\u00e9 planters with small planted foliage",
+      "Temporary dark container"
+    ],
+    "unverified": [
+      "Exact furniture positions and dimensions",
+      "Event-day container and caf\u00e9 arrangement",
+      "Flower sculpture positions and shapes are still artistic impressions"
+    ],
+    "treeEvidence": "Planter vegetation only; no surveyed street trees.",
+    "implemented": [
+      "Restored OSM Exchange Buildings footprint with courtyard-facing window grids and pilasters",
+      "Simplified monument anchored at OSM node 880178527",
+      "Close-view banner lanterns, picnic tables, benches, bollards and planted caf\u00e9 boxes"
+    ],
+    "notPlaced": [
+      "Temporary container retained as photo reference only; no event-day position assumed"
+    ]
+  }
+}

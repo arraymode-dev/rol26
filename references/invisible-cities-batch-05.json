@@ -1,0 +1,68 @@
+{
+  "installationId": "invisible-cities",
+  "officialNumber": 5,
+  "originalDirectory": "references/incoming/05-invisible-cities",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Pier Head lawn, equestrian statue, tree-lined approach and modern lamps"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Mersey Ferries terminal: angled stone facade, overhang and glazing"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Canal opening, stone parapet, railings and distant steel bridge"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Ferry terminal entrance, sloping glazed end and open paved forecourt"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Lower canal-side walk, integrated stone seating, railings and litter bin"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Stone parapet and tree-lined street below the Royal Liver Building"
+    },
+    {
+      "file": "7-Photo-7.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Lawn edge, lamp detail and equestrian statue with waterfront landmarks"
+    },
+    {
+      "file": "8-Photo-8.jpg",
+      "kind": "site",
+      "uses": ["modelling-reference", "location-gallery"],
+      "caption": "Equestrian statue and stepped stone plinth on the lawn"
+    }
+  ],
+  "positionMethod": "Saved OSM terminal footprint, lawn, canal outline, bench walls, trees and monument node; photo-informed low-poly forms. No camera GPS used as artwork coordinates.",
+  "observed": [
+    "Angled ferry terminal and recessed entrance",
+    "Lawn with equestrian statue on stepped plinth",
+    "Open canal and lower canal-side walk with stone seating and metal rails",
+    "Broadleaf tree avenue and modern lamps"
+  ],
+  "unverified": [
+    "Final installation position and dimensions",
+    "Exact site elevations, building heights and furniture dimensions",
+    "Event-day access and temporary obstacles"
+  ],
+  "artworkPlacement": "pending"
+}

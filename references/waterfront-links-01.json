@@ -1,0 +1,85 @@
+{
+  "category": "shared-waterfront-landmarks",
+  "installationId": null,
+  "officialNumber": null,
+  "originalDirectory": "references/incoming/waterfront-links-01",
+  "files": [
+    {
+      "file": "1-Photo-1.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Bronze working-horse sculpture on a stone plinth beside the dock",
+      "sha256": "22ad293c8cb354f8ad6e1f1b395729d9ae6824ffe71a34d0781f910ba4714ac4"
+    },
+    {
+      "file": "2-Photo-2.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Sticker-covered wayfinding totem and bridge approach",
+      "sha256": "e0f393f514341d5e8ff3e6e10ea5f00f56944d4aa1afc8b678a48f7e2e088128"
+    },
+    {
+      "file": "3-Photo-3.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Polygonal stone hut with black grid windows and broad roof",
+      "sha256": "6b812804d493976c23c0a6341cc6bb43e3f036753eff1350fe9c1f3c3491f614"
+    },
+    {
+      "file": "4-Photo-4.jpg",
+      "kind": "navigation-reference",
+      "uses": ["location-context"],
+      "caption": "Map screenshot showing the waterfront connection near the dock crossing",
+      "sha256": "491563ef214049cbb6b5a4640e0d31a2c22c1b0db8d8714d55e7d6a68a01966b"
+    },
+    {
+      "file": "5-Photo-5.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Stone hut, roof finial and adjacent cobbled plaza",
+      "sha256": "ddeeb71ef60c5a81d94f8e7c760449671e4b0470239910a93dcc996844ec9ee0"
+    },
+    {
+      "file": "6-Photo-6.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Bridge approach, riverside hut, lamps and railings",
+      "sha256": "80ac43e16b4bd462b3c71558ea09f7d5f90d0bc4359fc0c97e530ab3840951d6"
+    },
+    {
+      "file": "7-Photo-7.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Bridge side structure and stone abutment beside the water",
+      "sha256": "50e9658b82cdd749a56421d178f0ad9e630e1e3b9a488724aff60758ebb2a197"
+    },
+    {
+      "file": "8-Photo-8.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Bridge deck, cross-braced steel frame and tension rods",
+      "sha256": "e0c14a0f1cca0315958499809151367e91478a3baaa369d8fb301ae560c91cdf"
+    },
+    {
+      "file": "9-Photo-9.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Upward view of the steel portal and diagonal rods",
+      "sha256": "99f6797f357c49a840275da198c42a9a1bead6c48562a63f4e83a9b4060d7509"
+    },
+    {
+      "file": "10-Photo-10.jpg",
+      "kind": "shared-landmark",
+      "uses": ["modelling-reference", "route-context"],
+      "caption": "Reverse view along the bridge towards Pier Head",
+      "sha256": "31e0507cdaaf2b139fa7038e1ec922bb8f9b85efbf5a03fac6b65faead49b98a"
+    }
+  ],
+  "scope": "Shared surroundings and connections between numbered sites; not a new installation or artwork gallery.",
+  "positionMethod": "Saved OSM footprints and bridge centerline; Waiting... sculpture node 2517642852. Screenshot is contextual only, not surveyed coordinates.",
+  "unverified": [
+    "Model heights, bridge width, lamp and sign positions, sculpture orientation and proportions",
+    "Event-day access and accessibility",
+    "Any artwork placement"
+  ]
+}
