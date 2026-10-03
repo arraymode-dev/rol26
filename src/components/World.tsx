@@ -17,6 +17,8 @@ import {
   type Footprint,
 } from "../lib/attraction-boundary";
 import { GhostBuildings } from "./GhostBuildings";
+import { AnchorCourtyard } from "./AnchorCourtyard";
+import { ANCHOR_BUILDINGS, isAnchorTree } from "../lib/anchor-courtyard";
 import exchangeFootprint from "../data/exchange-flags.json";
 import dockFootprint from "../data/georges-dock.json";
 import { ATTRACTION_RADIUS } from "../lib/attraction-boundary";
@@ -133,6 +135,7 @@ export const World = memo(function World({
           "24611035",
           "9074112",
           ...ST_PAULS_BUILDINGS,
+          ...ANCHOR_BUILDINGS,
           ...WATERFRONT_BUILDINGS,
           ...WATERFRONT_LANDMARK_IDS,
           ...PUMP_BUILDINGS,
@@ -344,7 +347,8 @@ export const World = memo(function World({
             !isCunardTree([x, z]) &&
             !isPumpTree([x, z]) &&
             !isKingsTree([x, z]) &&
-            !isWappingTree([x, z]),
+            !isWappingTree([x, z]) &&
+            !isAnchorTree([x, z]),
         )}
         night={night}
       />
@@ -362,6 +366,7 @@ export const World = memo(function World({
         <ExchangeFlags night={night} />
         <StPaulsSquare night={night} />
       </GhostBuildings>
+      <AnchorCourtyard />
       <RiverFurniture data={data} night={night} />
       <ChurchGardens night={night} />
       <WappingGate night={night} />

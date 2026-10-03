@@ -21,3 +21,19 @@ The supplied field fixes are observations, not a single translation to apply to 
 The 09 gallery now uses the new courtyard photographs. The old platform images remain as source references, not as gallery evidence for this placement. No new detailed courtyard model is inferred from these photographs; the owner plans to supply a better model.
 
 The field log remains lazy-loaded at `?debug=gps`. Following the owner’s subsequent request, About also has a field-log button; Suggested trail has no debug entry. The direct URL is not authentication. High-accuracy tracking still runs only while Suggested trail is active.
+
+### Anchor Courtyard surround
+
+The four saved OSM building footprints surrounding 09 now use a lightweight,
+photo-informed model: tall red-brick warehouse wings, low slate-roofed wings,
+stone entrance piers, courtyard walls, flagstone joints, palms and benches.
+Heights and roof profiles are visual estimates from the owner's courtyard photos
+and supplied massing screenshots, not a measured architectural survey. Artwork
+09's placement remains provisional. Windows, paving joints and small furniture
+use close-range LOD; geometry is merged by material and needs no new textures.
+Tests enforce a 25k-triangle / 12-batch budget and an unobstructed entrance route.
+
+Phones now default to performance rendering (coarse pointer and short screen
+edge at most 700px). An explicit quality choice uses `rol-render-quality` and
+survives reload. The old automatically saved false value does not override the
+new phone default.

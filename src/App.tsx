@@ -107,19 +107,29 @@ export default function App() {
     [ready, setReady] = useState(false),
     [failed, setFailed] = useState(false);
   const [lowQuality, setLowQuality] = useState(() => {
+    const phone =
+      matchMedia("(pointer: coarse)").matches &&
+      Math.min(screen.width, screen.height) <= 700;
     try {
-      return localStorage.getItem("rol-low-quality") === "true";
+      const preference = localStorage.getItem("rol-render-quality");
+      if (preference === "performance" || preference === "full")
+        return preference === "performance";
+      // The old key was written on every load, even without a user choice.
+      // Its automatic false value must not disable the new phone default.
+      return phone || localStorage.getItem("rol-low-quality") === "true";
     } catch {
-      return false;
+      return phone;
     }
   });
-  useEffect(() => {
+  const toggleQuality = () => {
+    const next = !lowQuality;
+    setLowQuality(next);
     try {
-      localStorage.setItem("rol-low-quality", String(lowQuality));
+      localStorage.setItem("rol-render-quality", next ? "performance" : "full");
     } catch {
       /* Rendering still works when browser storage is unavailable. */
     }
-  }, [lowQuality]);
+  };
   const [keyboardInset, setKeyboardInset] = useState(0);
   useEffect(() => {
     const viewport = window.visualViewport;
@@ -319,7 +329,7 @@ export default function App() {
           aria-label="Low quality mode"
           aria-pressed={lowQuality}
           title="Reduce rendering cost: removes dynamic lights and shadows, stills water, and keeps artwork colour pools"
-          onClick={() => setLowQuality((value) => !value)}
+          onClick={toggleQuality}
         >
           <Gauge size={17} />
           <span>Low quality</span>
