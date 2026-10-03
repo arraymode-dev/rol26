@@ -1,3 +1,4 @@
+import { track } from "../lib/analytics";
 import { useEffect } from "react";
 import type { TrailLocationStore } from "../lib/trail-location";
 
@@ -6,6 +7,13 @@ export function TrailLocationTracker({ store }: { store: TrailLocationStore }) {
   const start = () =>
     store.start(navigator.geolocation, window.isSecureContext);
   useEffect(() => {
+    let previous = store.getSnapshot().status;
+    const unsubscribe = store.subscribe(() => {
+      const status = store.getSnapshot().status;
+      if (status === previous) return;
+      previous = status;
+      track("GPS status changed", { status });
+    });
     const resume = () => {
       if (document.visibilityState === "visible") start();
       else store.stop("paused");
@@ -20,6 +28,7 @@ export function TrailLocationTracker({ store }: { store: TrailLocationStore }) {
       window.removeEventListener("pagehide", pause);
       window.removeEventListener("pageshow", resume);
       store.stop();
+      unsubscribe();
     };
   }, [store]);
   return null;

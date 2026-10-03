@@ -1,3 +1,4 @@
+import { track } from "../lib/analytics";
 import { useEffect, useState } from "react";
 import { Download, Share2, X } from "lucide-react";
 import {
@@ -40,9 +41,11 @@ export function CollectionCertificate({
   const shareable = image && canShareCertificate(image.file, navigator);
   const share = async () => {
     if (!image || sharing) return;
+    track("Certificate share started");
     setSharing(true);
     setStatus("");
     const result = await shareCertificate(image.file, navigator);
+    track("Certificate share finished", { result });
     if (result === "failed" || result === "unavailable")
       setStatus(
         "Sharing is unavailable here. Save the image, then add it to your Instagram post.",
@@ -53,6 +56,7 @@ export function CollectionCertificate({
     <div className="modal-backdrop certificate-backdrop" onClick={onClose}>
       <section
         className="certificate-modal popup-shell"
+        data-analytics-surface="certificate"
         role="dialog"
         aria-modal="true"
         aria-labelledby="certificate-title"
@@ -102,6 +106,7 @@ export function CollectionCertificate({
                 className={shareable ? "certificate-save" : "primary-button"}
                 href={image.url}
                 download={CERTIFICATE_FILENAME}
+                onClick={() => track("Certificate downloaded")}
               >
                 <Download size={18} />
                 {shareable ? "Save image" : "Save for Instagram"}

@@ -1,3 +1,4 @@
+import { track } from "../lib/analytics";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { X, Copy, Download, MapPin } from "lucide-react";
 import { installations } from "../data/installations";
@@ -95,7 +96,18 @@ export function GPSDebug({
     setMessage("GPS log downloaded.");
   };
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div
+      onClickCapture={(event) => {
+        if (!(event.target instanceof Element)) return;
+        const control = event.target
+          .closest("[data-analytics-action]")
+          ?.getAttribute("data-analytics-action");
+        if (control) track("GPS field log action", { control });
+      }}
+      className="modal-backdrop heap-ignore"
+      data-heap-redact-text="true"
+      onClick={onClose}
+    >
       <section
         ref={dialogRef}
         onKeyDown={(event) => {
@@ -124,6 +136,7 @@ export function GPSDebug({
         <button
           className="icon-button detail-close"
           aria-label="Close GPS debug"
+          data-analytics-action="close"
           onClick={onClose}
         >
           <X size={22} />
@@ -142,12 +155,17 @@ export function GPSDebug({
               : "Turn on Suggested trail to use GPS."}
           </p>
           {!trail ? (
-            <button className="primary-button" onClick={onStart}>
+            <button
+              className="primary-button"
+              data-analytics-action="start-trail"
+              onClick={onStart}
+            >
               Start Suggested trail
             </button>
           ) : (
             <button
               className="gps-secondary"
+              data-analytics-action="refresh-gps"
               onClick={() =>
                 store.start(navigator.geolocation, window.isSecureContext, 0)
               }
@@ -207,6 +225,7 @@ export function GPSDebug({
           <button
             className="primary-button gps-capture"
             disabled={!fresh}
+            data-analytics-action="save-reading"
             onClick={save}
           >
             <MapPin size={18} /> I’m here — save GPS
@@ -219,6 +238,7 @@ export function GPSDebug({
             <button
               className="gps-secondary"
               disabled={!records.length}
+              data-analytics-action="copy-log"
               onClick={copy}
             >
               <Copy size={16} /> Copy log
@@ -226,6 +246,7 @@ export function GPSDebug({
             <button
               className="gps-secondary"
               disabled={!records.length}
+              data-analytics-action="download-log"
               onClick={download}
             >
               <Download size={16} /> Download log

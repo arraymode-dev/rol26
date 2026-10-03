@@ -1,3 +1,4 @@
+import { track } from "../lib/analytics";
 import { useEffect, useRef } from "react";
 import {
   ArrowLeft,
@@ -43,6 +44,16 @@ export function TrailGuide({
     next = items.find((i) => i.id === nextId),
     origin = items.find((i) => i.id === from),
     walk = trailWalk(ids, legs, from, nextId);
+  const lastStop = useRef<string | null>(null);
+  useEffect(() => {
+    if (lastStop.current === nextId) return;
+    lastStop.current = nextId;
+    track("Trail next artwork", {
+      artwork_id: nextId,
+      previous_artwork_id: from,
+      seen_count: seen.size,
+    });
+  }, [nextId, from, seen.size]);
   const complete = seen.size === items.length;
   if (!open)
     return (
@@ -63,7 +74,12 @@ export function TrailGuide({
       </button>
     );
   return (
-    <section className="trail-guide popup-shell" aria-labelledby="trail-title">
+    <section
+      className="trail-guide popup-shell"
+      data-analytics-surface="trail-guide"
+      data-artwork-id={nextId ?? undefined}
+      aria-labelledby="trail-title"
+    >
       <button ref={returnRef} className="trail-back" onClick={onClose}>
         <ArrowLeft size={17} /> Back to map
       </button>

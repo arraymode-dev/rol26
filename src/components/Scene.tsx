@@ -1,3 +1,5 @@
+import { attachMapAnalytics } from "../lib/map-analytics";
+import { track } from "../lib/analytics";
 import { UserLocationMarker } from "./UserLocationMarker";
 import type { TrailLocationStore } from "../lib/trail-location";
 import { loadMap } from "../lib/map-loader";
@@ -149,6 +151,7 @@ function Content({
 }: SceneProps & { data: MapData; mobile: boolean }) {
   const [hovered, setHovered] = useState<string | null>(null);
   const onHover = useCallback((id: string, active: boolean) => {
+    if (active) track("Artwork hovered", { artwork_id: id });
     setHovered((current) => (active ? id : current === id ? null : current));
   }, []);
   const highlightedBeam = hovered ?? props.selected;
@@ -507,6 +510,20 @@ function CameraRig({
         t,
       );
   }, [command]);
+  useEffect(
+    () =>
+      attachMapAnalytics(gl.domElement, window, () => {
+        const distance = controls.current
+          ? camera.position.distanceTo(controls.current.target)
+          : 2000;
+        return distance < 250
+          ? "close"
+          : distance < 900
+            ? "neighbourhood"
+            : "overview";
+      }),
+    [gl, camera],
+  );
   useEffect(() => {
     const canvas = gl.domElement;
     const wheel = (event: WheelEvent) => {

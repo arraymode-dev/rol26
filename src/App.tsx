@@ -1,3 +1,5 @@
+import { track } from "./lib/analytics";
+import { useExperienceAnalytics } from "./lib/use-experience-analytics";
 import { lastSeenArtwork } from "./lib/trail-guide";
 import { createTrailLocation } from "./lib/trail-location";
 import { TrailLocationTracker } from "./components/TrailLocationTracker";
@@ -196,6 +198,10 @@ export default function App() {
   const choose = useCallback((id: string, step = false) => {
     // A repeated hit on the selected artwork must not restart its camera flight.
     if (selectedIdRef.current === id) return;
+    track("Artwork selection requested", {
+      artwork_id: id,
+      source: step ? "previous-next" : "map-list-or-trail",
+    });
     selectedIdRef.current = id;
     searchRef.current?.blur();
     setMinimised(false);
@@ -212,8 +218,10 @@ export default function App() {
     setList(true);
   }, []);
   const loaded = useCallback(() => setReady(true), []);
-  const issue = (kind: Command["kind"]) =>
+  const issue = (kind: Command["kind"]) => {
+    track("Map command", { control: kind });
     setCommand((c) => ({ kind, sequence: c.sequence + 1 }));
+  };
   const overview = () => {
     setSelected(null);
     issue("overview");
@@ -229,6 +237,7 @@ export default function App() {
     const listener = (e: KeyboardEvent) => {
       if (e.defaultPrevented) return;
       if (e.key === "Escape") {
+        track("Keyboard shortcut", { control: "Escape" });
         if (gpsDebug) {
           setGPSDebug(false);
           return;
@@ -249,6 +258,7 @@ export default function App() {
       }
       if (e.key === "/" && !(e.target instanceof HTMLInputElement)) {
         if (certificate) return;
+        track("Keyboard shortcut", { control: "artwork-search" });
         e.preventDefault();
         setSelected(null);
         setList(true);
@@ -264,6 +274,23 @@ export default function App() {
       .toLowerCase()
       .includes(query.toLowerCase()),
   );
+  useExperienceAnalytics({
+    selected,
+    trail,
+    list,
+    info,
+    gpsDebug,
+    certificate,
+    trailGuide,
+    minimised,
+    lowQuality,
+    ready,
+    failed,
+    reducedMotion,
+    seen,
+    query,
+    resultCount: filtered.length,
+  });
   useModalFocus(info, ".about-modal");
   useModalFocus(certificate, ".certificate-modal");
   const next = (offset: number) => {
@@ -361,6 +388,8 @@ export default function App() {
       {active && (
         <section
           className={`detail-panel popup-shell${minimised ? " is-minimised" : ""}`}
+          data-analytics-surface="artwork-details"
+          data-artwork-id={active.id}
           aria-label={`${active.name} details`}
         >
           <button
@@ -460,6 +489,7 @@ export default function App() {
         <section
           className="list-panel popup-shell"
           style={{ "--keyboard-inset": `${keyboardInset}px` } as CSSProperties}
+          data-analytics-surface="artwork-list"
           id="artwork-list"
           tabIndex={-1}
         >
@@ -484,6 +514,7 @@ export default function App() {
               <button
                 disabled={!seen.size}
                 onClick={() => {
+                  track("Collection reset", { seen_count: seen.size });
                   setSeen(new Set());
                 }}
               >
@@ -531,6 +562,7 @@ export default function App() {
               <div
                 className={`list-entry${seen.has(i.id) ? " is-seen" : ""}`}
                 key={i.id}
+                data-artwork-id={i.id}
               >
                 <button className="list-item" onClick={() => choose(i.id)}>
                   <span className="list-number">
@@ -566,7 +598,7 @@ export default function App() {
           </a>
         </div>
       </div>
-      <footer className="bottom-bar">
+      <footer className="bottom-bar" data-analytics-surface="navigation">
         <nav className="bottom-actions">
           <button
             ref={listButtonRef}
@@ -657,6 +689,7 @@ export default function App() {
         <div className="modal-backdrop" onClick={() => setInfo(false)}>
           <section
             className="about-modal popup-shell"
+            data-analytics-surface="about"
             role="dialog"
             aria-modal="true"
             aria-labelledby="about-title"
@@ -727,6 +760,18 @@ function Photo({ item }: { item: Installation }) {
     setFull(false);
   }, [item.id]);
   const photo = item.photos[index];
+  const photoEvent = useRef("");
+  useEffect(() => {
+    const key = `${item.id}:${index}:${full}:${broken}`;
+    if (photoEvent.current === key) return;
+    photoEvent.current = key;
+    track(broken ? "Artwork photo unavailable" : "Artwork photo viewed", {
+      artwork_id: item.id,
+      photo_index: index + 1,
+      photo_kind: photo?.kind ?? "none",
+      open: full,
+    });
+  }, [item.id, index, full, broken, photo?.kind]);
   useModalFocus(full, ".image-lightbox");
   useEffect(() => {
     if (!full) return;
