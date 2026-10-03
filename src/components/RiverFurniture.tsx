@@ -37,7 +37,9 @@ export const RiverFurniture = memo(function RiverFurniture({
       }
     >();
     batches.set("rod", {
-      geometry: new THREE.CylinderGeometry(1, 1, 1, 6),
+      // Tiny chain links do not need end caps; keep full-dock coverage cheaper
+      // than the old densely segmented river-only chains.
+      geometry: new THREE.CylinderGeometry(1, 1, 1, 6, 1, true),
       material: iron,
       matrices: [],
     });
@@ -108,21 +110,19 @@ export const RiverFurniture = memo(function RiverFurniture({
         }
       }
       for (const y of [0.45, 0.8, 1.2])
-        for (let k = 0; k < 4; k++) {
+        for (let k = 0; k < 2; k++) {
           const at = (t: number) => [
             a[0] + (b[0] - a[0]) * t,
             y - 0.16 * Math.sin(Math.PI * t),
             a[1] + (b[1] - a[1]) * t,
           ];
-          rod(at(k / 4), at((k + 1) / 4), 0.024);
+          rod(at(k / 2), at((k + 1) / 2), 0.024);
         }
     }
-    for (const {
-      lamp: [x, z],
-      bin,
-      ring,
-      angle,
-    } of layout.groups) {
+    for (const [x, z] of [
+      ...layout.groups.map((g) => g.lamp),
+      ...layout.dockLamps,
+    ]) {
       add("base", x, 0.24, z);
       add("stem", x, 2.1, z);
       add("glass", x, 4.02, z);
@@ -135,6 +135,8 @@ export const RiverFurniture = memo(function RiverFurniture({
             [x + dx * 1.65, 4.35, z + dz * 1.65],
             0.025,
           );
+    }
+    for (const { bin, ring, angle } of layout.groups) {
       add("bin", bin[0], 0.51, bin[1]);
       rod([ring[0], -0.04, ring[1]], [ring[0], 1.65, ring[1]], 0.05);
       add("ring", ring[0], 1.2, ring[1], -angle);

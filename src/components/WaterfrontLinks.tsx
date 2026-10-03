@@ -6,7 +6,7 @@ import { memo, useEffect, useMemo } from "react";
 import { Detailed } from "@react-three/drei";
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import site from "../data/waterfront-links.json";
+import site from "../data/waterfront-links.json" with { type: "json" };
 
 // Shared surroundings: deliberately independent of artwork numbering and placement.
 export const WATERFRONT_BUILDINGS = [

@@ -20,9 +20,10 @@ const site = JSON.parse(
 );
 const shorelines = [map.coast, ...map.water.map((w) => w.points)];
 test("repeated river furniture covers the waterfront without water, building or bridge collisions", () => {
-  const { groups, chains } = riverFurnitureLayout(map);
+  const { groups, chains, dockLamps } = riverFurnitureLayout(map);
   assert.ok(groups.length > 100 && groups.length < 180);
-  assert.ok(chains.length > 1000 && chains.length < 1800);
+  assert.ok(chains.length > 3500 && chains.length < 4200);
+  assert.ok(dockLamps.length > 200 && dockLamps.length < 280);
   assert.ok(groups[0].lamp[1] < -1700);
   assert.ok(groups.at(-1)!.lamp[1] > 600);
   const bridges = map.roads
@@ -30,6 +31,7 @@ test("repeated river furniture covers the waterfront without water, building or 
     .flatMap((r) => r.points.slice(1).map((b, i) => [r.points[i], b]));
   const points = [
     ...groups.flatMap((g) => [g.lamp, g.bin, g.ring]),
+    ...dockLamps,
     ...chains.flat(),
   ];
   for (const point of points) {
@@ -56,6 +58,33 @@ function distance(p: number[], a: number[], b: number[]) {
     : 0;
   return Math.hypot(p[0] - a[0] - dx * t, p[1] - a[1] - dz * t);
 }
+test("every inland dock has perimeter rails and regularly spaced lamps", () => {
+  const { chains, dockLamps } = riverFurnitureLayout(map);
+  const docks = map.water.filter((w) => /dock|basin/i.test(w.name));
+  assert.equal(docks.length, 8);
+  for (const dock of docks) {
+    const edges = dock.points.slice(1).map((b, i) => [dock.points[i], b]);
+    const perimeter = edges.reduce(
+      (sum, [a, b]) => sum + Math.hypot(a[0] - b[0], a[1] - b[1]),
+      0,
+    );
+    const near = (p: number[]) =>
+      Math.min(...edges.map(([a, b]) => distance(p, a, b)));
+    const railingLength = chains
+      .filter(([a, b]) => near([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]) < 0.3)
+      .reduce((sum, [a, b]) => sum + Math.hypot(a[0] - b[0], a[1] - b[1]), 0);
+    // Gaps are intentional at bridges, connecting water mouths and buildings.
+    assert.ok(
+      railingLength / perimeter > 0.75,
+      `${dock.name}: missing perimeter coverage`,
+    );
+    assert.ok(
+      dockLamps.filter((p) => near(p) < 1.4).length >=
+        Math.floor(perimeter / 42),
+      `${dock.name}: missing lamps`,
+    );
+  }
+});
 test("quay railings follow rendered shorelines and keep the bridge corridor open", () => {
   const rails = waterfrontRailings(map, site.bridge.points);
   assert.ok(rails.length > 20);

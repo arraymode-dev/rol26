@@ -22,10 +22,7 @@ export const AnchorCourtyard = memo(function AnchorCourtyard() {
         </mesh>
       ));
   return (
-    <group
-      position={[ANCHOR_ORIGIN[0], 0, ANCHOR_ORIGIN[1]]}
-      userData={{ retainBuildingColour: true }}
-    >
+    <group position={[ANCHOR_ORIGIN[0], 0, ANCHOR_ORIGIN[1]]}>
       {meshes(false)}
       <Detailed distances={[0, 320]} hysteresis={0.12}>
         <group>{meshes(true)}</group>

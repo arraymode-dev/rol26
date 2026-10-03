@@ -39,7 +39,6 @@ export function BuildingPalette({
       const mesh = object;
       const geometry = mesh.geometry;
       let buildingOnly = false;
-      let retainBuildingColour = false;
       let owner: Footprint | undefined;
       for (
         let parent: THREE.Object3D | null = mesh;
@@ -47,12 +46,8 @@ export function BuildingPalette({
         parent = parent.parent
       ) {
         buildingOnly ||= parent.userData.ghostBuilding === true;
-        retainBuildingColour ||= parent.userData.retainBuildingColour === true;
         owner ??= parent.userData.ghostFootprint;
       }
-      // Photo-matched architecture still receives event lighting and camera
-      // clearance below, while keeping its authored brick and stone palette.
-      if (retainBuildingColour) return;
       const tagged = geometry.getAttribute("building");
       const existing = geometry.getAttribute("buildingTone");
       if (!buildingOnly && !tagged && !existing) return;

@@ -25,15 +25,28 @@ The field log remains lazy-loaded at `?debug=gps`. Following the owner’s subse
 ### Anchor Courtyard surround
 
 The four saved OSM building footprints surrounding 09 now use a lightweight,
-photo-informed model: tall red-brick warehouse wings, low slate-roofed wings,
+photo-informed model: tall warehouse wings, low slate-roofed wings,
 stone entrance piers, courtyard walls, flagstone joints, palms and benches.
 Heights and roof profiles are visual estimates from the owner's courtyard photos
 and supplied massing screenshots, not a measured architectural survey. Artwork
 09's placement remains provisional. Windows, paving joints and small furniture
 use close-range LOD; geometry is merged by material and needs no new textures.
 Tests enforce a 25k-triangle / 12-batch budget and an unobstructed entrance route.
+Architecture uses the shared light building palette, preserving dark windows,
+roof details and the geometry from the photo references. Courtyard furniture
+retains its own materials; the Liver Building treatment is unchanged.
 
 Phones now default to performance rendering (coarse pointer and short screen
 edge at most 700px). An explicit quality choice uses `rol-render-quality` and
 survives reload. The old automatically saved false value does not override the
 new phone default.
+
+### Inland dock furniture
+
+Shared instanced railings and lamps now follow the perimeters of all eight named
+inland docks/basins in the saved map. Fixtures are offset onto land; bridge
+approaches, water connections and building footprints remain clear. Existing
+curated rails at the north landing and Pump House are retained without doubling.
+Lamps share emissive materials rather than adding lights. Uncapped six-sided
+chain rods use two spans per sag, reducing triangle cost; the same seven draw
+batches and overview visibility cutoff are retained.
