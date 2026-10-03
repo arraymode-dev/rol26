@@ -15,7 +15,7 @@ const treatments: Record<string, [number, string, string]> = {
   "coloured-peonies": [30, "#ff72cb", "#b18aff"],
   unity: [32, "#ffaa6d", "#ff73aa"],
   "colour-rush": [34, "#ff518c", "#ffb24d"],
-  "the-stars-come-out-at-night": [34, "#6194ff", "#cadfff"],
+  "the-stars-come-out-at-night": [34, "#ff8f32", "#ffc16b"],
   together: [34, "#ffaf53", "#ba85ff"],
   paradigm: [25, "#ff6b1f", "#ffbf52"],
   "dream-herd": [28, "#ff9cce", "#bc98ff"],
