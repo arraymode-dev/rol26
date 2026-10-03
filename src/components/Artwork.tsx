@@ -282,8 +282,8 @@ export const Artwork = memo(function Artwork({
             ? 53
             : item.id === "together"
               ? selected
-                ? 12
-                : 20
+                ? 16
+                : 22
               : item.id === "the-stars-come-out-at-night"
                 ? selected
                   ? 7

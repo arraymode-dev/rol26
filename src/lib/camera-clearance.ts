@@ -9,6 +9,7 @@ export function applyCameraClearance(
   const seen = new Set<THREE.Material>();
   root.traverse((object) => {
     if (!(object instanceof THREE.Mesh)) return;
+    const artwork = object.geometry.hasAttribute("cameraProtected");
     for (const material of Array.isArray(object.material)
       ? object.material
       : [object.material]) {
@@ -35,7 +36,8 @@ export function applyCameraClearance(
         shader.vertexShader = shader.vertexShader
           .replace(
             "#include <common>",
-            "#include <common>\nvarying vec3 clearanceWorld;",
+            `#include <common>\nvarying vec3 clearanceWorld;
+            ${artwork ? "attribute float cameraProtected; varying float clearanceProtected;" : ""}`,
           )
           .replace(
             "#include <project_vertex>",
@@ -44,12 +46,14 @@ export function applyCameraClearance(
             #ifdef USE_INSTANCING
               clearancePosition = instanceMatrix * clearancePosition;
             #endif
-            clearanceWorld = (modelMatrix * clearancePosition).xyz;`,
+            clearanceWorld = (modelMatrix * clearancePosition).xyz;
+            ${artwork ? "clearanceProtected = cameraProtected;" : ""}`,
           );
         shader.fragmentShader = shader.fragmentShader
           .replace(
             "#include <common>",
-            "#include <common>\nvarying vec3 clearanceWorld; uniform vec3 clearanceFocus;",
+            `#include <common>\nvarying vec3 clearanceWorld; uniform vec3 clearanceFocus;
+            ${artwork ? "varying float clearanceProtected;" : ""}`,
           )
           .replace(
             "#include <clipping_planes_fragment>",
@@ -61,11 +65,11 @@ export function applyCameraClearance(
             float visibility = mix(1.0, proximity, raised * (1.0 - protectedSite));
             // Stable screen-door coverage avoids transparent sorting and additional passes.
             float coverage = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715))));
-            if (visibility < 0.999 && coverage >= visibility) discard;`,
+            ${artwork ? "// The attraction is never cut away, even when no artwork is selected.\n            if (clearanceProtected < 0.5 && visibility < 0.999 && coverage >= visibility) discard;" : "if (visibility < 0.999 && coverage >= visibility) discard;"}`,
           );
       };
       material.customProgramCacheKey = () =>
-        `${cacheKey.call(material)}-camera-clearance-v1`;
+        `${cacheKey.call(material)}-camera-clearance-v2-${artwork}`;
       material.needsUpdate = true;
       restore.push(() => {
         material.onBeforeCompile = previous;

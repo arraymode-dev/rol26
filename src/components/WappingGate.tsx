@@ -1,12 +1,21 @@
+import {
+  TOGETHER_POSITION,
+  TOGETHER_OFFSET,
+  TOGETHER_HEIGHT_SCALE,
+  TOGETHER_BASE,
+} from "../lib/together-placement";
 import { GRASS_COLOUR, PATH_COLOURS } from "../lib/palette";
 import { memo, useMemo, useEffect } from "react";
 import { useThree } from "@react-three/fiber";
 import { Detailed } from "@react-three/drei";
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import site from "../data/wapping-gate.json";
+import site from "../data/wapping-gate.json" with { type: "json" };
 import thumbnails from "../data/artwork-thumbnails.json" with { type: "json" };
-export const WAPPING_GATE = { x: site.center[0], z: site.center[1] };
+export const WAPPING_GATE = {
+  x: TOGETHER_POSITION[0],
+  z: TOGETHER_POSITION[1],
+};
 export const isWappingTree = ([x, z]: number[]) =>
   site.trees.some(([a, b]) => Math.hypot(x - a, z - b) < 1);
 const origin = site.center;
@@ -23,8 +32,14 @@ function build() {
         1,
       ),
     );
+    g.setAttribute("cameraProtected", g.getAttribute("artworkSurface"));
     g.rotateY(a);
     g.translate(p[0] - origin[0], p[1], p[2] - origin[1]);
+    if (projectArtwork) {
+      g.translate(0, -TOGETHER_BASE, 0);
+      g.scale(1, TOGETHER_HEIGHT_SCALE, 1);
+      g.translate(TOGETHER_OFFSET[0], TOGETHER_BASE, TOGETHER_OFFSET[1]);
+    }
     (parts[m] ??= []).push(g);
   };
   const box = (p: number[], s: [number, number, number], m: string, a = 0) =>
@@ -457,11 +472,14 @@ export const WappingGate = memo(function WappingGate({
         .replace(
           "#include <begin_vertex>",
           `#include <begin_vertex>
-        float gateX = position.x * ${c} - position.z * ${s};
+        vec3 gatePosition = vec3(position.x - float(${TOGETHER_OFFSET[0]}),
+          float(${TOGETHER_BASE}) + (position.y - float(${TOGETHER_BASE})) / float(${TOGETHER_HEIGHT_SCALE}),
+          position.z - float(${TOGETHER_OFFSET[1]}));
+        float gateX = gatePosition.x * ${c} - gatePosition.z * ${s};
         float facing = normal.x * ${s} + normal.z * ${c};
         // Reverse the back face horizontally so the image reads from either side.
         artworkUV = vec2(0.5 + gateX * sign(facing) / 19.5,
-          mix(0.43, 0.874, clamp((position.y - 0.55) / 9.4, 0.0, 1.0)));
+          mix(0.43, 0.874, clamp((gatePosition.y - 0.55) / 9.4, 0.0, 1.0)));
         artworkMask = artworkSurface * smoothstep(0.65, 0.95, abs(facing));
       `,
         );

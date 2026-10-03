@@ -1,3 +1,4 @@
+import { TOGETHER_POSITION } from "../lib/together-placement.ts";
 import { unproject } from "../lib/geo.ts";
 import type { Installation, Survey } from "../types";
 import officialArtworks from "./official-artworks.json" with { type: "json" };
@@ -11,7 +12,7 @@ const sitePositions: Record<string, [number, number]> = {
   "coloured-peonies": [-169.96, -159],
   unity: [-146, -101],
   "the-stars-come-out-at-night": [-80.25, 615.1],
-  together: [246.1, 450.8],
+  together: TOGETHER_POSITION,
   // The small fountain beside Chavasse Park, beyond the bus station.
   paradigm: [186, 159],
   "dream-herd": [116, -111],

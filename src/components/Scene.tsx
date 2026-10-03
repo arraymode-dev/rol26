@@ -7,7 +7,7 @@ import {
   type CameraPose,
 } from "../lib/trail-camera";
 import { approachArtwork, faceArtworkSurface } from "../lib/artwork-camera";
-import wappingSite from "../data/wapping-gate.json";
+import wappingSite from "../data/wapping-gate.json" with { type: "json" };
 import { WAPPING_GATE } from "./WappingGate";
 import { KINGS_PLATFORM } from "./KingsParade";
 import { EventLighting } from "./EventLighting";
@@ -357,7 +357,13 @@ function CameraRig({
     const { x, z } = anchors[selected] ?? { x: mapX, z: mapZ };
     const focus = new THREE.Vector3(
       x,
-      selected === "the-anooki" ? 18 : selected === "today-i-love-you" ? 13 : 4,
+      selected === "the-anooki"
+        ? 18
+        : selected === "today-i-love-you"
+          ? 13
+          : selected === "together"
+            ? 6.7
+            : 4,
       z,
     );
     orbitCentre.current.copy(focus);
