@@ -387,20 +387,15 @@ export default function App() {
             <button onClick={() => next(-1)}>
               <ChevronLeft size={17} /> Back
             </button>
-            <div className="detail-progress">
-              <button
-                className="seen-toggle"
-                aria-pressed={seen.has(active.id)}
-                aria-label={`Mark ${active.name} as seen`}
-                onClick={() => toggleSeen(active.id)}
-              >
-                <Check size={16} />{" "}
-                {seen.has(active.id) ? "Seen!" : "I've seen it!"}
-              </button>
-              <span>
-                {active.number} of {installations.length}
-              </span>
-            </div>
+            <button
+              className="seen-toggle"
+              aria-pressed={seen.has(active.id)}
+              aria-label={`Mark ${active.name} as seen`}
+              onClick={() => toggleSeen(active.id)}
+            >
+              <Check size={16} />{" "}
+              {seen.has(active.id) ? "Seen!" : "I've seen it!"}
+            </button>
             <button onClick={() => next(1)}>
               Next <ChevronRight size={17} />
             </button>
