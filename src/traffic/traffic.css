@@ -1,8 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Caslon+Display&display=swap");
 :root {
-  font-family: "DM Sans", sans-serif;
-  color: #eeeaf0;
-  background: #14121b;
+  font-family: system-ui, sans-serif;
+  color: #25313a;
+  background: #e8e7e2;
   font-synthesis: none;
 }
 * {
@@ -24,7 +23,7 @@ a {
 }
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid #fec287;
+  outline: 2px solid #243642;
   outline-offset: 5px;
 }
 main {
@@ -37,7 +36,7 @@ main {
   align-items: center;
   gap: 16px;
   padding: 26px 0;
-  border-bottom: 1px solid #36313c;
+  border-bottom: 1px solid #d4d9d9;
   font-size: 11px;
   letter-spacing: 2px;
   font-weight: 600;
@@ -45,7 +44,7 @@ main {
 .brand {
   font-family: Georgia, serif;
   font-size: 35px;
-  color: #fec287;
+  color: #243642;
   letter-spacing: -4px;
   margin-right: 8px;
 }
@@ -54,7 +53,7 @@ main {
 }
 .atlas-header small {
   display: block;
-  color: #aaa1b0;
+  color: #637885;
   font-size: 9px;
   letter-spacing: 3px;
   margin-top: 6px;
@@ -62,7 +61,7 @@ main {
 .private-tag {
   margin-left: auto;
   font-size: 9px;
-  color: #aaa1b0;
+  color: #637885;
   display: flex;
   align-items: center;
   gap: 9px;
@@ -71,7 +70,7 @@ main {
   height: 6px;
   width: 6px;
   border-radius: 50%;
-  background: #a782b7;
+  background: #637885;
 }
 .intro {
   display: flex;
@@ -84,11 +83,11 @@ main {
   font-size: 10px;
   letter-spacing: 2px;
   font-weight: 600;
-  color: #ab9bad;
+  color: #637885;
   margin: 0 0 13px;
 }
 h1 {
-  font-family: "Libre Caslon Display", Georgia, serif;
+  font-family: Georgia, serif;
   font-size: clamp(44px, 4.4vw, 68px);
   font-weight: 400;
   letter-spacing: -1.8px;
@@ -96,22 +95,22 @@ h1 {
   margin: 0;
 }
 h1 em {
-  color: #fec287;
+  color: #243642;
   font-style: normal;
 }
 .deck {
   font-size: 13px;
-  color: #b7afbf;
+  color: #627580;
   margin: 18px 0 0;
 }
 .source-block {
   text-align: right;
   font-size: 12px;
   line-height: 1.7;
-  color: #c5becb;
+  color: #627580;
 }
 .source-tag {
-  color: #dfcadb;
+  color: #263743;
   letter-spacing: 1.5px;
   font-size: 10px;
 }
@@ -120,12 +119,12 @@ h1 em {
 }
 .source-block .timestamp {
   font-size: 10px;
-  color: #9b90a4;
+  color: #637885;
 }
 .source-block button {
-  border: 1px solid #4b4254;
-  background: transparent;
-  color: #d8cfe0;
+  border: 1px solid #b9c0c0;
+  background: #fff;
+  color: #22333c;
   border-radius: 6px;
   padding: 9px 13px;
   font-size: 11px;
@@ -139,41 +138,41 @@ h1 em {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #36313c;
+  border-top: 1px solid #d4d9d9;
   padding: 18px 0;
   gap: 18px;
 }
 .metric-switch {
   display: flex;
-  background: #211d29;
+  background: #dcdedb;
   padding: 4px;
   border-radius: 7px;
   gap: 4px;
 }
 .metric-switch button {
   background: transparent;
-  color: #b6aabb;
+  color: #627580;
   border: 0;
   padding: 10px 17px;
   border-radius: 4px;
   font-size: 12px;
 }
 .metric-switch button[aria-pressed="true"] {
-  background: #eee6ee;
-  color: #251c29;
+  background: #ffffff;
+  color: #22333c;
 }
 .view-bar p {
   font-size: 11px;
-  color: #a99caf;
+  color: #627580;
 }
 .view-bar strong {
   font-size: 15px;
   font-weight: 500;
-  color: #f1e8ef;
+  color: #25313a;
 }
 .view-bar p span {
   padding: 0 12px;
-  color: #716677;
+  color: #637885;
 }
 .atlas-grid {
   display: grid;
@@ -182,19 +181,19 @@ h1 em {
   align-items: start;
 }
 .map-frame {
-  border: 1px solid #4b424c;
+  border: 1px solid #b9c0c0;
   border-radius: 8px;
   overflow: hidden;
-  background: #c4c6c0;
+  background: #f4f3ef;
 }
 .map-heading {
   display: flex;
   justify-content: space-between;
-  background: #24202b;
+  background: #f4f3ef;
   padding: 14px 18px;
   letter-spacing: 2px;
   font-size: 9px;
-  color: #bfb4c7;
+  color: #637885;
 }
 .static-map {
   position: relative;
@@ -212,7 +211,7 @@ h1 em {
   height: 100%;
 }
 .map-tiles {
-  filter: grayscale(1) brightness(0.69) contrast(0.84);
+  filter: grayscale(1) brightness(1.02) contrast(0.9);
 }
 .map-tiles img {
   position: absolute;
@@ -222,21 +221,21 @@ h1 em {
   mix-blend-mode: normal;
 }
 .pin circle {
-  fill: #17121e;
-  stroke: #fcdfb3;
+  fill: #243642;
+  stroke: #f4f3ef;
   stroke-width: 1.4;
 }
 .pin text {
-  font-family: "DM Sans", sans-serif;
+  font-family: system-ui, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  fill: #fff6ee;
+  fill: #f4f3ef;
 }
 .pin-empty {
   opacity: 0.6;
 }
 .pin-empty circle {
-  stroke: #a4a2a9;
+  stroke: #b9c0c0;
 }
 .map-credit {
   padding: 10px 13px;
@@ -244,8 +243,8 @@ h1 em {
   justify-content: space-between;
   gap: 8px;
   font-size: 9px;
-  background: #24202b;
-  color: #beb2c5;
+  background: #f4f3ef;
+  color: #627580;
 }
 .map-credit a {
   text-decoration: none;
@@ -255,14 +254,14 @@ h1 em {
   bottom: 18px;
   left: 20px;
   width: 7.82%;
-  color: #18161e;
+  color: #25313a;
   font-size: 10px;
   text-shadow: 0 1px 2px white;
 }
 .map-scale i {
   display: block;
   width: 100%;
-  border: solid #18161e;
+  border: solid #25313a;
   border-width: 0 2px 2px;
   height: 6px;
   margin-bottom: 4px;
@@ -270,7 +269,7 @@ h1 em {
 .tile-error {
   position: absolute;
   bottom: 35px;
-  background: #302537;
+  background: #243642;
   color: white;
   padding: 12px;
   font-size: 12px;
@@ -279,14 +278,14 @@ h1 em {
   padding: 7px 0 0;
 }
 h2 {
-  font-family: "Libre Caslon Display", Georgia, serif;
+  font-family: Georgia, serif;
   font-size: 35px;
   font-weight: 400;
   margin: 0 0 10px;
 }
 .aside-title > p:last-child {
   font-size: 12px;
-  color: #b2a7b9;
+  color: #627580;
   line-height: 1.6;
   max-width: 330px;
 }
@@ -313,7 +312,7 @@ h2 {
   display: flex;
   justify-content: space-between;
   font-size: 9px;
-  color: #b9adbf;
+  color: #637885;
   margin-top: 7px;
 }
 table {
@@ -324,7 +323,7 @@ table {
 th {
   text-align: left;
   font-size: 8px;
-  color: #a294ac;
+  color: #637885;
   font-weight: 500;
   letter-spacing: 1px;
   padding: 0 0 10px;
@@ -333,9 +332,9 @@ th:not(:first-child) {
   text-align: right;
 }
 td {
-  border-top: 1px solid #36303f;
+  border-top: 1px solid #d4d9d9;
   padding: 13px 0;
-  color: #ded7e4;
+  color: #263743;
 }
 td:first-child {
   display: flex;
@@ -345,14 +344,14 @@ td:first-child {
   line-height: 1.3;
 }
 .row-number {
-  color: #aa9ab3;
+  color: #637885;
   font-size: 9px;
   flex: none;
 }
 td:nth-child(2) {
   text-align: right;
   width: 44px;
-  color: #ab9cb6;
+  color: #637885;
 }
 td:last-child {
   width: 65px;
@@ -373,47 +372,47 @@ td:last-child i {
   border-radius: 2px;
 }
 .reading-note {
-  border-top: 1px solid #44374d;
+  border-top: 1px solid #d4d9d9;
   padding-top: 18px;
   margin-top: 20px;
-  color: #ae9dbb;
+  color: #627580;
   font-size: 11px;
   line-height: 1.7;
 }
 .reading-note > span {
   font-size: 9px;
   letter-spacing: 1.5px;
-  color: #dbb9d0;
+  color: #263743;
 }
 footer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 32px;
-  border-top: 1px solid #36313c;
+  border-top: 1px solid #d4d9d9;
   margin-top: 32px;
   padding: 28px 0 35px;
 }
 footer p {
   font-size: 11px;
   line-height: 1.8;
-  color: #a99caf;
+  color: #627580;
   margin: 10px 0;
 }
 footer a {
   font-size: 10px;
-  color: #e9bcad;
+  color: #496371;
   text-decoration: none;
 }
 .notice {
   font-size: 13px;
   line-height: 1.6;
-  background: #352135;
+  background: #f4f3ef;
   padding: 16px;
   border-radius: 6px;
   margin: 10px 0;
 }
 .error {
-  border: 1px solid #9a556d;
+  border: 1px solid #9b5560;
 }
 .sr-only {
   position: absolute;
