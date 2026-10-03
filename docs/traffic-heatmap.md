@@ -26,10 +26,12 @@ No GPS trajectories are collected or inferred.
 
 Each artwork weight = unique artwork visitors / unique experience visitors in the
 same window. Do not sum daily unique counts, or sum artwork visitors to create the
-denominator. A visitor can be present at multiple artworks. Nearby weights are
-rendered with the **maximum** of 70 m Gaussian kernels, not summed. The halo is
+denominator. A visitor can be present at multiple artworks. Nearby 85 m Gaussian footprints merge using a smooth union of their coverage.
+Their colour is a kernel-weighted mean of visitor shares, never a sum.
+Duplicate input points are ignored. This produces irregular connected shapes
+where neighbouring footprints overlap, while distant clusters stay separate. The halo is
 illustrative, not a measured geographical reach or a count of a combined region.
-Magma is fixed to 0–100%, not rescaled to the busiest location. Zero stays transparent.
+Magma is fixed to 0–100%, not rescaled to the busiest location. Zero stays transparent; a smooth opacity curve softens the outer edges.
 
 ## Updating
 

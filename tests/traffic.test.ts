@@ -64,3 +64,40 @@ test("Mercator aligns with OSM tile origin and keeps all locations inside fixed 
     );
   }
 });
+
+test("nearby footprints merge smoothly without increasing shares above their peaks", () => {
+  const points = [
+    { x: 20, y: 30, weight: 0.5 },
+    { x: 40, y: 30, weight: 0.5 },
+  ];
+  const field = heatField(points, 80, 60, 10);
+  const solo = heatField([points[0]], 80, 60, 10);
+  const middle = 30 * 80 + 30;
+  assert.ok(
+    field[middle] > solo[middle] * 1.3,
+    "nearby centres form a connecting shoulder",
+  );
+  assert.ok(Math.max(...field) <= 0.500001, "no summed visitor inflation");
+  assert.ok(
+    Math.abs(field[middle - 1] - field[middle + 1]) < 0.000001,
+    "symmetric seam",
+  );
+  assert.ok(
+    Math.abs(field[middle] - field[middle - 1]) < 0.002,
+    "smooth centre join",
+  );
+  const far = heatField(
+    [
+      { x: 10, y: 30, weight: 0.5 },
+      { x: 100, y: 30, weight: 0.5 },
+    ],
+    120,
+    60,
+    10,
+  );
+  assert.equal(far[30 * 120 + 55], 0, "distant clusters remain disconnected");
+  assert.deepEqual(
+    heatField([...points, { x: 30, y: 30, weight: 0 }], 80, 60, 10),
+    field,
+  );
+});

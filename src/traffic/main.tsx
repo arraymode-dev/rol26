@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { installations } from "../data/installations";
 import {
   heatField,
+  heatOpacity,
   magma,
   MAP,
   mapPoint,
@@ -75,17 +76,14 @@ function StaticMap({
       points,
       width,
       height,
-      (70 / metresPerPixel) * scale,
+      (85 / metresPerPixel) * scale,
     );
     const image = ctx.createImageData(width, height);
     for (let i = 0; i < field.length; i++) {
       const v = field[i];
-      if (v < 0.006) continue;
+      if (v <= 0) continue;
       const color = magma(v);
-      image.data.set(
-        [...color, Math.round(Math.min(0.84, v * 8) * 255)],
-        i * 4,
-      );
+      image.data.set([...color, Math.round(heatOpacity(v) * 255)], i * 4);
     }
     ctx.putImageData(image, 0, 0);
   }, [data, metric]);
@@ -158,7 +156,7 @@ function StaticMap({
         </div>
       </div>
       <div className="map-credit">
-        <span>Fixed view · 70 m smoothing</span>
+        <span>Fixed view · 85 m smoothing</span>
         <a
           href="https://www.openstreetmap.org/copyright"
           target="_blank"

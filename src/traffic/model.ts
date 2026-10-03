@@ -103,18 +103,27 @@ export function magma(value: number): [number, number, number] {
     number,
   ];
 }
-// Max kernel avoids adding overlapping shares as though they were distinct people.
-// Fixed 70 m sigma: smoothing is illustrative; no inferred GPS journeys or union counts.
+// Blend neighbouring Gaussian footprints into a continuous field. Coverage is a
+// soft union; colour is a kernel-weighted mean, never a sum of visitor shares.
+// This is spatial interpolation for display, not an estimate of combined visitors.
 export function heatField(
   points: { x: number; y: number; weight: number }[],
   width: number,
   height: number,
   sigma: number,
 ) {
-  const field = new Float32Array(width * height),
-    radius = Math.ceil(sigma * 3);
-  for (const p of points) {
-    if (p.weight <= 0) continue;
+  const size = width * height;
+  const weighted = new Float32Array(size);
+  const influence = new Float32Array(size);
+  const coverage = new Float32Array(size);
+  const radius = Math.ceil(sigma * 4);
+  // Identical inputs should not make a location brighter or enlarge its footprint.
+  const unique = new Map(
+    points
+      .filter((p) => p.weight > 0)
+      .map((p) => [`${p.x},${p.y},${p.weight}`, p]),
+  );
+  for (const p of unique.values()) {
     for (
       let y = Math.max(0, Math.floor(p.y - radius));
       y < Math.min(height, Math.ceil(p.y + radius));
@@ -125,13 +134,24 @@ export function heatField(
         x < Math.min(width, Math.ceil(p.x + radius));
         x++
       ) {
-        const weight =
-          p.weight *
-          Math.exp(-((x - p.x) ** 2 + (y - p.y) ** 2) / (2 * sigma * sigma));
+        const kernel = Math.exp(
+          -((x - p.x) ** 2 + (y - p.y) ** 2) / (2 * sigma * sigma),
+        );
         const i = y * width + x;
-        if (weight > field[i]) field[i] = weight;
+        weighted[i] += p.weight * kernel;
+        influence[i] += kernel;
+        coverage[i] += kernel * (1 - coverage[i]);
       }
     }
   }
-  return field;
+  for (let i = 0; i < size; i++) {
+    weighted[i] =
+      influence[i] > 0 ? (weighted[i] / influence[i]) * coverage[i] : 0;
+  }
+  return weighted;
+}
+// A continuous fade removes the dark rims around low-intensity kernels.
+export function heatOpacity(value: number) {
+  const t = Math.max(0, Math.min(1, value / 0.45));
+  return 0.86 * t * t * (3 - 2 * t);
 }
