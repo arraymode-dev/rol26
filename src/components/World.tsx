@@ -18,6 +18,7 @@ import {
 } from "../lib/attraction-boundary";
 import { GhostBuildings } from "./GhostBuildings";
 import { AnchorCourtyard } from "./AnchorCourtyard";
+import { DockRides } from "./DockRides";
 import { ANCHOR_BUILDINGS, isAnchorTree } from "../lib/anchor-courtyard";
 import exchangeFootprint from "../data/exchange-flags.json";
 import dockFootprint from "../data/georges-dock.json";
@@ -86,12 +87,14 @@ export const World = memo(function World({
   focus,
   selected,
   reducedMotion,
+  animateRides,
 }: {
   data: MapData & { coast: [number, number][] };
   night: boolean;
   focus: [number, number] | null;
   selected: string | null;
   reducedMotion: boolean;
+  animateRides: boolean;
 }) {
   const lightFootprints = useMemo(() => {
     const centres = installations.map((i) => project(...i.coordinates));
@@ -367,6 +370,7 @@ export const World = memo(function World({
         <StPaulsSquare night={night} />
       </GhostBuildings>
       <AnchorCourtyard />
+      <DockRides night={night} reducedMotion={!animateRides} />
       <RiverFurniture data={data} night={night} />
       <ChurchGardens night={night} />
       <WappingGate night={night} />

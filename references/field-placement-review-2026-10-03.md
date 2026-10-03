@@ -50,3 +50,16 @@ curated rails at the north landing and Pump House are retained without doubling.
 Lamps share emissive materials rather than adding lights. Uncapped six-sided
 chain rods use two spans per sag, reducing triangle cost; the same seven draw
 batches and overview visibility cutoff are retained.
+
+### Animated dock rides
+
+The Wheel of Liverpool and nearby carousel now have independent, batched ride
+models. The wheel has twin rims, spokes, framed upright cabins and cool lamps;
+the carousel has shaped horses, saddles, gold poles and warm canopy/platform bulbs.
+Both animate only nearby and on screen, retaining their phase when stopped.
+The wheel starts within 220m and stops beyond 260m; the carousel uses 160m/190m.
+This hysteresis prevents flicker near the cutoff. Hidden pages and reduced-motion
+preferences stop animation. Performance mode retains this bounded local motion
+while still suppressing water movement and dynamic lights. Lit surfaces use
+emissive geometry, not extra point lights or shadow maps. Demand rendering is
+woken at 30Hz locally; wheel cabins use two instanced batches and stay upright.

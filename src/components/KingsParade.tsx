@@ -4,7 +4,7 @@ import { memo, useMemo, useEffect } from "react";
 import { Detailed } from "@react-three/drei";
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import site from "../data/kings-parade.json";
+import site from "../data/kings-parade.json" with { type: "json" };
 export const KINGS_PLATFORM = {
   x: site.center[0],
   z: site.center[1],
@@ -241,33 +241,6 @@ function build() {
       box([x, y, z], [1.7, 2.6, 0.12], "glass", -Math.atan2(fz, fx));
     }
   buildingGeometry = false;
-  // Static wheel, anchored to mapped axis; it is site context rather than an artwork.
-  const [wx, wz] = site.wheel.center,
-    wa = site.wheel.angle;
-  const wp = (x: number, y: number, z: number) => [
-    wx + Math.cos(wa) * x + Math.sin(wa) * z,
-    y,
-    wz - Math.sin(wa) * x + Math.cos(wa) * z,
-  ];
-  for (const depth of [-1, 1]) {
-    const g = new THREE.TorusGeometry(29, 0.2, 6, 72);
-    add(g, wp(0, 31, depth), "wheel", wa);
-  }
-  for (let i = 0; i < 36; i++) {
-    const a = (i * Math.PI) / 18,
-      x = 29 * Math.cos(a),
-      y = 31 + 29 * Math.sin(a);
-    beam(wp(0, 31, 0), wp(x, y, 0), 0.07, "detail-wheel");
-    beam(wp(x, y, -1), wp(x, y, 1), 0.08, "wheel");
-    box(wp(x, y - 0.8, 0), [1.5, 1.5, 2.5], "glass", wa);
-    box(wp(x, y + 0.05, 0), [1.7, 0.18, 2.65], "wheel", wa);
-  }
-  for (const side of [-1, 1])
-    for (const depth of [-6, 6])
-      beam(wp(side * 10, 0.55, depth), wp(0, 31, side * 1.8), 0.3, "wheel");
-  const hub = new THREE.CylinderGeometry(1.4, 1.4, 5, 16);
-  hub.rotateX(Math.PI / 2);
-  add(hub, wp(0, 31, 0), "wheel", wa);
   poly(site.grass.points, 0.38, 0.05, "grass");
   site.trees.forEach(([x, z], i) => {
     cyl([x, 3.2, z], 0.22, 0.4, 5.5, "bark", 7);

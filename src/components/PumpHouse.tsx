@@ -4,7 +4,7 @@ import { memo, useEffect, useMemo } from "react";
 import { Detailed } from "@react-three/drei";
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import site from "../data/pump-house.json";
+import site from "../data/pump-house.json" with { type: "json" };
 
 export const PUMP_BUILDINGS = [
   site.building.id,
@@ -285,47 +285,8 @@ function build() {
     for (const d of [-0.9, 0.9])
       box([x + d, 0.7, z], [0.12, 0.6, 0.6], "detail-iron");
   }
-  // Existing carousel is a mapped neighbourhood feature, not Colour Rush.
-  const [ax, az] = site.carousel.center,
-    r = site.carousel.radius;
-  cyl([ax, 0.75, az], r, r, 0.45, "red", 24);
-  cyl([ax, 4.7, az], r, r, 0.65, "cream", 24);
-  for (let i = 0; i < 16; i++) {
-    const a = (i * Math.PI) / 8,
-      b = ((i + 1) * Math.PI) / 8;
-    const g = new THREE.BufferGeometry();
-    g.setAttribute(
-      "position",
-      new THREE.Float32BufferAttribute(
-        [
-          ax,
-          6.1,
-          az,
-          ax + Math.cos(a) * r,
-          5,
-          az + Math.sin(a) * r,
-          ax + Math.cos(b) * r,
-          5,
-          az + Math.sin(b) * r,
-        ],
-        3,
-      ),
-    );
-    g.computeVertexNormals();
-    add(g, [0, 0, 0], i % 2 ? "yellow" : "red");
-    const x = ax + Math.cos(a) * 4.5,
-      z = az + Math.sin(a) * 4.5;
-    cyl([x, 2.8, z], 0.045, 0.045, 3.6, "detail-yellow", 6);
-    if (i % 2 === 0) {
-      box([x, 1.95, z], [1, 0.45, 0.35], "detail-cream", -a);
-      box(
-        [x + 0.4 * Math.cos(a), 2.3, z + 0.4 * Math.sin(a)],
-        [0.3, 0.6, 0.3],
-        "detail-cream",
-        -a,
-      );
-    }
-  }
+  // Ticket booth stays fixed beside the animated carousel.
+  const [ax, az] = site.carousel.center;
   box([ax - 8, 1.8, az], [3, 2.5, 2], "cream");
   box([ax - 8, 2, az + 1.02], [2.3, 1, 0.07], "glass");
   box([ax - 8, 3.2, az], [3.3, 0.2, 2.3], "slate");

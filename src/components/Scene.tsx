@@ -193,6 +193,7 @@ function Content({
         focus={focus}
         selected={props.selected}
         reducedMotion={props.reducedMotion || props.lowQuality}
+        animateRides={!props.reducedMotion}
       />
       {!props.lowQuality && <EventLighting night={props.night} />}
       {installations.map((item) => (
