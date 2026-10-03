@@ -1,6 +1,6 @@
 import { lastSeenArtwork } from "./lib/trail-guide";
 import { createTrailLocation } from "./lib/trail-location";
-import { TrailLocationStatus } from "./components/TrailLocationStatus";
+import { TrailLocationTracker } from "./components/TrailLocationTracker";
 import { TrailGuide } from "./components/TrailGuide";
 import { loadMap } from "./lib/map-loader";
 import { PRIMARY } from "./lib/palette";
@@ -45,6 +45,11 @@ import type { Installation } from "./types";
 import type { Command } from "./components/Scene";
 void loadMap();
 const Scene = lazy(() => import("./components/Scene"));
+const GPSDebug = lazy(() =>
+  import("./components/GPSDebug").then((module) => ({
+    default: module.GPSDebug,
+  })),
+);
 
 class SceneBoundary extends Component<
   { children: ReactNode; onError: () => void },
@@ -63,6 +68,9 @@ class SceneBoundary extends Component<
 }
 export default function App() {
   const [trailLocation] = useState(createTrailLocation);
+  const [gpsDebug, setGPSDebug] = useState(
+    () => new URLSearchParams(location.search).get("debug") === "gps",
+  );
   const [seen, setSeen] = useState<Set<string>>(() => {
     try {
       return parseSeenArtworks(
@@ -211,6 +219,10 @@ export default function App() {
     const listener = (e: KeyboardEvent) => {
       if (e.defaultPrevented) return;
       if (e.key === "Escape") {
+        if (gpsDebug) {
+          setGPSDebug(false);
+          return;
+        }
         if (certificate) {
           setCertificate(false);
           return;
@@ -235,7 +247,7 @@ export default function App() {
     };
     window.addEventListener("keydown", listener);
     return () => window.removeEventListener("keydown", listener);
-  }, [selected, info, certificate]);
+  }, [selected, info, certificate, gpsDebug]);
   const active = installations.find((i) => i.id === selected);
   const filtered = installations.filter((i) =>
     `${i.name} ${i.location} ${i.artist}`
@@ -321,7 +333,7 @@ export default function App() {
           <Info size={20} />
         </button>
       </header>
-      {trail && <TrailLocationStatus store={trailLocation} />}
+      {trail && <TrailLocationTracker store={trailLocation} />}
       <div className="top-meta" hidden={trail}>
         <span>
           <span className="live-dot" /> A CITY BROUGHT TOGETHER
@@ -586,7 +598,7 @@ export default function App() {
             <Expand size={16} />
           </button>
         </nav>
-        {trail && !list && !selected && !info && (
+        {trail && !list && !selected && !info && !gpsDebug && (
           <TrailGuide
             items={installations}
             seen={seen}
@@ -600,10 +612,32 @@ export default function App() {
               setList(true);
               setTrailGuide(false);
             }}
+            onGPSDebug={() => setGPSDebug(true)}
             onCertificate={() => setCertificate(true)}
           />
         )}
       </footer>
+      {gpsDebug && (
+        <Suspense
+          fallback={
+            <div className="loading" role="status">
+              Opening GPS field log…
+            </div>
+          }
+        >
+          <GPSDebug
+            store={trailLocation}
+            trail={trail}
+            selected={selected}
+            onClose={() => setGPSDebug(false)}
+            onStart={() => {
+              setTrail(true);
+              setTrailGuide(false);
+              issue("trail-on");
+            }}
+          />
+        </Suspense>
+      )}
       {certificate && (
         <CollectionCertificate
           total={installations.length}
@@ -648,6 +682,15 @@ export default function App() {
               >
                 Visit the official event website <ArrowUpRight size={18} />
               </a>
+              <button
+                className="gps-secondary gps-debug-entry"
+                onClick={() => {
+                  setInfo(false);
+                  setGPSDebug(true);
+                }}
+              >
+                GPS debug · field log
+              </button>
               <div className="legal-disclaimer">
                 <strong>Unofficial project disclaimer</strong>
                 <p>

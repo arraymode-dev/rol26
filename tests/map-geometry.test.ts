@@ -156,6 +156,29 @@ test("07 to 08 takes the dockside bridges in order without doubling back", () =>
   assert.ok(!nodes.includes("-123.5,-22.8"), "avoid the detour east of 07");
 });
 
+test("03 to 04 enters Old Churchyard and follows the courtyard beside the church", () => {
+  const path = JSON.parse(readFileSync("public/data/trail.json", "utf8"))
+    .segments[2];
+  const entrance = path.findIndex(
+    ([x, z]: number[]) => x === -174.4 && z === -365.8,
+  );
+  assert.ok(entrance > 0, "enter from the Old Churchyard crossing");
+  assert.deepEqual(path.slice(entrance), [
+    [-174.4, -365.8],
+    [-170.8, -358.7],
+    [-170.1, -336.6],
+    [-169.7, -327.2],
+    [-174.8, -326.4],
+    [-178.3, -324.4],
+    [-182.7, -323],
+    [-186.7, -322.7],
+  ]);
+  assert.ok(
+    !path.some(([x]: number[]) => x < -240),
+    "avoid the road junction detour",
+  );
+});
+
 test("04 to 05 crosses directly from the church to Pier Head", () => {
   const path = JSON.parse(readFileSync("public/data/trail.json", "utf8"))
     .segments[3];

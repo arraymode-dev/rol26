@@ -1,7 +1,7 @@
 import { TOWN_HALL } from "../lib/site-positions";
 import { AnookiFigure } from "./AnookiFigure";
 import { useFrame } from "@react-three/fiber";
-import { anookiPose } from "../lib/anooki-pose";
+import { anookiPose, anookiCanFly } from "../lib/anooki-pose";
 import { markBuildingGeometry } from "../lib/ghost-geometry";
 import { memo, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
@@ -203,7 +203,7 @@ export function AnookiOnColumns({
       flight.current.settled = 0;
       flight.current.progress = 0;
     }
-  }, [selectionSequence, night]);
+  }, [selected, selectionSequence, night]);
   const centre = useMemo(
     () => new THREE.Vector3(TOWN_HALL.x, 20, TOWN_HALL.z),
     [],
@@ -213,23 +213,20 @@ export function AnookiOnColumns({
     const distance = camera.position.distanceTo(centre);
     const state = flight.current;
     const dt = Math.min(delta, 0.1);
-    if (
-      !night ||
-      distance <= 220 ||
-      Math.abs(distance - state.previousDistance) > 0.4
-    )
+    const canFly = anookiCanFly(night, selected, distance);
+    if (!canFly) state.airborne = false;
+    if (!canFly || Math.abs(distance - state.previousDistance) > 0.4)
       state.settled = 0;
     else state.settled += dt;
     state.previousDistance = distance;
-    if (night && distance > 220 && state.settled >= 2) state.airborne = true;
+    if (canFly && state.settled >= 2) state.airborne = true;
     const target = night && state.airborne ? 1 : 0;
     state.progress = reducedMotion
       ? target
       : THREE.MathUtils.damp(state.progress, target, 3, dt);
     if (
-      night &&
-      distance > 220 &&
-      (state.settled < 2 || Math.abs(state.progress - target) > 0.001)
+      (canFly && state.settled < 2) ||
+      Math.abs(state.progress - target) > 0.001
     )
       invalidate();
     figures.current.forEach((figure, i) => {

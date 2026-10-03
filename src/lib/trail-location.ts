@@ -54,6 +54,7 @@ export function createTrailLocation() {
       geolocation:
         Pick<Geolocation, "watchPosition" | "clearWatch"> | undefined,
       secure = true,
+      maximumAge = 5000,
     ) {
       clear();
       if (!secure) {
@@ -103,7 +104,7 @@ export function createTrailLocation() {
               publish("denied");
             } else publish(error.code === 3 ? "timeout" : "unavailable");
           },
-          { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 },
+          { enableHighAccuracy: true, maximumAge, timeout: 15000 },
         );
         // Also safe with synchronously responding test providers.
         if (session === generation)

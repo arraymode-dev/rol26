@@ -25,3 +25,12 @@ export function anookiPose(
     floating: lift > 0,
   };
 }
+
+/** Focused figures always play hide-and-seek, including wider mobile framing. */
+export function anookiCanFly(
+  night: boolean,
+  selected: boolean,
+  distance: number,
+) {
+  return night && !selected && distance > 220;
+}

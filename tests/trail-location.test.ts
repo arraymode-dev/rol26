@@ -133,3 +133,12 @@ test("old or invalid fixes never render as a live location; fresh fixes expire",
   assert.deepEqual(store.getSnapshot(), { status: "stale", fix: null });
   store.stop();
 });
+
+test("field refresh requests high accuracy without accepting cached positions", () => {
+  const store = createTrailLocation(),
+    provider = gps();
+  store.start(provider, true, 0);
+  assert.equal(provider.watches[0].options?.enableHighAccuracy, true);
+  assert.equal(provider.watches[0].options?.maximumAge, 0);
+  store.stop();
+});

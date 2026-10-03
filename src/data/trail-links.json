@@ -46,5 +46,16 @@
       [113.4, -74.1],
       [125.5, -96.9]
     ]
+  },
+  {
+    "id": "old-churchyard-courtyard-entrance",
+    "source": "User field-directed courtyard approach; joins the saved Old Churchyard public road to its garden footway",
+    "kind": "footway",
+    "walkable": true,
+    "public": true,
+    "points": [
+      [-174.4, -365.8],
+      [-170.8, -358.7]
+    ]
   }
 ]

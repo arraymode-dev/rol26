@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { anookiPose } from "../src/lib/anooki-pose.ts";
+import { anookiPose, anookiCanFly } from "../src/lib/anooki-pose.ts";
 
 test("Anooki stay behind the portico pillars in close views and throughout daytime", () => {
   for (const side of [-1, 1]) {
@@ -39,4 +39,13 @@ test("flight hold keeps the pair on the columns before easing into a larger over
     assert.ok(Math.abs(a.y - b.y) < 0.1, "arc has no abrupt loop reset");
     assert.ok(a.y >= 90 && a.y <= 104, "flight stays above the roof");
   }
+});
+
+test("selected Anooki cannot take off at wider mobile framing or after zooming out", () => {
+  for (const distance of [150, 270, 600, 1800]) {
+    assert.equal(anookiCanFly(true, true, distance), false);
+    assert.equal(anookiCanFly(false, false, distance), false);
+  }
+  assert.equal(anookiCanFly(true, false, 150), false);
+  assert.equal(anookiCanFly(true, false, 600), true);
 });

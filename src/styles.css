@@ -2251,47 +2251,136 @@ kbd {
 .top-meta[hidden] {
   display: none;
 }
-.trail-location-status {
-  position: absolute;
-  top: 97px;
-  left: 36px;
-  z-index: 26;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  max-width: min(420px, calc(100vw - 36px));
-  padding: 8px 12px;
-  border: 1px solid #ffffff20;
-  border-radius: 20px;
-  background: #152633ee;
-  color: #e8e4ef;
+
+.gps-debug.about-modal.popup-shell {
+  width: min(560px, calc(100vw - 24px));
+}
+.gps-debug h2 {
+  font-size: 32px;
+}
+.gps-debug .gps-help,
+.gps-debug .gps-status,
+.gps-debug .gps-feedback {
   font-size: 12px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
-.location-status-dot {
-  flex: 0 0 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #8b94a3;
+.gps-debug .gps-status {
+  color: #d1c4fa;
 }
-.location-status-dot.is-live {
-  background: #ef4444;
+.gps-readings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px;
+  background: #ffffff06;
+  border: 1px solid #ffffff18;
+  border-radius: 18px;
 }
-.trail-location-status button {
-  flex-shrink: 0;
-  min-height: 44px;
-  background: #ffffff0d;
+.gps-readings dt {
+  font-size: 11px;
+  color: #a9b5c4;
+}
+.gps-readings dd {
+  margin: 5px 0 0;
+  font:
+    15px ui-monospace,
+    monospace;
+  color: #f2effa;
+}
+.gps-field {
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
+  margin: 18px 0;
+  color: #c9bde4;
+}
+.gps-field select,
+.gps-field textarea {
+  width: 100%;
+  min-width: 0;
+  font:
+    16px Manrope,
+    sans-serif;
+  background: #20303e;
   color: white;
-  border: 1px solid #ffffff20;
-  border-radius: 22px;
-  padding: 0 10px;
+  border: 1px solid #ffffff26;
+  border-radius: 12px;
+  padding: 12px;
+}
+.gps-field textarea {
+  resize: vertical;
+}
+.gps-secondary {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  border: 1px solid #ffffff25;
+  border-radius: 24px;
+  background: #ffffff09;
+  color: #e3dbee;
+  padding: 10px 14px;
   font-size: 12px;
+}
+.gps-debug-entry {
+  margin-top: 18px;
+}
+.gps-debug .gps-capture {
+  width: 100%;
+  justify-content: center;
+}
+.gps-export {
+  display: flex;
+  gap: 8px;
+}
+.gps-export > button {
+  flex: 1;
+}
+.gps-debug button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.gps-records {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.gps-records li {
+  display: grid;
+  gap: 6px;
+  padding: 14px 0;
+  border-bottom: 1px solid #ffffff18;
+}
+.gps-records strong {
+  font-size: 13px;
+}
+.gps-records span {
+  font:
+    12px ui-monospace,
+    monospace;
+}
+.gps-records small {
+  font-size: 11px;
+  color: #aab5c4;
+  overflow-wrap: anywhere;
+}
+.gps-debug-link {
+  background: none;
+  border: none;
+  color: #a9b5c4;
+  font-size: 11px;
+  min-height: 44px;
+  margin-top: 8px;
 }
 @media (max-width: 700px) {
-  .trail-location-status {
-    top: calc(max(19px, env(safe-area-inset-top, 0px) + 8px) + 53px);
-    left: max(18px, env(safe-area-inset-left, 0px));
-    right: max(18px, env(safe-area-inset-right, 0px));
-    width: fit-content;
+  .gps-debug .about-scroll {
+    padding: 24px 18px;
+  }
+  .gps-debug.about-modal.popup-shell {
+    max-height: calc(
+      100dvh - 40px - env(safe-area-inset-top, 0px) -
+        env(safe-area-inset-bottom, 0px)
+    );
   }
 }
