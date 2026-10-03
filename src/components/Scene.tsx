@@ -1,3 +1,6 @@
+import { loadMap } from "../lib/map-loader";
+import { useTouchCamera } from "../lib/use-touch-camera";
+import { panelViewOffset } from "../lib/touch-camera";
 import {
   trailCameraPose,
   shouldRestoreTrailView,
@@ -57,25 +60,36 @@ export interface SceneProps {
   selectionSequence: number;
   onDeselect: () => void;
   onReady: () => void;
+  onProgress: (stage: string) => void;
   onError: () => void;
 }
 export default function Scene(props: SceneProps) {
   const [data, setData] = useState<MapData | null>(null);
-  const [dpr, setDpr] = useState(1.5);
+  const [mobile] = useState(
+    () => matchMedia("(max-width: 700px), (pointer: coarse)").matches,
+  );
+  const [dpr, setDpr] = useState(mobile ? 1.25 : 1.5);
   useEffect(() => {
-    const abort = new AbortController();
-    fetch("/data/map.json", { cache: "no-cache", signal: abort.signal })
-      .then((r) => {
-        if (!r.ok) throw new Error("Map unavailable");
-        return r.json();
-      })
+    let cancelled = false;
+    loadMap()
       .then(applySurvey)
-      .then(setData)
-      .catch((e) => {
-        if (e.name !== "AbortError") props.onError();
+      .then((map) => {
+        if (cancelled) return;
+        props.onProgress("Building the city and its lights…");
+        // Give the status text a paint before constructing the detailed geometry.
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => {
+            if (!cancelled) setData(map);
+          }),
+        );
+      })
+      .catch(() => {
+        if (!cancelled) props.onError();
       });
-    return () => abort.abort();
-  }, [props.onError]);
+    return () => {
+      cancelled = true;
+    };
+  }, [props.onError, props.onProgress]);
   if (!data) return null;
   return (
     <Canvas
@@ -94,7 +108,6 @@ export default function Scene(props: SceneProps) {
           "Interactive 3D map of River of Light. Drag to pan; pinch or scroll to zoom.",
         );
         gl.domElement.setAttribute("tabindex", "0");
-        props.onReady();
       }}
     >
       <color attach="background" args={[props.night ? "#152a36" : "#c4d6d3"]} />
@@ -110,14 +123,22 @@ export default function Scene(props: SceneProps) {
           0.65,
         ]}
       />
-      <MapSunlight night={props.night} shadows={!props.lowQuality} />
+      <MapSunlight
+        night={props.night}
+        shadows={!props.lowQuality}
+        mobile={mobile}
+      />
       <PerformanceMonitor onDecline={() => setDpr(1)}>
-        <Content data={data} {...props} />
+        <Content data={data} mobile={mobile} {...props} />
       </PerformanceMonitor>
     </Canvas>
   );
 }
-function Content({ data, ...props }: SceneProps & { data: MapData }) {
+function Content({
+  data,
+  mobile,
+  ...props
+}: SceneProps & { data: MapData; mobile: boolean }) {
   const [hovered, setHovered] = useState<string | null>(null);
   const onHover = useCallback((id: string, active: boolean) => {
     setHovered((current) => (active ? id : current === id ? null : current));
@@ -156,7 +177,8 @@ function Content({ data, ...props }: SceneProps & { data: MapData }) {
     return () => controller.abort();
   }, [props.trail]);
   return (
-    <BoundaryDepth active={!!focus} lowQuality={props.lowQuality}>
+    <BoundaryDepth active={!!focus} lowQuality={props.lowQuality || mobile}>
+      <FirstPaint onReady={props.onReady} />
       <World
         data={data}
         night={props.night}
@@ -193,6 +215,17 @@ function Content({ data, ...props }: SceneProps & { data: MapData }) {
         )}
     </BoundaryDepth>
   );
+}
+// Runs after BoundaryDepth's render pass; readiness means pixels, not just a canvas.
+function FirstPaint({ onReady }: { onReady: () => void }) {
+  const rendered = useRef(false);
+  useFrame(() => {
+    if (!rendered.current) {
+      rendered.current = true;
+      requestAnimationFrame(onReady);
+    }
+  }, 2);
+  return null;
 }
 function CameraRig({
   selected,
@@ -234,6 +267,53 @@ function CameraRig({
   const zoomOffset = useMemo(() => new THREE.Vector3(), []);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
+  const interruptTouch = useCallback(() => {
+    wheelDistance.current = null;
+    targetMotion.current = null;
+    userZoom.current = true;
+  }, []);
+  useTouchCamera(controls, interruptTouch);
+  useEffect(() => {
+    const perspective = camera as THREE.PerspectiveCamera;
+    const canvas = gl.domElement;
+    const panel = document.querySelector(".detail-panel");
+    const header = document.querySelector(".topbar");
+    const footer = document.querySelector(".bottom-bar");
+    const update = () => {
+      if (canvas.clientWidth <= 700) {
+        const rect = canvas.getBoundingClientRect();
+        const offset = panelViewOffset(
+          rect.height,
+          (header?.getBoundingClientRect().bottom ?? rect.top) - rect.top,
+          (panel?.getBoundingClientRect().top ??
+            footer?.getBoundingClientRect().top ??
+            rect.bottom) - rect.top,
+        );
+        perspective.setViewOffset(
+          rect.width,
+          rect.height,
+          0,
+          offset,
+          rect.width,
+          rect.height,
+        );
+      } else perspective.clearViewOffset();
+      invalidate();
+    };
+    const observer = new ResizeObserver(update);
+    observer.observe(canvas);
+    if (panel) observer.observe(panel);
+    if (header) observer.observe(header);
+    if (footer) observer.observe(footer);
+    // Toolbar expansion can move UI without resizing the large canvas.
+    window.visualViewport?.addEventListener("resize", update);
+    update();
+    return () => {
+      observer.disconnect();
+      window.visualViewport?.removeEventListener("resize", update);
+      perspective.clearViewOffset();
+    };
+  }, [camera, gl, selected, invalidate]);
   const overviewTarget = new THREE.Vector3(-40, 0, -70);
   const move = (to: THREE.Vector3, lookTo: THREE.Vector3) => {
     if (!controls.current) return;
@@ -276,25 +356,14 @@ function CameraRig({
       z,
     );
     orbitCentre.current.copy(focus);
-    const mobile = gl.domElement.clientWidth < 700;
     if (selected === "the-anooki") {
       // The opening stop deliberately retains its centred street approach.
-      move(
-        new THREE.Vector3(
-          x + (mobile ? 143 : 68),
-          mobile ? 135 : 90,
-          z + (mobile ? 336 : 145),
-        ),
-        focus,
-      );
+      move(new THREE.Vector3(x + 68, 90, z + 145), focus);
       return;
     }
     if (selected === "today-i-love-you") {
       // The church is the deliberate backdrop for stop 04, from every entry angle.
-      move(
-        new THREE.Vector3(x - 65, mobile ? 125 : 83, z + (mobile ? 125 : 85)),
-        focus,
-      );
+      move(new THREE.Vector3(x - 65, 83, z + 85), focus);
       return;
     }
     const distances: Record<string, number> = {
@@ -315,7 +384,8 @@ function CameraRig({
       camera.position,
       controls.current.target,
       focus,
-      (distances[selected] ?? 100) * (mobile ? 1.3 : 1),
+      distances[selected] ?? 100,
+      gl.domElement.clientWidth <= 700 ? Math.PI / 4 : undefined,
     );
     move(
       selected === "together"
@@ -329,10 +399,32 @@ function CameraRig({
     if (command.kind === "out") userZoom.current = true;
     const t = controls.current.target.clone();
     if (command.kind === "trail-on") {
+      const canvas = gl.domElement;
+      const headerBottom =
+        document.querySelector(".topbar")?.getBoundingClientRect().bottom ?? 0;
+      const footerTop =
+        document.querySelector(".bottom-bar")?.getBoundingClientRect().top ??
+        canvas.clientHeight;
+      const visibleHeight =
+        canvas.clientWidth <= 700
+          ? Math.max(160, footerTop - headerBottom - 24)
+          : canvas.clientHeight;
+      const visibleFov = THREE.MathUtils.radToDeg(
+        2 *
+          Math.atan(
+            (Math.tan(
+              THREE.MathUtils.degToRad(
+                (camera as THREE.PerspectiveCamera).fov / 2,
+              ),
+            ) *
+              visibleHeight) /
+              canvas.clientHeight,
+          ),
+      );
       const birdseye = trailCameraPose(
         installations.map((item) => project(...item.coordinates)),
-        gl.domElement.clientWidth / gl.domElement.clientHeight,
-        (camera as THREE.PerspectiveCamera).fov,
+        canvas.clientWidth / visibleHeight,
+        visibleFov,
       );
       trailView.current = { previous: cameraPose(), birdseye };
       userZoom.current = false;
@@ -538,7 +630,7 @@ function CameraRig({
         MIDDLE: THREE.MOUSE.DOLLY,
         RIGHT: THREE.MOUSE.ROTATE,
       }}
-      touches={{ ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_ROTATE }}
+      touches={{ ONE: undefined, TWO: undefined }}
       onStart={() => {
         wheelDistance.current = null;
         userZoom.current = true;

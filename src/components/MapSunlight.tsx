@@ -7,9 +7,11 @@ import * as THREE from "three";
 export function MapSunlight({
   night,
   shadows,
+  mobile = false,
 }: {
   night: boolean;
   shadows: boolean;
+  mobile?: boolean;
 }) {
   const light = useRef<THREE.DirectionalLight>(null);
   const target = useMemo(() => new THREE.Object3D(), []);
@@ -45,7 +47,7 @@ export function MapSunlight({
         intensity={night ? 1.1 : 1.65}
         color={night ? "#c5daf4" : "#fff2d5"}
         castShadow={shadows}
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize={mobile ? [1024, 1024] : [2048, 2048]}
         shadow-camera-far={3200}
         shadow-normalBias={0.04}
       />

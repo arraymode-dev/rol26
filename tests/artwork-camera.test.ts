@@ -60,3 +60,23 @@ test("Together chooses the nearer face and avoids an edge-on approach", async ()
     assert.ok(Math.abs(result.length() - before.distanceTo(focus)) < 1e-10);
   }
 });
+
+test("mobile approaches retain the arriving side while bringing a steep overview down to artwork height", () => {
+  const focus = new Vector3(0, 4, 0);
+  const position = approachArtwork(
+    new Vector3(0, 2100, 200),
+    new Vector3(),
+    focus,
+    90,
+    Math.PI / 4,
+  );
+  const offset = position.clone().sub(focus);
+  assert.ok(Math.abs(offset.length() - 90) < 1e-8);
+  assert.ok(
+    Math.abs(
+      Math.atan2(offset.y, Math.hypot(offset.x, offset.z)) - Math.PI / 4,
+    ) < 1e-8,
+  );
+  assert.equal(offset.x, 0);
+  assert.ok(offset.z > 0);
+});

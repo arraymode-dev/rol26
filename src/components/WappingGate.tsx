@@ -1,6 +1,7 @@
 import { GRASS_COLOUR, PATH_COLOURS } from "../lib/palette";
 import { memo, useMemo, useEffect } from "react";
-import { Detailed, useTexture } from "@react-three/drei";
+import { useThree } from "@react-three/fiber";
+import { Detailed } from "@react-three/drei";
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import site from "../data/wapping-gate.json";
@@ -414,12 +415,36 @@ export const WappingGate = memo(function WappingGate({
   night: boolean;
 }) {
   const parts = useMemo(build, []);
-  const artwork = useTexture(thumbnails.together);
+  const invalidate = useThree((state) => state.invalidate);
+  const image = useMemo(
+    () => ({ texture: { value: new THREE.Texture() }, ready: { value: 0 } }),
+    [],
+  );
+  useEffect(() => {
+    let cancelled = false;
+    const placeholder = image.texture.value;
+    const texture = new THREE.TextureLoader().load(
+      thumbnails.together,
+      (loaded) => {
+        if (cancelled) return;
+        image.texture.value = loaded;
+        image.ready.value = 1;
+        invalidate();
+      },
+    );
+    return () => {
+      cancelled = true;
+      texture.dispose();
+      placeholder.dispose();
+      image.ready.value = 0;
+    };
+  }, [image, invalidate]);
   const projection = useMemo(() => {
     const c = Math.cos(site.angle),
       s = Math.sin(site.angle);
     return (shader: THREE.WebGLProgramParametersWithUniforms) => {
-      shader.uniforms.togetherImage = { value: artwork };
+      shader.uniforms.togetherImage = image.texture;
+      shader.uniforms.projectionReady = image.ready;
       shader.uniforms.projectionLight = { value: night ? 0.72 : 0.08 };
       shader.vertexShader = shader.vertexShader
         .replace(
@@ -446,6 +471,7 @@ export const WappingGate = memo(function WappingGate({
           `#include <common>
         uniform sampler2D togetherImage;
         uniform float projectionLight;
+        uniform float projectionReady;
         varying vec2 artworkUV;
         varying float artworkMask;`,
         )
@@ -453,17 +479,17 @@ export const WappingGate = memo(function WappingGate({
           "#include <color_fragment>",
           `#include <color_fragment>
         vec3 projectedArt = sRGBTransferEOTF(texture2D(togetherImage, artworkUV)).rgb;
-        diffuseColor.rgb = mix(diffuseColor.rgb, projectedArt, artworkMask * 0.9);
+        diffuseColor.rgb = mix(diffuseColor.rgb, projectedArt, artworkMask * 0.9 * projectionReady);
       `,
         )
         .replace(
           "#include <emissivemap_fragment>",
           `#include <emissivemap_fragment>
-        totalEmissiveRadiance += projectedArt * artworkMask * projectionLight;
+        totalEmissiveRadiance += projectedArt * artworkMask * projectionLight * projectionReady;
       `,
         );
     };
-  }, [artwork, night]);
+  }, [image, night]);
   useEffect(
     () => () => Object.values(parts).forEach((g) => g.dispose()),
     [parts],

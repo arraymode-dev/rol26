@@ -6,6 +6,7 @@ export function approachArtwork(
   currentTarget: Vector3,
   focus: Vector3,
   preferredDistance: number,
+  maxElevation = Math.PI * 0.36,
 ): Vector3 {
   const offset = currentPosition.clone().sub(focus);
   let horizontal = Math.hypot(offset.x, offset.z);
@@ -23,7 +24,7 @@ export function approachArtwork(
   const elevation = MathUtils.clamp(
     Math.atan2(offset.y, horizontal),
     Math.PI / 10,
-    Math.PI * 0.36,
+    maxElevation,
   );
   const distance = MathUtils.clamp(
     Math.min(preferredDistance, currentPosition.distanceTo(focus)),

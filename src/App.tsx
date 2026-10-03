@@ -1,3 +1,4 @@
+import { loadMap } from "./lib/map-loader";
 import { PRIMARY } from "./lib/palette";
 import {
   Component,
@@ -8,7 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import {
   Gauge,
@@ -32,6 +33,7 @@ import {
 import { installations } from "./data/installations";
 import type { Installation } from "./types";
 import type { Command } from "./components/Scene";
+void loadMap();
 const Scene = lazy(() => import("./components/Scene"));
 
 class SceneBoundary extends Component<
@@ -71,6 +73,37 @@ export default function App() {
       /* Rendering still works when browser storage is unavailable. */
     }
   }, [lowQuality]);
+  const [keyboardInset, setKeyboardInset] = useState(0);
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    if (!list || !viewport) {
+      setKeyboardInset(0);
+      return;
+    }
+    const update = () =>
+      setKeyboardInset(
+        document.activeElement === searchRef.current
+          ? Math.max(
+              0,
+              window.innerHeight - viewport.height - viewport.offsetTop,
+            )
+          : 0,
+      );
+    viewport.addEventListener("resize", update);
+    viewport.addEventListener("scroll", update);
+    document.addEventListener("focusin", update);
+    document.addEventListener("focusout", update);
+    return () => {
+      viewport.removeEventListener("resize", update);
+      viewport.removeEventListener("scroll", update);
+      document.removeEventListener("focusin", update);
+      document.removeEventListener("focusout", update);
+    };
+  }, [list]);
+  const [minimised, setMinimised] = useState(false);
+  const [loadingStage, setLoadingStage] = useState(
+    "Downloading Liverpool’s map…",
+  );
   const [selectionSequence, setSelectionSequence] = useState(0);
   const deselectFromZoom = useCallback(() => {
     setSelected(null);
@@ -86,7 +119,11 @@ export default function App() {
     closeRef = useRef<HTMLButtonElement>(null),
     listButtonRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    if (list) searchRef.current?.focus();
+    if (list) {
+      if (matchMedia("(max-width: 700px), (pointer: coarse)").matches)
+        document.getElementById("artwork-list")?.focus({ preventScroll: true });
+      else searchRef.current?.focus({ preventScroll: true });
+    }
   }, [list]);
   useEffect(() => {
     const mq = matchMedia("(prefers-reduced-motion: reduce)"),
@@ -100,6 +137,8 @@ export default function App() {
     // A repeated hit on the selected artwork must not restart its camera flight.
     if (selectedIdRef.current === id) return;
     selectedIdRef.current = id;
+    searchRef.current?.blur();
+    setMinimised(false);
     setSelected(id);
     setSelectionSequence((n) => n + 1);
     setQuery("");
@@ -187,6 +226,7 @@ export default function App() {
                 selectionSequence={selectionSequence}
                 onDeselect={deselectFromZoom}
                 onReady={loaded}
+                onProgress={setLoadingStage}
                 onError={error}
               />
             </Suspense>
@@ -236,13 +276,13 @@ export default function App() {
           <span className="loading-orbit" />
           <p>
             A little light is on its way.
-            <small>Preparing Liverpool in 3D</small>
+            <small>{loadingStage}</small>
           </p>
         </div>
       )}
       {active && (
         <section
-          className="detail-panel popup-shell"
+          className={`detail-panel popup-shell${minimised ? " is-minimised" : ""}`}
           aria-label={`${active.name} details`}
         >
           <button
@@ -253,7 +293,30 @@ export default function App() {
           >
             <X size={22} />
           </button>
-          <div className="detail-scroll" key={active.id}>
+          <button
+            className="icon-button detail-minimise"
+            aria-label={
+              minimised ? "Expand artwork details" : "Minimise artwork details"
+            }
+            aria-expanded={!minimised}
+            aria-controls="artwork-detail-content"
+            onClick={() => setMinimised((value) => !value)}
+          >
+            {minimised ? <Plus size={20} /> : <Minus size={20} />}
+          </button>
+          <button
+            className="detail-summary"
+            onClick={() => setMinimised(false)}
+            aria-label={`Expand ${active.name} details`}
+          >
+            <span>{String(active.number).padStart(2, "0")}</span>
+            {active.name}
+          </button>
+          <div
+            className="detail-scroll"
+            id="artwork-detail-content"
+            key={active.id}
+          >
             <Photo item={active} />
             <div className="detail-copy">
               <h2>{active.name}</h2>
@@ -312,6 +375,7 @@ export default function App() {
       {list && (
         <section
           className="list-panel popup-shell"
+          style={{ "--keyboard-inset": `${keyboardInset}px` } as CSSProperties}
           id="artwork-list"
           tabIndex={-1}
         >
@@ -494,7 +558,8 @@ export default function App() {
                 <p>
                   Drag to pan · Scroll to zoom · Right-drag to rotate
                   <br />
-                  On touch: one finger to pan, two to zoom and rotate.
+                  On touch: drag to pan, pinch to zoom, twist to rotate. Drag
+                  two fingers up or down to tilt.
                   <br />
                   Focus the map and use arrow keys to pan, + / − to zoom.
                 </p>
