@@ -1,5 +1,6 @@
 import { loadMap } from "./lib/map-loader";
 import { PRIMARY } from "./lib/palette";
+import { CollectionCertificate } from "./components/CollectionCertificate";
 import {
   parseSeenArtworks,
   toggleSeenArtwork,
@@ -75,6 +76,14 @@ export default function App() {
   }, [seen]);
   const toggleSeen = (id: string) =>
     setSeen((current) => toggleSeenArtwork(current, id));
+  const complete = seen.size === installations.length;
+  const previouslyComplete = useRef(complete);
+  const [certificate, setCertificate] = useState(false);
+  useEffect(() => {
+    if (complete && !previouslyComplete.current) setCertificate(true);
+    if (!complete) setCertificate(false);
+    previouslyComplete.current = complete;
+  }, [complete]);
   const [selected, setSelected] = useState<string | null>(null),
     [trail, setTrail] = useState(false),
     [list, setList] = useState(false),
@@ -190,6 +199,10 @@ export default function App() {
     const listener = (e: KeyboardEvent) => {
       if (e.defaultPrevented) return;
       if (e.key === "Escape") {
+        if (certificate) {
+          setCertificate(false);
+          return;
+        }
         if (info) {
           setInfo(false);
           return;
@@ -200,6 +213,7 @@ export default function App() {
         setQuery("");
       }
       if (e.key === "/" && !(e.target instanceof HTMLInputElement)) {
+        if (certificate) return;
         e.preventDefault();
         setSelected(null);
         setList(true);
@@ -208,7 +222,7 @@ export default function App() {
     };
     window.addEventListener("keydown", listener);
     return () => window.removeEventListener("keydown", listener);
-  }, [selected, info]);
+  }, [selected, info, certificate]);
   const active = installations.find((i) => i.id === selected);
   const filtered = installations.filter((i) =>
     `${i.name} ${i.location} ${i.artist}`
@@ -216,6 +230,7 @@ export default function App() {
       .includes(query.toLowerCase()),
   );
   useModalFocus(info, ".about-modal");
+  useModalFocus(certificate, ".certificate-modal");
   const next = (offset: number) => {
     if (active)
       choose(
@@ -421,9 +436,7 @@ export default function App() {
             >
               <X size={20} />
             </button>
-            <h2>
-              Find your light.<span>13 artworks across Liverpool</span>
-            </h2>
+            <h2>Find your light.</h2>
             <div className="collection-progress">
               <span role="status">
                 {seen.size} of {installations.length} seen
@@ -433,6 +446,14 @@ export default function App() {
                 Reset all
               </button>
             </div>
+            {complete && (
+              <button
+                className="collection-certificate-button"
+                onClick={() => setCertificate(true)}
+              >
+                <Sparkles size={16} /> Your golden certificate
+              </button>
+            )}
           </div>
           <div className="search-wrap collection-search">
             <Search size={18} />
@@ -549,6 +570,12 @@ export default function App() {
           </div>
         )}
       </footer>
+      {certificate && (
+        <CollectionCertificate
+          total={installations.length}
+          onClose={() => setCertificate(false)}
+        />
+      )}
       {info && (
         <div className="modal-backdrop" onClick={() => setInfo(false)}>
           <section

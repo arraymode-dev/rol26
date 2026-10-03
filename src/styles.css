@@ -450,9 +450,11 @@ kbd {
 }
 .list-entry {
   position: relative;
+  margin-bottom: 8px;
 }
 .list-panel .list-entry .list-item {
   padding-right: 62px;
+  margin-bottom: 0;
 }
 .list-entry .list-item > svg {
   display: none;
@@ -483,11 +485,19 @@ kbd {
 }
 .list-seen-toggle {
   position: absolute;
-  right: 10px;
-  top: calc(50% - 4px);
-  transform: translateY(-50%);
-  width: 44px;
+  right: 12px;
+  top: 0;
+  bottom: 0;
+  margin-block: auto;
+  width: 34px;
+  height: 34px;
+  min-height: 34px;
   padding: 0;
+}
+.list-seen-toggle::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
 }
 .list-seen-toggle[aria-pressed="false"] svg {
   visibility: hidden;
@@ -1018,6 +1028,105 @@ kbd {
 
 .image-lightbox {
   color: #f2f3ec;
+}
+.collection-certificate-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 12px;
+  border: 1px solid #d8b97170;
+  border-radius: 24px;
+  color: #f0d999;
+  background: #d8b97112;
+}
+.certificate-backdrop {
+  z-index: 110;
+}
+.certificate-modal.popup-shell {
+  position: relative;
+  width: min(460px, 100%);
+  max-height: calc(100dvh - 40px);
+  border-color: #d8b97150;
+  overflow: hidden;
+  display: flex;
+}
+.certificate-modal.popup-shell::before {
+  background: linear-gradient(90deg, #ab8343, #f5e5b9, #ab834320);
+}
+.certificate-scroll {
+  padding: 26px 22px 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  width: 100%;
+}
+.certificate-modal .eyebrow {
+  color: #d8b971;
+  padding-right: 46px;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+.certificate-modal.popup-shell h2 {
+  font: 28px/1.15 Georgia, serif;
+  color: #f4e6c3;
+  margin: 24px 0 18px;
+}
+.certificate-image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 51dvh;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+.certificate-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+.certificate-modal .primary-button {
+  background: #ead6a0;
+  color: #192129;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+}
+.certificate-save {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 14px;
+  color: #ead6a0;
+}
+.certificate-hint,
+.certificate-status {
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+  color: #afa894;
+  margin: 12px 0 0;
+}
+.certificate-status:empty {
+  display: none;
+}
+.certificate-loading {
+  display: grid;
+  place-content: center;
+  gap: 16px;
+  min-height: 200px;
+  color: #ead6a0;
+}
+.certificate-loading button {
+  min-height: 44px;
+  background: #25313e;
+  border-radius: 24px;
 }
 @media (prefers-reduced-motion: reduce) {
   *,
