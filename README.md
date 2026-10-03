@@ -1,6 +1,6 @@
 # River of Light 2026
 
-An independent, local, mobile-first 3D exploration of Liverpool's River of Light. React + TypeScript + Vite + React Three Fiber / Three.js. No map API key, accounts or backend required.
+An unofficial, local, mobile-first 3D exploration of Liverpool's River of Light. React + TypeScript + Vite + React Three Fiber / Three.js. No map API key, accounts or backend required.
 
 ## Run
 
@@ -21,6 +21,14 @@ Open http://127.0.0.1:4317. `npm run build` type-checks and creates `dist/`. `np
 - Artwork list/search, photo galleries, automatic compact previews after the camera settles nearby, external walking directions and a suggested trail along mapped walking-network edges.
 - Responsive panels and a usable artwork-list fallback if WebGL or map loading fails.
 - File-based survey corrections and photo ingestion, ready for incoming site images.
+
+## Photo-informed sculptures and on-site trail
+
+All thirteen stops now have artwork silhouettes informed by the official images in `public/photos/official/`: looped neon daisies, seated wheel drums, a white neon sign, stacked open frames, layered peonies, five linked figures, a striped octagonal tower, a star-lit drum, the projected Together gate, Paradigm’s radial sphere, an overhead sheep canopy, POP’s opening monoliths and the Town Hall Anooki. These remain illustrative models and approximate placements; older survey-batch notes below record the earlier surroundings-only stage.
+
+`sculpture-models.ts` batches the ten procedural models into at most two vertex-coloured meshes (the church sign adds one cached text texture). Near detail switches at 350 m with a 420 m exit threshold. Distant pins retain 44 px hit targets around compact 23 px circles; columns and boundary fills are suppressed at overview distance. Waterfront fittings are hidden above overview height without rebuilding their shared buffers. Existing lighting pools and the special artwork approaches remain intact.
+
+The trail guide shows the next unseen artwork in numbered order, collection progress, walking directions and a mobile Back to map action. Selecting a stop makes it the starting point; marking it seen advances progress. `npm run data:trail` regenerates both the rendered route and `src/data/trail-distances.json`. Times use mapped leg lengths at an illustrative 65 m/min, exclude stops, and explicitly name the origin. Missing connections produce no guessed estimate; revisiting earlier stops follows the mapped trail in reverse. This is a suggested route, without GPS tracking or verified event access.
 
 ## Data and images
 

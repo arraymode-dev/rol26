@@ -128,6 +128,7 @@ const trailAnchors = {
   "dream-herd": [132.8, -110.9],
 };
 const segments = [],
+  summaries = [],
   gaps = [];
 // Take the waterfront approach and cross both dock bridges before returning
 // north along the quay to Colour Rush. These are exact walking-network nodes.
@@ -154,8 +155,22 @@ for (let i = 1; i < installations.length; i++) {
   const path = legs.every(Boolean)
     ? legs.flatMap((leg, j) => (j ? leg.slice(1) : leg))
     : null;
-  if (path) segments.push(path);
-  else gaps.push([a.id, b.id]);
+  if (path) {
+    segments.push(path);
+    summaries.push({
+      from: a.id,
+      to: b.id,
+      metres: Math.round(
+        path
+          .slice(1)
+          .reduce(
+            (sum, p, j) =>
+              sum + Math.hypot(p[0] - path[j][0], p[1] - path[j][1]),
+            0,
+          ),
+      ),
+    });
+  } else gaps.push([a.id, b.id]);
 }
 writeFileSync(
   "public/data/trail.json",
@@ -171,4 +186,9 @@ writeFileSync(
 );
 console.log(
   `${segments.length} mapped connections, ${gaps.length} gaps; ${largest.length} connected walking nodes`,
+);
+
+writeFileSync(
+  "src/data/trail-distances.json",
+  JSON.stringify(summaries, null, 2) + "\n",
 );

@@ -1,4 +1,5 @@
 import { memo, useEffect, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import type { MapData } from "../types";
 import { riverFurnitureLayout } from "../lib/river-furniture";
@@ -156,5 +157,10 @@ export const RiverFurniture = memo(function RiverFurniture({
     };
   }, [data, night]);
   useEffect(() => () => assets.dispose(), [assets]);
+  useFrame(({ camera }) => {
+    // Tiny quay fittings contribute only subpixel noise from overview height.
+    // Keep their shared batches resident, so approaching does not rebuild them.
+    assets.root.visible = camera.position.y < (assets.root.visible ? 320 : 260);
+  });
   return <primitive object={assets.root} />;
 });

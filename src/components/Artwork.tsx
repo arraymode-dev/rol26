@@ -1,8 +1,9 @@
 import { EVENT_POOLS } from "../lib/event-lighting";
-import { Paradigm } from "./Paradigm";
+import { Sculpture } from "./Sculpture";
+import { artworkDetail, type ArtworkDetail } from "../lib/artwork-detail";
 import { PRIMARY } from "../lib/palette";
 import { BoundaryMaterial } from "./BoundaryDepth";
-import { memo, useMemo, useEffect, useLayoutEffect, useRef } from "react";
+import { memo, useState, useLayoutEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import * as THREE from "three";
@@ -16,53 +17,6 @@ import { GEORGES_DOCK } from "./GeorgesDock";
 import { EXCHANGE } from "./ExchangeFlags";
 import { CHURCH_GARDENS } from "./ChurchGardens";
 import { ST_PAULS } from "./StPaulsSquare";
-const palette = ["#ffa0d2", "#a8e2df", "#ffe293", "#b2a0ff", "#cde993"];
-function Orb({
-  p,
-  s = 1,
-  color,
-  night,
-}: {
-  p: [number, number, number];
-  s?: number | [number, number, number];
-  color: string;
-  night: boolean;
-}) {
-  return (
-    <mesh position={p} scale={s} castShadow>
-      <icosahedronGeometry args={[1, 1]} />
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={night ? 0.8 : 0}
-        roughness={0.5}
-        flatShading
-      />
-    </mesh>
-  );
-}
-function Rod({
-  p,
-  s,
-  color,
-  night = false,
-}: {
-  p: [number, number, number];
-  s: [number, number, number];
-  color: string;
-  night?: boolean;
-}) {
-  return (
-    <mesh position={p} castShadow>
-      <boxGeometry args={s} />
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={night ? 0.8 : 0}
-      />
-    </mesh>
-  );
-}
 function AttractionBeam({
   show,
   distance,
@@ -135,7 +89,7 @@ function AttractionBeam({
       frustumCulled={false}
     >
       <cylinderGeometry
-        args={[ATTRACTION_RADIUS, ATTRACTION_RADIUS, 180, 96, 1, true]}
+        args={[ATTRACTION_RADIUS, ATTRACTION_RADIUS, 180, 32, 1, true]}
       />
       <BoundaryMaterial
         color={PRIMARY}
@@ -187,12 +141,32 @@ export const Artwork = memo(function Artwork({
                 : item.id === "flower-power"
                   ? [EXCHANGE.x, EXCHANGE.z]
                   : project(...item.coordinates);
+  const [detail, setDetail] = useState<ArtworkDetail>("overview");
+  const detailRef = useRef<ArtworkDetail>("overview");
+  const sampled = useRef(0);
+  useFrame(({ camera, clock }) => {
+    if (clock.elapsedTime - sampled.current < 0.15) return;
+    sampled.current = clock.elapsedTime;
+    const next = artworkDetail(
+      Math.hypot(
+        camera.position.x - x,
+        camera.position.y,
+        camera.position.z - z,
+      ),
+      detailRef.current,
+    );
+    if (next !== detailRef.current) {
+      detailRef.current = next;
+      setDetail(next);
+    }
+  });
+  const near = selected || detail === "near";
   const treatment = EVENT_POOLS.find((pool) => pool.id === item.id)!;
   const floor =
     item.id === "today-i-love-you" ? CHURCH_GARDENS.elevation + 0.08 : 0.65;
   return (
     <group position={[x, 0, z]}>
-      {!seen && (
+      {!seen && near && (
         <AttractionBeam
           show={showBeam}
           spillColor={treatment.colour}
@@ -207,6 +181,7 @@ export const Artwork = memo(function Artwork({
         />
       )}
       <mesh
+        visible={near}
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, floor, 0]}
         renderOrder={1}
@@ -223,6 +198,7 @@ export const Artwork = memo(function Artwork({
         />
       </mesh>
       <mesh
+        visible={near}
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, floor + 0.015, 0]}
         renderOrder={1}
@@ -235,24 +211,21 @@ export const Artwork = memo(function Artwork({
           opacity={selected ? 0.85 : 0.3}
         />
       </mesh>
-      {item.artworkPlacement !== "pending" && (
+      {item.id !== "together" && (
         <group
           position={[
             0,
-            item.id === "today-i-love-you" ? CHURCH_GARDENS.elevation : 0,
+            item.id === "today-i-love-you"
+              ? CHURCH_GARDENS.elevation
+              : item.id === "unity"
+                ? 2.15
+                : item.id === "the-stars-come-out-at-night"
+                  ? KINGS_PLATFORM.level
+                  : item.id === "the-anooki"
+                    ? 0
+                    : 0.6,
             0,
           ]}
-          scale={
-            [
-              "the-anooki",
-              "flower-power",
-              "loop",
-              "dream-herd",
-              "paradigm",
-            ].includes(item.id)
-              ? 1
-              : 1.7
-          }
           onClick={(e) => {
             e.stopPropagation();
             if (!selected && e.delta <= 5) onSelect(item.id);
@@ -272,17 +245,17 @@ export const Artwork = memo(function Artwork({
               position={[ST_PAULS.x - x, 0, ST_PAULS.z - z]}
               rotation={[0, ST_PAULS.rotation, 0]}
             >
-              <Sculpture id={item.id} color={item.color} night={night} />
+              <Sculpture id={item.id} detailed={near} night={night} />
             </group>
           ) : item.id === "flower-power" ? (
             <group
               position={[EXCHANGE.x - x, 0, EXCHANGE.z - z]}
               rotation={[0, EXCHANGE.rotation, 0]}
             >
-              <Sculpture id={item.id} color={item.color} night={night} />
+              <Sculpture id={item.id} detailed={near} night={night} />
             </group>
           ) : (
-            <Sculpture id={item.id} color={item.color} night={night} />
+            <Sculpture id={item.id} detailed={near} night={night} />
           )}
         </group>
       )}
@@ -291,28 +264,29 @@ export const Artwork = memo(function Artwork({
           item.id === "the-anooki" ? TOWN_HALL.x - x : 0,
           item.id === "the-anooki"
             ? 53
-            : item.id === "together"
-              ? selected
-                ? 16
-                : 22
-              : item.id === "the-stars-come-out-at-night"
-                ? selected
-                  ? 7
-                  : 18
-                : item.id === "unity"
-                  ? selected
-                    ? 16
-                    : 23
-                  : selected
-                    ? 38
-                    : 30,
+            : near
+              ? ({
+                  "flower-power": 18,
+                  loop: 11,
+                  "today-i-love-you": 26,
+                  "invisible-cities": 18,
+                  "coloured-peonies": 19,
+                  unity: 14,
+                  "colour-rush": 16,
+                  "the-stars-come-out-at-night": 11,
+                  together: 16,
+                  paradigm: 12,
+                  "dream-herd": 18,
+                  pop: 17,
+                }[item.id] ?? 20)
+              : 30,
           item.id === "the-anooki" ? TOWN_HALL.z - z : 0,
         ]}
         center
         zIndexRange={[20, 5]}
       >
         <button
-          className={`art-marker ${selected ? "selected" : ""}${seen ? " is-seen" : ""}`}
+          className={`art-marker ${selected ? "selected" : ""}${seen ? " is-seen" : ""}${near ? "" : " overview-marker"}`}
           style={
             { "--art-color": seen ? "#747f8b" : PRIMARY } as React.CSSProperties
           }
@@ -331,326 +305,3 @@ export const Artwork = memo(function Artwork({
     </group>
   );
 });
-function Sculpture({
-  id,
-  color,
-  night,
-}: {
-  id: string;
-  color: string;
-  night: boolean;
-}) {
-  if (id === "paradigm") return <Paradigm night={night} />;
-  if (id === "loop")
-    return (
-      <>
-        {Array.from({ length: 6 }, (_, i) => (
-          <group
-            position={[(i % 3) * 12 - 10, 3.8, Math.floor(i / 3) * 10 - 2]}
-            key={i}
-          >
-            <mesh>
-              <torusGeometry args={[2.7, 0.35, 8, 28]} />
-              <meshStandardMaterial
-                color="#eef1d2"
-                emissive={color}
-                emissiveIntensity={night ? 1 : 0}
-              />
-            </mesh>
-            <Rod p={[0, -2, 0]} s={[4, 0.4, 1.5]} color={color} night={night} />
-          </group>
-        ))}
-      </>
-    );
-  if (id === "flower-power")
-    return (
-      <>
-        {[
-          [-14, -12],
-          [0, -20],
-          [14, -12],
-          [-15, 0],
-          [15, 0],
-          [-11, 14],
-          [11, 14],
-        ].map(([x, z], i) => (
-          <group key={i} position={[x, 0, z]}>
-            <Rod p={[0, 3.5, 0]} s={[0.3, 7, 0.3]} color="#7b9488" />
-            <group position={[0, 7.5, 0]} rotation={[-0.35, i * 0.9, 0]}>
-              {Array.from({ length: 5 }, (_, j) => (
-                <mesh
-                  key={j}
-                  position={[
-                    Math.cos(j * Math.PI * 0.4) * 1.6,
-                    Math.sin(j * Math.PI * 0.4) * 1.6,
-                    0,
-                  ]}
-                  rotation={[0, 0, j * Math.PI * 0.4]}
-                  scale={[1.5, 0.85, 0.4]}
-                >
-                  <octahedronGeometry args={[1, 0]} />
-                  <meshStandardMaterial
-                    color={palette[(i + j) % 5]}
-                    emissive={palette[(i + j) % 5]}
-                    emissiveIntensity={night ? 0.8 : 0}
-                    metalness={0.25}
-                    roughness={0.35}
-                  />
-                </mesh>
-              ))}
-              <Orb p={[0, 0, 0.2]} s={0.6} color="#fff0b6" night={night} />
-            </group>
-          </group>
-        ))}
-      </>
-    );
-  if (id === "coloured-peonies")
-    return (
-      <>
-        {Array.from({ length: 5 }, (_, i) => {
-          const a = i * 2.4,
-            r = i ? 7 : 0;
-          return (
-            <group key={i} position={[Math.cos(a) * r, 0, Math.sin(a) * r]}>
-              <Rod p={[0, 3.5, 0]} s={[0.4, 7, 0.4]} color="#909c88" />
-              {Array.from({ length: 5 }, (_, j) => (
-                <Orb
-                  key={j}
-                  p={[
-                    Math.cos(j * 1.256) * 1.5,
-                    7.5,
-                    Math.sin(j * 1.256) * 1.5,
-                  ]}
-                  s={[1.4, 0.6, 1.4]}
-                  color={palette[i % 5]}
-                  night={night}
-                />
-              ))}
-              <Orb p={[0, 8, 0]} s={0.6} color="#ffffd6" night={night} />
-            </group>
-          );
-        })}
-      </>
-    );
-  if (id === "pop")
-    return (
-      <>
-        {palette.map((c, i) => (
-          <group key={c} position={[(i - 2) * 4, 0, Math.sin(i * 2) * 3]}>
-            <Rod p={[0, 3, 0]} s={[2.7, 6, 2.7]} color={c} night={night} />
-            <Orb p={[0, 7, 0]} s={[1.7, 2, 1.4]} color={c} night={night} />
-            {[-0.55, 0.55].map((x) => (
-              <Orb
-                key={x}
-                p={[x, 7.4, 1.3]}
-                s={0.3}
-                color="#202d38"
-                night={false}
-              />
-            ))}
-          </group>
-        ))}
-      </>
-    );
-  if (id === "dream-herd")
-    return (
-      <>
-        {Array.from({ length: 8 }, (_, i) => (
-          <group
-            key={i}
-            position={[
-              Math.cos((i * Math.PI) / 4) * 10,
-              0,
-              Math.sin((i * Math.PI) / 4) * 10,
-            ]}
-            rotation={[0, (-i * Math.PI) / 4, 0]}
-          >
-            <Orb
-              p={[0, 4, 0]}
-              s={[2.5, 1.5, 1.5]}
-              color={palette[i % 5]}
-              night={night}
-            />
-            <Orb p={[2.4, 4.6, 0]} s={1} color="#edeee6" night={night} />
-            {[-1, 1].flatMap((x) =>
-              [-0.8, 0.8].map((z) => (
-                <Rod
-                  key={`${x}-${z}`}
-                  p={[x, 2, z]}
-                  s={[0.4, 4, 0.4]}
-                  color={palette[i % 5]}
-                  night={night}
-                />
-              )),
-            )}
-          </group>
-        ))}
-      </>
-    );
-  if (id === "unity")
-    return (
-      <>
-        {palette.map((c, i) => {
-          const a = (i * Math.PI * 2) / 5;
-          return (
-            <group
-              key={c}
-              position={[Math.cos(a) * 4, 0, Math.sin(a) * 4]}
-              rotation={[0, -a, 0]}
-            >
-              <Orb p={[0, 6.5, 0]} s={1.5} color={c} night={night} />
-              <Rod p={[0, 3.8, 0]} s={[1.8, 3, 1.8]} color={c} night={night} />
-              <Rod p={[0, 4.5, 0]} s={[6, 1.2, 1.2]} color={c} night={night} />
-              {[-0.7, 0.7].map((x) => (
-                <Rod
-                  key={x}
-                  p={[x, 1.5, 0]}
-                  s={[0.8, 3, 0.8]}
-                  color={c}
-                  night={night}
-                />
-              ))}
-            </group>
-          );
-        })}
-      </>
-    );
-  if (id === "colour-rush")
-    return (
-      <>
-        {Array.from({ length: 10 }, (_, i) => (
-          <mesh
-            key={i}
-            position={[0, i * 1.1 + 1, 0]}
-            rotation={[0, i * 0.08, 0]}
-          >
-            <cylinderGeometry args={[2.7, 2.7, 1.1, 8]} />
-            <meshStandardMaterial
-              color={palette[i % 5]}
-              emissive={palette[i % 5]}
-              emissiveIntensity={night ? 1 : 0}
-            />
-          </mesh>
-        ))}
-      </>
-    );
-  if (id === "the-stars-come-out-at-night")
-    return (
-      <>
-        <Rod p={[0, 2, 0]} s={[3, 4, 3]} color="#526b77" />
-        <mesh position={[0, 6, 0]}>
-          <dodecahedronGeometry args={[4, 0]} />
-          <meshStandardMaterial
-            color="#839bcc"
-            emissive={color}
-            emissiveIntensity={night ? 0.7 : 0}
-            wireframe
-          />
-        </mesh>
-        {Array.from({ length: 12 }, (_, i) => (
-          <Orb
-            key={i}
-            p={[
-              Math.cos(i * 2.4) * 3,
-              5 + Math.sin(i) * 3,
-              Math.sin(i * 2.4) * 3,
-            ]}
-            s={0.35}
-            color="#ffffd7"
-            night={night}
-          />
-        ))}
-      </>
-    );
-  if (id === "today-i-love-you") return <LightText night={night} />;
-  if (id === "together")
-    return (
-      <>
-        {Array.from({ length: 12 }, (_, i) => (
-          <Rod
-            key={i}
-            p={[(i - 5.5) * 1.8, 4, 0]}
-            s={[1.8, 8, 0.5]}
-            color={palette[i % 5]}
-            night={night}
-          />
-        ))}
-      </>
-    );
-  if (id === "invisible-cities")
-    return (
-      <>
-        {Array.from({ length: 4 }, (_, i) => (
-          <group
-            key={i}
-            position={[(i - 1.5) * 5, 4, Math.sin(i) * 4]}
-            rotation={[0, i * 0.3, 0]}
-          >
-            <mesh>
-              <torusGeometry args={[3.7, 1.1, 6, 16, Math.PI]} />
-              <meshStandardMaterial
-                color={palette[i % 5]}
-                emissive={palette[i % 5]}
-                emissiveIntensity={night ? 0.65 : 0}
-              />
-            </mesh>
-            {[-3.7, 3.7].map((x) => (
-              <Rod
-                key={x}
-                p={[x, -2, 0]}
-                s={[2, 4, 2]}
-                color={palette[i % 5]}
-                night={night}
-              />
-            ))}
-          </group>
-        ))}
-      </>
-    );
-  return (
-    <>
-      {Array.from({ length: 7 }, (_, i) => (
-        <Rod
-          key={i}
-          p={[(i - 3) * 2.8, 4 + Math.sin(i) * 2, Math.cos(i) * 3]}
-          s={[1, 8 + Math.sin(i) * 4, 1]}
-          color={palette[i % 5]}
-          night={night}
-        />
-      ))}
-    </>
-  );
-}
-function LightText({ night }: { night: boolean }) {
-  const texture = useMemo(() => {
-    const c = document.createElement("canvas");
-    c.width = 1024;
-    c.height = 256;
-    const ctx = c.getContext("2d")!;
-    ctx.font = "bold 100px Arial";
-    ctx.fillStyle = "#ffe8e8";
-    ctx.textAlign = "center";
-    ctx.fillText("TODAY I LOVE YOU", 512, 156);
-    return new THREE.CanvasTexture(c);
-  }, []);
-  useEffectDispose(texture);
-  return (
-    <>
-      <mesh position={[0, 6, 0]}>
-        <planeGeometry args={[28, 7]} />
-        <meshBasicMaterial
-          map={texture}
-          transparent
-          side={THREE.DoubleSide}
-          color={night ? "#ffffff" : "#b04b79"}
-        />
-      </mesh>
-      {[-10, 10].map((x) => (
-        <Rod key={x} p={[x, 3, 0]} s={[0.2, 6, 0.2]} color="#80958c" />
-      ))}
-    </>
-  );
-}
-function useEffectDispose(texture: THREE.Texture) {
-  useEffect(() => () => texture.dispose(), [texture]);
-}

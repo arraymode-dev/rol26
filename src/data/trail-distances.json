@@ -1,0 +1,62 @@
+[
+  {
+    "from": "the-anooki",
+    "to": "flower-power",
+    "metres": 117
+  },
+  {
+    "from": "flower-power",
+    "to": "loop",
+    "metres": 428
+  },
+  {
+    "from": "loop",
+    "to": "today-i-love-you",
+    "metres": 820
+  },
+  {
+    "from": "today-i-love-you",
+    "to": "invisible-cities",
+    "metres": 219
+  },
+  {
+    "from": "invisible-cities",
+    "to": "coloured-peonies",
+    "metres": 310
+  },
+  {
+    "from": "coloured-peonies",
+    "to": "unity",
+    "metres": 14
+  },
+  {
+    "from": "unity",
+    "to": "colour-rush",
+    "metres": 746
+  },
+  {
+    "from": "colour-rush",
+    "to": "the-stars-come-out-at-night",
+    "metres": 506
+  },
+  {
+    "from": "the-stars-come-out-at-night",
+    "to": "together",
+    "metres": 398
+  },
+  {
+    "from": "together",
+    "to": "paradigm",
+    "metres": 339
+  },
+  {
+    "from": "paradigm",
+    "to": "dream-herd",
+    "metres": 377
+  },
+  {
+    "from": "dream-herd",
+    "to": "pop",
+    "metres": 603
+  }
+]

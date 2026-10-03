@@ -5,7 +5,11 @@ import { Detailed } from "@react-three/drei";
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import site from "../data/kings-parade.json";
-export const KINGS_PLATFORM = { x: site.center[0], z: site.center[1] };
+export const KINGS_PLATFORM = {
+  x: site.center[0],
+  z: site.center[1],
+  level: 0.55 + site.rise,
+};
 export const KINGS_BUILDINGS = [site.arena.id, site.wheel.id];
 export const isKingsTree = ([x, z]: number[]) =>
   site.trees.some(([a, b]) => Math.hypot(x - a, z - b) < 1);

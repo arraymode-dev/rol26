@@ -1,0 +1,148 @@
+import { useEffect, useRef } from "react";
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  Check,
+  ChevronRight,
+  Footprints,
+  MapPin,
+  Trophy,
+} from "lucide-react";
+import type { Installation } from "../types";
+import { nextTrailArtwork, trailWalk } from "../lib/trail-guide";
+import legs from "../data/trail-distances.json";
+export function TrailGuide({
+  items,
+  seen,
+  from,
+  open,
+  onOpen,
+  onClose,
+  onView,
+  onSeen,
+  onCertificate,
+}: {
+  items: Installation[];
+  seen: ReadonlySet<string>;
+  from: string | null;
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+  onView: (id: string) => void;
+  onSeen: (id: string) => void;
+  onCertificate: () => void;
+}) {
+  const returnRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    returnRef.current?.focus({ preventScroll: true });
+  }, [open]);
+  const ids = items.map((i) => i.id),
+    nextId = nextTrailArtwork(ids, seen, from),
+    next = items.find((i) => i.id === nextId),
+    origin = items.find((i) => i.id === from),
+    walk = trailWalk(ids, legs, from, nextId);
+  if (!open)
+    return (
+      <button ref={returnRef} className="trail-resume" onClick={onOpen}>
+        <Footprints size={17} />
+        <span>
+          {next ? `Next: ${next.name}` : "Every light collected"}
+          <small>
+            {walk ? `About ${walk.minutes} min · ` : ""}
+            {seen.size} of {items.length} seen
+          </small>
+        </span>
+        <ChevronRight size={18} />
+      </button>
+    );
+  return (
+    <section className="trail-guide popup-shell" aria-labelledby="trail-title">
+      <button ref={returnRef} className="trail-back" onClick={onClose}>
+        <ArrowLeft size={17} /> Back to map
+      </button>
+      <div className="eyebrow">YOUR NIGHT OF LIGHT</div>
+      <h2 id="trail-title">
+        {next ? "Your next light." : "Every light, collected."}
+      </h2>
+      <div className="trail-progress" aria-live="polite">
+        <span>
+          {seen.size} of {items.length} seen
+        </span>
+        <span>{Math.round((seen.size / items.length) * 100)}%</span>
+      </div>
+      <progress
+        max={items.length}
+        value={seen.size}
+        aria-label="Artwork collection progress"
+      />
+      {next ? (
+        <>
+          <div className="trail-stop">
+            <img src={next.photos[0].src} alt="" width="88" height="88" />
+            <div>
+              <span className="eyebrow">
+                {String(next.number).padStart(2, "0")} ·{" "}
+                {origin ? "UP NEXT" : "START HERE"}
+              </span>
+              <h3>{next.name}</h3>
+              <p>{next.location}</p>
+            </div>
+          </div>
+          <p className="trail-walk">
+            <Footprints size={19} />
+            <span>
+              {walk ? (
+                <>
+                  About {walk.minutes} min walk{" "}
+                  <small>
+                    {Math.round(walk.metres / 10) * 10} m along the trail · from{" "}
+                    {origin?.name}
+                  </small>
+                </>
+              ) : (
+                <>
+                  Begin at {next.name}
+                  <small>
+                    {origin
+                      ? "Walking estimate unavailable for this connection."
+                      : "Choose a stop on the map to start elsewhere."}
+                  </small>
+                </>
+              )}
+            </span>
+          </p>
+          <div className="trail-buttons">
+            <button className="primary-button" onClick={() => onView(next.id)}>
+              <MapPin size={17} /> View on map
+            </button>
+            <button className="trail-seen" onClick={() => onSeen(next.id)}>
+              <Check size={17} /> I’ve seen it
+            </button>
+          </div>
+          <a
+            className="trail-directions"
+            target="_blank"
+            rel="noreferrer"
+            href={`https://www.google.com/maps/dir/?api=1&destination=${next.coordinates[1]},${next.coordinates[0]}&travelmode=walking`}
+          >
+            Walking directions <ArrowUpRight size={16} />
+          </a>
+          <p className="trail-caveat">
+            Suggested route · check crossings and access on site. Walking times
+            exclude stops.
+          </p>
+        </>
+      ) : (
+        <>
+          <p className="trail-complete">
+            You found all {items.length} artworks. Take your golden certificate
+            home.
+          </p>
+          <button className="primary-button" onClick={onCertificate}>
+            <Trophy size={18} /> Your certificate
+          </button>
+        </>
+      )}
+    </section>
+  );
+}

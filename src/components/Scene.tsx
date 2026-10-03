@@ -167,16 +167,16 @@ function Content({
   }, [props.selected]);
   const [route, setRoute] = useState<TrailData>({ segments: [], ribbons: [] });
   useEffect(() => {
-    if (!props.trail) return;
+    if (!props.trail || route.segments.length) return;
     const controller = new AbortController();
-    fetch("/data/trail.json", { cache: "no-cache", signal: controller.signal })
+    fetch("/data/trail.json", { signal: controller.signal })
       .then((r) => (r.ok ? r.json() : []))
       .then((r) =>
         setRoute({ segments: r.segments || [], ribbons: r.ribbons || [] }),
       )
       .catch(() => {});
     return () => controller.abort();
-  }, [props.trail]);
+  }, [props.trail, route.segments.length]);
   return (
     <BoundaryDepth active={!!focus} lowQuality={props.lowQuality || mobile}>
       <FirstPaint onReady={props.onReady} />

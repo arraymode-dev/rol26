@@ -216,17 +216,7 @@ export const installations: Installation[] = [...seeds]
         color,
         description: official.description || description,
         source: official.source,
-        artworkPlacement: [
-          "today-i-love-you",
-          "invisible-cities",
-          "coloured-peonies",
-          "unity",
-          "colour-rush",
-          "the-stars-come-out-at-night",
-          "together",
-        ].includes(id)
-          ? "pending"
-          : "illustrative",
+        artworkPlacement: "illustrative",
         positionStatus: override ? "surveyed" : "approximate",
         photos: [
           {

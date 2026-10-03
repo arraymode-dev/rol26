@@ -1,3 +1,4 @@
+import { TrailGuide } from "./components/TrailGuide";
 import { loadMap } from "./lib/map-loader";
 import { PRIMARY } from "./lib/palette";
 import { CollectionCertificate } from "./components/CollectionCertificate";
@@ -74,8 +75,10 @@ export default function App() {
       /* Check-offs still work when storage is unavailable. */
     }
   }, [seen]);
-  const toggleSeen = (id: string) =>
+  const toggleSeen = (id: string) => {
+    if (!seen.has(id)) setTrailFrom(id);
     setSeen((current) => toggleSeenArtwork(current, id));
+  };
   const complete = seen.size === installations.length;
   const previouslyComplete = useRef(complete);
   const [certificate, setCertificate] = useState(false);
@@ -132,6 +135,8 @@ export default function App() {
       document.removeEventListener("focusout", update);
     };
   }, [list]);
+  const [trailGuide, setTrailGuide] = useState(false);
+  const [trailFrom, setTrailFrom] = useState<string | null>(null);
   const [minimised, setMinimised] = useState(false);
   const [loadingStage, setLoadingStage] = useState(
     "Downloading Liverpool’s map…",
@@ -172,9 +177,11 @@ export default function App() {
     searchRef.current?.blur();
     setMinimised(false);
     setSelected(id);
+    setTrailFrom(id);
     setSelectionSequence((n) => n + 1);
     setQuery("");
     setList(false);
+    setTrailGuide(false);
   }, []);
   const error = useCallback(() => {
     setFailed(true);
@@ -207,6 +214,7 @@ export default function App() {
           setInfo(false);
           return;
         }
+        setTrailGuide(false);
         setSelected(null);
         setList(false);
         setInfo(false);
@@ -442,7 +450,13 @@ export default function App() {
                 {seen.size} of {installations.length} seen
                 {seen.size === installations.length ? " — well done!" : ""}
               </span>
-              <button disabled={!seen.size} onClick={() => setSeen(new Set())}>
+              <button
+                disabled={!seen.size}
+                onClick={() => {
+                  setSeen(new Set());
+                  setTrailFrom(null);
+                }}
+              >
                 Reset all
               </button>
             </div>
@@ -543,9 +557,11 @@ export default function App() {
             aria-pressed={trail}
             onClick={() => {
               if (!trail) {
+                setTrailFrom(selected ?? trailFrom);
                 setSelected(null);
                 setList(false);
               }
+              setTrailGuide(!trail);
               setTrail(!trail);
               issue(trail ? "trail-off" : "trail-on");
             }}
@@ -563,11 +579,21 @@ export default function App() {
             <Expand size={16} />
           </button>
         </nav>
-        {trail && (
-          <div className="trail-note">
-            <Footprints size={14} />
-            Suggested connections · check crossings and access on site
-          </div>
+        {trail && !list && !selected && !info && (
+          <TrailGuide
+            items={installations}
+            seen={seen}
+            from={trailFrom}
+            open={trailGuide}
+            onOpen={() => setTrailGuide(true)}
+            onClose={() => setTrailGuide(false)}
+            onView={choose}
+            onSeen={(id) => {
+              toggleSeen(id);
+              setTrailFrom(id);
+            }}
+            onCertificate={() => setCertificate(true)}
+          />
         )}
       </footer>
       {certificate && (
