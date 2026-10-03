@@ -89,6 +89,7 @@ test("touch controller preserves taps, pans faster, pinches and resumes panning 
     () => {},
     () => {},
     lifecycle,
+    { reducedMotion: true },
   );
   surface.addEventListener("click", () => clicks++);
   surface.pointer("pointerdown", 1, 100, 200);
@@ -127,4 +128,136 @@ test("touch controller preserves taps, pans faster, pinches and resumes panning 
   surface.pointer("pointermove", 3, 300, 300);
   assert.deepEqual(camera.position.toArray(), stopped.toArray());
   cleanup();
+});
+
+function gestureHarness(reducedMotion = false) {
+  const surface = new TouchSurface(),
+    lifecycle = new EventTarget();
+  const camera = new PerspectiveCamera(42, 390 / 844, 1, 16000);
+  camera.position.set(0, 100, 100);
+  camera.lookAt(0, 0, 0);
+  camera.updateMatrixWorld();
+  const controls = {
+    target: new Vector3(),
+    enabled: true,
+    minDistance: 70,
+    maxDistance: 3600,
+    minPolarAngle: 0.15,
+    maxPolarAngle: Math.PI * 0.43,
+    update() {
+      camera.lookAt(this.target);
+      camera.updateMatrixWorld();
+    },
+  };
+  let time = 0,
+    id = 0;
+  const frames = new Map<number, FrameRequestCallback>();
+  const cleanup = attachTouchCamera(
+    surface as unknown as HTMLCanvasElement,
+    camera,
+    () => controls as OrbitControls,
+    () => {},
+    () => {},
+    lifecycle,
+    {
+      reducedMotion,
+      now: () => time,
+      requestFrame: (callback) => {
+        frames.set(++id, callback);
+        return id;
+      },
+      cancelFrame: (id) => {
+        frames.delete(id);
+      },
+    },
+  );
+  const tick = (ms: number) => {
+    time += ms;
+    const pending = [...frames.values()];
+    frames.clear();
+    pending.forEach((f) => f(time));
+  };
+  const swipe = () => {
+    surface.pointer("pointerdown", 1, 100, 200);
+    tick(16);
+    surface.pointer("pointermove", 1, 120, 200);
+    tick(16);
+    surface.pointer("pointermove", 1, 140, 200);
+  };
+  return { surface, lifecycle, camera, controls, frames, cleanup, tick, swipe };
+}
+
+test("one-finger throw coasts in the swipe direction, eases to rest and preserves zoom", () => {
+  const h = gestureHarness();
+  h.swipe();
+  const before = h.controls.target.clone();
+  const distance = h.camera.position.distanceTo(h.controls.target);
+  h.surface.pointer("pointerup", 1, 140, 200);
+  h.tick(16);
+  const first = before.distanceTo(h.controls.target);
+  assert.ok(first > 0);
+  assert.ok(h.controls.target.x < before.x);
+  const next = h.controls.target.clone();
+  h.tick(16);
+  assert.ok(next.distanceTo(h.controls.target) < first, "coasting slows down");
+  for (let i = 0; i < 100; i++) h.tick(16);
+  assert.equal(h.frames.size, 0, "animation stops requesting frames");
+  assert.ok(
+    Math.abs(h.camera.position.distanceTo(h.controls.target) - distance) < 1e-8,
+  );
+  h.cleanup();
+});
+
+test("throw stops on new input, cancellation, a paused release, reduced motion or cleanup", () => {
+  for (const action of [
+    "new-touch",
+    "wheel",
+    "pointerdown",
+    "keydown",
+    "blur",
+    "cleanup",
+    "stall",
+  ]) {
+    const h = gestureHarness();
+    h.swipe();
+    h.surface.pointer("pointerup", 1, 140, 200);
+    h.tick(16);
+    if (action === "new-touch") h.surface.pointer("pointerdown", 2, 100, 200);
+    else if (action === "cleanup") h.cleanup();
+    else if (action === "stall") h.tick(200);
+    else h.lifecycle.dispatchEvent(new Event(action));
+    const stopped = h.camera.position.clone();
+    h.tick(16);
+    assert.deepEqual(h.camera.position.toArray(), stopped.toArray(), action);
+    assert.equal(h.frames.size, 0);
+    h.cleanup();
+  }
+  for (const mode of ["paused", "cancelled", "reduced-motion"]) {
+    const h = gestureHarness(mode === "reduced-motion");
+    h.swipe();
+    if (mode === "paused") h.tick(120);
+    h.surface.pointer(
+      mode === "cancelled" ? "pointercancel" : "pointerup",
+      1,
+      140,
+      200,
+    );
+    assert.equal(h.frames.size, 0, mode);
+    h.cleanup();
+  }
+});
+
+test("clockwise finger twist rotates camera clockwise without changing pinch scale", () => {
+  const h = gestureHarness();
+  const distance = h.camera.position.distanceTo(h.controls.target);
+  h.surface.pointer("pointerdown", 1, 100, 200);
+  h.surface.pointer("pointerdown", 2, 200, 200);
+  h.surface.pointer("pointermove", 2, 100, 300);
+  const offset = h.camera.position.clone().sub(h.controls.target);
+  assert.ok(Math.abs(Math.atan2(offset.x, offset.z) - Math.PI / 2) < 1e-8);
+  assert.ok(Math.abs(offset.length() - distance) < 1e-8);
+  h.surface.pointer("pointerup", 2, 100, 300);
+  h.surface.pointer("pointerup", 1, 100, 200);
+  assert.equal(h.frames.size, 0, "twisting does not cause a pan throw");
+  h.cleanup();
 });

@@ -272,7 +272,12 @@ function CameraRig({
     targetMotion.current = null;
     userZoom.current = true;
   }, []);
-  useTouchCamera(controls, interruptTouch);
+  useTouchCamera(
+    controls,
+    interruptTouch,
+    reducedMotion,
+    `${selected}:${selectionSequence}:${command.sequence}`,
+  );
   useEffect(() => {
     const perspective = camera as THREE.PerspectiveCamera;
     const canvas = gl.domElement;

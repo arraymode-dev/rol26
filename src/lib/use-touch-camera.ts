@@ -8,6 +8,8 @@ import { attachTouchCamera } from "./touch-controls";
 export function useTouchCamera(
   controls: RefObject<OrbitControls | null>,
   interrupt: () => void,
+  reducedMotion: boolean,
+  resetKey: string,
 ) {
   const { camera, gl, invalidate } = useThree();
   useEffect(
@@ -18,7 +20,9 @@ export function useTouchCamera(
         () => controls.current,
         interrupt,
         invalidate,
+        window,
+        { reducedMotion },
       ),
-    [camera, gl, invalidate, controls, interrupt],
+    [camera, gl, invalidate, controls, interrupt, reducedMotion, resetKey],
   );
 }

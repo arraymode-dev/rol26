@@ -1785,3 +1785,28 @@ kbd {
     top: 50dvh;
   }
 }
+
+/* Three aligned actions: two pills and a circular reset button. */
+.bottom-actions {
+  align-items: center;
+}
+.bottom-actions button {
+  height: 44px;
+}
+.bottom-actions .overview-action {
+  flex: 0 0 44px;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+}
+@media (max-width: 700px) {
+  .map-corner {
+    bottom: calc(
+      68px + env(safe-area-inset-bottom, 0px) + var(--browser-toolbar-gap)
+    );
+  }
+}

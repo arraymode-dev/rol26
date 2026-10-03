@@ -18,7 +18,6 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
-  Compass,
   Expand,
   Footprints,
   Info,
@@ -443,20 +442,6 @@ export default function App() {
         </section>
       )}
       <div className="map-corner">
-        <aside className="map-controls" aria-label="Map controls">
-          <div className="navigation-controls">
-            <button aria-label="Reset north" onClick={() => issue("north")}>
-              <Compass size={22} />
-              <span>N</span>
-            </button>
-            <button aria-label="Zoom in" onClick={() => issue("in")}>
-              <Plus size={20} />
-            </button>
-            <button aria-label="Zoom out" onClick={() => issue("out")}>
-              <Minus size={20} />
-            </button>
-          </div>
-        </aside>
         <div className="attribution">
           <a
             href="https://www.openstreetmap.org/copyright"
@@ -500,12 +485,12 @@ export default function App() {
             {trail && <Check size={14} />}
           </button>
           <button
-            aria-label="Map overview"
+            aria-label="Reset map view"
+            title="Reset map view"
             onClick={overview}
             className="overview-action"
           >
             <Expand size={16} />
-            <span>Overview</span>
           </button>
         </nav>
         {trail && (
