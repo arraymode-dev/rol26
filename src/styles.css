@@ -1996,6 +1996,27 @@ kbd {
 }
 .bottom-actions button {
   height: 44px;
+  font-size: 13px;
+}
+@media (max-width: 700px) {
+  .bottom-actions button {
+    font-size: 12px;
+    gap: 6px;
+    padding-inline: 8px;
+    white-space: nowrap;
+  }
+  .bottom-actions button svg {
+    flex-shrink: 0;
+  }
+}
+@media (max-width: 359px) {
+  .bottom-actions button {
+    font-size: 11px;
+    gap: 5px;
+  }
+  .bottom-actions button[aria-pressed="true"] > svg:last-child {
+    display: none;
+  }
 }
 .bottom-actions .overview-action {
   flex: 0 0 44px;

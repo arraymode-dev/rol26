@@ -3,20 +3,16 @@ export interface WalkingLeg {
   to: string;
   metres: number;
 }
-export function nextTrailArtwork(
-  ids: readonly string[],
-  seen: ReadonlySet<string>,
-  from: string | null,
-) {
+/** Collection insertion order records the last confirmed visit, including reloads. */
+export function lastSeenArtwork(seen: ReadonlySet<string>): string | null {
+  return Array.from(seen).at(-1) ?? null;
+}
+export function nextTrailArtwork(ids: readonly string[], from: string | null) {
   const start = from ? ids.indexOf(from) : -1;
-  for (let offset = 1; offset <= ids.length; offset++) {
-    const id = ids[(start + offset) % ids.length];
-    if (!seen.has(id)) return id;
-  }
-  return null;
+  return ids[start + 1] ?? null;
 }
 // Sum mapped walking legs, including backtracking when revisiting an earlier
-// unseen stop. Never substitute an aerial straight line across docks/buildings.
+// stop. Never substitute an aerial straight line across docks/buildings.
 export function trailWalk(
   ids: readonly string[],
   legs: readonly WalkingLeg[],

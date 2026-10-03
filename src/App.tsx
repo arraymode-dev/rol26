@@ -1,3 +1,4 @@
+import { lastSeenArtwork } from "./lib/trail-guide";
 import { createTrailLocation } from "./lib/trail-location";
 import { TrailLocationStatus } from "./components/TrailLocationStatus";
 import { TrailGuide } from "./components/TrailGuide";
@@ -7,6 +8,7 @@ import { CollectionCertificate } from "./components/CollectionCertificate";
 import {
   parseSeenArtworks,
   toggleSeenArtwork,
+  markArtworkSeen,
   SEEN_STORAGE_KEY,
 } from "./lib/seen-artworks";
 import {
@@ -79,7 +81,6 @@ export default function App() {
     }
   }, [seen]);
   const toggleSeen = (id: string) => {
-    if (!seen.has(id)) setTrailFrom(id);
     setSeen((current) => toggleSeenArtwork(current, id));
   };
   const complete = seen.size === installations.length;
@@ -139,12 +140,13 @@ export default function App() {
     };
   }, [list]);
   const [trailGuide, setTrailGuide] = useState(false);
-  const [trailFrom, setTrailFrom] = useState<string | null>(null);
+  const trailFrom = lastSeenArtwork(seen);
   const [minimised, setMinimised] = useState(false);
   const [loadingStage, setLoadingStage] = useState(
     "Downloading Liverpool’s map…",
   );
   const [selectionSequence, setSelectionSequence] = useState(0);
+  const [stepNavigation, setStepNavigation] = useState(false);
   const deselectFromZoom = useCallback(() => {
     setSelected(null);
   }, []);
@@ -173,14 +175,14 @@ export default function App() {
   }, []);
   const selectedIdRef = useRef(selected);
   selectedIdRef.current = selected;
-  const choose = useCallback((id: string) => {
+  const choose = useCallback((id: string, step = false) => {
     // A repeated hit on the selected artwork must not restart its camera flight.
     if (selectedIdRef.current === id) return;
     selectedIdRef.current = id;
     searchRef.current?.blur();
     setMinimised(false);
     setSelected(id);
-    setTrailFrom(id);
+    setStepNavigation(step);
     setSelectionSequence((n) => n + 1);
     setQuery("");
     setList(false);
@@ -249,6 +251,7 @@ export default function App() {
           (installations.indexOf(active) + offset + installations.length) %
             installations.length
         ].id,
+        true,
       );
   };
   return (
@@ -275,6 +278,7 @@ export default function App() {
                 reducedMotion={reducedMotion}
                 onSelect={choose}
                 selectionSequence={selectionSequence}
+                stepNavigation={stepNavigation}
                 onDeselect={deselectFromZoom}
                 onReady={loaded}
                 onProgress={setLoadingStage}
@@ -459,7 +463,6 @@ export default function App() {
                 disabled={!seen.size}
                 onClick={() => {
                   setSeen(new Set());
-                  setTrailFrom(null);
                 }}
               >
                 Reset all
@@ -562,7 +565,6 @@ export default function App() {
             aria-pressed={trail}
             onClick={() => {
               if (!trail) {
-                setTrailFrom(selected ?? trailFrom);
                 setSelected(null);
                 setList(false);
               }
@@ -593,9 +595,10 @@ export default function App() {
             onOpen={() => setTrailGuide(true)}
             onClose={() => setTrailGuide(false)}
             onView={choose}
-            onSeen={(id) => {
-              toggleSeen(id);
-              setTrailFrom(id);
+            onSeen={(id) => setSeen((current) => markArtworkSeen(current, id))}
+            onReview={() => {
+              setList(true);
+              setTrailGuide(false);
             }}
             onCertificate={() => setCertificate(true)}
           />

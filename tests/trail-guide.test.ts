@@ -1,18 +1,43 @@
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import assert from "node:assert/strict";
-import { nextTrailArtwork, trailWalk } from "../src/lib/trail-guide.ts";
+import {
+  lastSeenArtwork,
+  nextTrailArtwork,
+  trailWalk,
+} from "../src/lib/trail-guide.ts";
 import { installations } from "../src/data/installations.ts";
 import legs from "../src/data/trail-distances.json" with { type: "json" };
+import {
+  markArtworkSeen,
+  parseSeenArtworks,
+  toggleSeenArtwork,
+} from "../src/lib/seen-artworks.ts";
 const ids = installations.map((i) => i.id);
-test("trail starts at first unseen stop and skips collected stops in route order", () => {
-  assert.equal(nextTrailArtwork(ids, new Set(), null), ids[0]);
-  assert.equal(
-    nextTrailArtwork(ids, new Set([ids[1], ids[2]]), ids[0]),
-    ids[3],
-  );
-  assert.equal(nextTrailArtwork(ids, new Set(ids), ids[12]), null);
-  assert.equal(nextTrailArtwork(ids, new Set(ids.slice(1)), ids[12]), ids[0]);
+test("trail follows the last seen artwork in strict order, including already seen stops", () => {
+  assert.equal(nextTrailArtwork(ids, null), ids[0]);
+  let seen = new Set([ids[8], ids[0], ids[1]]);
+  assert.equal(nextTrailArtwork(ids, lastSeenArtwork(seen)), ids[2]);
+  seen = markArtworkSeen(seen, ids[6]);
+  assert.equal(nextTrailArtwork(ids, lastSeenArtwork(seen)), ids[7]);
+  seen = markArtworkSeen(seen, ids[7]);
+  assert.equal(nextTrailArtwork(ids, lastSeenArtwork(seen)), ids[8]);
+  const count = seen.size;
+  seen = markArtworkSeen(seen, ids[8]);
+  assert.equal(seen.size, count, "continuing from 09 never unchecks it");
+  assert.equal(nextTrailArtwork(ids, lastSeenArtwork(seen)), ids[9]);
+});
+test("last confirmed visit survives reload and removing it falls back to the previous visit", () => {
+  const seen = new Set([ids[8], ids[0], ids[1]]);
+  const restored = parseSeenArtworks(JSON.stringify([...seen]), ids);
+  assert.equal(lastSeenArtwork(restored), ids[1]);
+  assert.equal(lastSeenArtwork(toggleSeenArtwork(restored, ids[1])), ids[0]);
+  assert.equal(lastSeenArtwork(new Set()), null);
+});
+test("stop 13 ends the trail without jumping back to a random uncollected stop", () => {
+  assert.equal(nextTrailArtwork(ids, ids[12]), null);
+  assert.equal(nextTrailArtwork([], null), null);
+  assert.equal(nextTrailArtwork(ids, "unknown"), ids[0]);
 });
 test("walking estimates follow mapped legs, including reverse travel, with no distance guessed across gaps", () => {
   assert.equal(legs.length, 12);

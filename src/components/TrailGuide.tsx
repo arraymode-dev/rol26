@@ -21,6 +21,7 @@ export function TrailGuide({
   onView,
   onSeen,
   onCertificate,
+  onReview,
 }: {
   items: Installation[];
   seen: ReadonlySet<string>;
@@ -31,22 +32,28 @@ export function TrailGuide({
   onView: (id: string) => void;
   onSeen: (id: string) => void;
   onCertificate: () => void;
+  onReview: () => void;
 }) {
   const returnRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     returnRef.current?.focus({ preventScroll: true });
   }, [open]);
   const ids = items.map((i) => i.id),
-    nextId = nextTrailArtwork(ids, seen, from),
+    nextId = nextTrailArtwork(ids, from),
     next = items.find((i) => i.id === nextId),
     origin = items.find((i) => i.id === from),
     walk = trailWalk(ids, legs, from, nextId);
+  const complete = seen.size === items.length;
   if (!open)
     return (
       <button ref={returnRef} className="trail-resume" onClick={onOpen}>
         <Footprints size={17} />
         <span>
-          {next ? `Next: ${next.name}` : "Every light collected"}
+          {next
+            ? `Next: ${next.name}`
+            : complete
+              ? "Every light collected"
+              : "End of the trail"}
           <small>
             {walk ? `About ${walk.minutes} min · ` : ""}
             {seen.size} of {items.length} seen
@@ -62,7 +69,11 @@ export function TrailGuide({
       </button>
       <div className="eyebrow">YOUR NIGHT OF LIGHT</div>
       <h2 id="trail-title">
-        {next ? "Your next light." : "Every light, collected."}
+        {next
+          ? "Your next light."
+          : complete
+            ? "Every light, collected."
+            : "You reached the last light."}
       </h2>
       <div className="trail-progress" aria-live="polite">
         <span>
@@ -105,7 +116,7 @@ export function TrailGuide({
                   <small>
                     {origin
                       ? "Walking estimate unavailable for this connection."
-                      : "Choose a stop on the map to start elsewhere."}
+                      : "Mark an artwork as seen to continue from there."}
                   </small>
                 </>
               )}
@@ -116,7 +127,8 @@ export function TrailGuide({
               <MapPin size={17} /> View on map
             </button>
             <button className="trail-seen" onClick={() => onSeen(next.id)}>
-              <Check size={17} /> I’ve seen it
+              <Check size={17} />{" "}
+              {seen.has(next.id) ? "Continue from here" : "I’ve seen it"}
             </button>
           </div>
           <a
@@ -132,7 +144,7 @@ export function TrailGuide({
             exclude stops.
           </p>
         </>
-      ) : (
+      ) : complete ? (
         <>
           <p className="trail-complete">
             You found all {items.length} artworks. Take your golden certificate
@@ -140,6 +152,16 @@ export function TrailGuide({
           </p>
           <button className="primary-button" onClick={onCertificate}>
             <Trophy size={18} /> Your certificate
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="trail-complete">
+            You reached stop 13. There are {items.length - seen.size} artworks
+            left in your collection.
+          </p>
+          <button className="primary-button" onClick={onReview}>
+            Review artworks
           </button>
         </>
       )}

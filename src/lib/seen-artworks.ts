@@ -28,3 +28,14 @@ export function toggleSeenArtwork(
   else next.add(id);
   return next;
 }
+
+/** Confirming a trail stop advances the visit order without unchecking it. */
+export function markArtworkSeen(
+  current: ReadonlySet<string>,
+  id: string,
+): Set<string> {
+  const next = new Set(current);
+  next.delete(id);
+  next.add(id);
+  return next;
+}

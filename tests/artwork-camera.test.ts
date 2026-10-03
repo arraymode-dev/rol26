@@ -1,7 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { Vector3 } from "three";
-import { approachArtwork } from "../src/lib/artwork-camera.ts";
+import {
+  approachArtwork,
+  frameMobileTrailStep,
+} from "../src/lib/artwork-camera.ts";
 
 test("artwork approaches keep the current side and bearing instead of circling to a preset", () => {
   const focus = new Vector3(-78, 1, 615);
@@ -79,4 +82,23 @@ test("mobile approaches retain the arriving side while bringing a steep overview
   );
   assert.equal(offset.x, 0);
   assert.ok(offset.z > 0);
+});
+
+test("mobile Previous/Next frames the surrounding area consistently without changing approach", () => {
+  const focus = new Vector3(20, 4, 30);
+  const offset = new Vector3(60, 60, 30);
+  const frame = frameMobileTrailStep(
+    focus.clone().add(offset),
+    focus,
+    390 / 844,
+  );
+  const result = frame.clone().sub(focus);
+  assert.ok(result.length() > 260 && result.length() < 280);
+  assert.ok(result.clone().normalize().distanceTo(offset.normalize()) < 1e-10);
+  const another = frameMobileTrailStep(
+    focus.clone().addScaledVector(offset, 85),
+    focus,
+    390 / 844,
+  );
+  assert.ok(Math.abs(another.distanceTo(focus) - result.length()) < 1e-10);
 });

@@ -8,7 +8,11 @@ import {
   shouldRestoreTrailView,
   type CameraPose,
 } from "../lib/trail-camera";
-import { approachArtwork, faceArtworkSurface } from "../lib/artwork-camera";
+import {
+  approachArtwork,
+  faceArtworkSurface,
+  frameMobileTrailStep,
+} from "../lib/artwork-camera";
 import wappingSite from "../data/wapping-gate.json" with { type: "json" };
 import { WAPPING_GATE } from "./WappingGate";
 import { EventLighting } from "./EventLighting";
@@ -61,6 +65,7 @@ export interface SceneProps {
   reducedMotion: boolean;
   onSelect: (id: string) => void;
   selectionSequence: number;
+  stepNavigation: boolean;
   onDeselect: () => void;
   onReady: () => void;
   onProgress: (stage: string) => void;
@@ -236,6 +241,7 @@ function CameraRig({
   selected,
   trail,
   selectionSequence,
+  stepNavigation,
   onDeselect,
   command,
   reducedMotion,
@@ -371,14 +377,23 @@ function CameraRig({
       z,
     );
     orbitCentre.current.copy(focus);
+    const frame = (position: THREE.Vector3) =>
+      stepNavigation && gl.domElement.clientWidth <= 700
+        ? frameMobileTrailStep(
+            position,
+            focus,
+            gl.domElement.clientWidth / gl.domElement.clientHeight,
+            (camera as THREE.PerspectiveCamera).fov,
+          )
+        : position;
     if (selected === "the-anooki") {
       // The opening stop deliberately retains its centred street approach.
-      move(new THREE.Vector3(x + 68, 90, z + 145), focus);
+      move(frame(new THREE.Vector3(x + 68, 90, z + 145)), focus);
       return;
     }
     if (selected === "today-i-love-you") {
       // The church is the deliberate backdrop for stop 04, from every entry angle.
-      move(new THREE.Vector3(x - 65, 83, z + 85), focus);
+      move(frame(new THREE.Vector3(x - 65, 83, z + 85)), focus);
       return;
     }
     const distances: Record<string, number> = {
@@ -403,12 +418,14 @@ function CameraRig({
       gl.domElement.clientWidth <= 700 ? Math.PI / 4 : undefined,
     );
     move(
-      selected === "together"
-        ? faceArtworkSurface(destination, focus, wappingSite.angle)
-        : destination,
+      frame(
+        selected === "together"
+          ? faceArtworkSurface(destination, focus, wappingSite.angle)
+          : destination,
+      ),
       focus,
     );
-  }, [selected, selectionSequence]);
+  }, [selected, selectionSequence, stepNavigation]);
   useEffect(() => {
     if (!controls.current) return;
     if (command.kind === "out") userZoom.current = true;

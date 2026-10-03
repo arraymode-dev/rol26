@@ -69,3 +69,24 @@ export function faceArtworkSurface(
       ),
     );
 }
+
+/** On narrow screens, frame the 58 m artwork area at roughly 60% of the width. */
+export function frameMobileTrailStep(
+  position: Vector3,
+  focus: Vector3,
+  aspect: number,
+  fov = 42,
+): Vector3 {
+  const distance = MathUtils.clamp(
+    58 /
+      (0.6 * 2 * Math.tan(MathUtils.degToRad(fov / 2)) * Math.max(0.3, aspect)),
+    180,
+    360,
+  );
+  return position
+    .clone()
+    .sub(focus)
+    .normalize()
+    .multiplyScalar(distance)
+    .add(focus);
+}
