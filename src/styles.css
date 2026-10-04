@@ -2563,14 +2563,15 @@ kbd {
   left: -15px;
   top: -2px;
   font-size: 30px;
+  font-family: Georgia, serif;
   font-weight: 400;
   color: #9589bc;
 }
 .countdown-unit > span {
   display: block;
-  font-family: Manrope, sans-serif;
+  font-family: Georgia, serif;
   font-size: 36px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1;
   letter-spacing: -1px;
   font-variant-numeric: tabular-nums;
