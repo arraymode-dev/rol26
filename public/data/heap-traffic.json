@@ -2,82 +2,82 @@
   "version": 1,
   "environmentId": "442235230",
   "environment": "Production",
-  "capturedAt": "2026-10-03T17:37:20.125Z",
+  "capturedAt": "2026-10-04T13:08:53.666Z",
   "period": {
-    "start": "2026-09-27",
-    "end": "2026-10-03",
-    "label": "27 Sep – 3 Oct 2026",
+    "start": "2026-09-28",
+    "end": "2026-10-04",
+    "label": "28 Sep – 4 Oct 2026",
     "timezone": "Europe/London"
   },
   "filter": "environment=production",
-  "totalVisitors": 4,
+  "totalVisitors": 5,
   "denominator": "Experience opened",
   "source": "https://eu.heapanalytics.com/app/env/442235230/dashboard/River-of-Light-Artwork-discovery-601510",
   "artworks": [
     {
       "id": "the-anooki",
-      "opened": 2,
-      "seen": 2
+      "opened": 3,
+      "seen": 3
     },
     {
       "id": "flower-power",
-      "opened": 0,
-      "seen": 2
+      "opened": 1,
+      "seen": 3
     },
     {
       "id": "loop",
       "opened": 2,
-      "seen": 2
+      "seen": 3
     },
     {
       "id": "today-i-love-you",
-      "opened": 1,
-      "seen": 2
-    },
-    {
-      "id": "invisible-cities",
       "opened": 2,
       "seen": 3
     },
     {
+      "id": "invisible-cities",
+      "opened": 3,
+      "seen": 4
+    },
+    {
       "id": "coloured-peonies",
-      "opened": 2,
-      "seen": 2
+      "opened": 3,
+      "seen": 3
     },
     {
       "id": "unity",
-      "opened": 2,
-      "seen": 2
+      "opened": 3,
+      "seen": 3
     },
     {
       "id": "colour-rush",
-      "opened": 1,
-      "seen": 2
+      "opened": 2,
+      "seen": 3
     },
     {
       "id": "the-stars-come-out-at-night",
-      "opened": 1,
-      "seen": 2
+      "opened": 2,
+      "seen": 3
     },
     {
       "id": "together",
-      "opened": 1,
-      "seen": 2
+      "opened": 2,
+      "seen": 3
     },
     {
       "id": "paradigm",
-      "opened": 1,
-      "seen": 2
+      "opened": 2,
+      "seen": 3
     },
     {
       "id": "dream-herd",
-      "opened": 1,
-      "seen": 2
+      "opened": 2,
+      "seen": 3
     },
     {
       "id": "pop",
-      "opened": 2,
-      "seen": 2
+      "opened": 3,
+      "seen": 3
     }
   ]
 }
