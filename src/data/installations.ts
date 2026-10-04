@@ -1,4 +1,5 @@
 import { TOGETHER_POSITION } from "../lib/together-placement.ts";
+import { PARADIGM_POSITION } from "../lib/paradigm-placement.ts";
 import { unproject } from "../lib/geo.ts";
 import type { Installation, Survey } from "../types";
 import officialArtworks from "./official-artworks.json" with { type: "json" };
@@ -16,7 +17,7 @@ const sitePositions: Record<string, [number, number]> = {
   "the-stars-come-out-at-night": [88.78793599859713, 488.0921362052487],
   together: TOGETHER_POSITION,
   // The small fountain beside Chavasse Park, beyond the bus station.
-  paradigm: [186, 159],
+  paradigm: PARADIGM_POSITION,
   "dream-herd": [116, -111],
   pop: [588, -278],
 };

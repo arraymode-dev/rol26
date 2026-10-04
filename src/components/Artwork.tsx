@@ -16,6 +16,7 @@ import { GEORGES_DOCK } from "./GeorgesDock";
 import { EXCHANGE } from "./ExchangeFlags";
 import { CHURCH_GARDENS } from "./ChurchGardens";
 import { ST_PAULS } from "./StPaulsSquare";
+import { WATER_LEVEL } from "./WaterMaterial";
 function AttractionBeam({
   show,
   distance,
@@ -218,7 +219,9 @@ export const Artwork = memo(function Artwork({
                 ? 2.15
                 : item.id === "the-anooki"
                   ? 0
-                  : 0.6,
+                  : item.id === "paradigm"
+                    ? WATER_LEVEL + 0.05
+                    : 0.6,
             0,
           ]}
           onClick={(e) => {
@@ -270,7 +273,7 @@ export const Artwork = memo(function Artwork({
                   "colour-rush": 16,
                   "the-stars-come-out-at-night": 11,
                   together: 16,
-                  paradigm: 12,
+                  paradigm: 16,
                   "dream-herd": 18,
                   pop: 17,
                 }[item.id] ?? 20)

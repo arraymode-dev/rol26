@@ -1,6 +1,7 @@
 import { memo, useEffect, useMemo } from "react";
 import * as THREE from "three";
 import { buildParadigm, PARADIGM } from "../lib/paradigm";
+import { PARADIGM_SCALE } from "../lib/paradigm-placement";
 
 export const Paradigm = memo(function Paradigm({ night }: { night: boolean }) {
   const model = useMemo(buildParadigm, []);
@@ -31,7 +32,7 @@ export const Paradigm = memo(function Paradigm({ night }: { night: boolean }) {
     [model, halo],
   );
   return (
-    <group>
+    <group scale={PARADIGM_SCALE}>
       <mesh position={[0, 0.09, 0]} receiveShadow>
         <cylinderGeometry args={[2.1, 2.15, 0.18, 32]} />
         <meshStandardMaterial color="#252b30" roughness={0.85} />
@@ -73,7 +74,7 @@ export const Paradigm = memo(function Paradigm({ night }: { night: boolean }) {
           <pointsMaterial
             map={halo}
             color="#ff630d"
-            size={1.1}
+            size={1.1 * PARADIGM_SCALE}
             transparent
             opacity={0.85}
             fog={false}
