@@ -22,8 +22,15 @@ const graph = new Map();
 const pointMap = new Map();
 const key = (p) => p.join(",");
 // Public waterfront access and the short Lord Street connection join the
-// walking network. Do not admit unrelated service/parking or main roads.
-const sharedWalkingAccess = new Set(["207474320", "8025656", "1390016226"]);
+// walking network. Way 1253004863 explicitly has foot=designated in the saved
+// OSM source: the shared path joins the west-side pavement to Pier Head.
+// Do not admit unrelated service/parking or main roads.
+const sharedWalkingAccess = new Set([
+  "207474320",
+  "8025656",
+  "1390016226",
+  "1253004863",
+]);
 for (const road of [...data.roads, ...authoredLinks]) {
   if (
     !(
@@ -149,7 +156,24 @@ for (let i = 1; i < installations.length; i++) {
     gaps.push([a.id, b.id]);
     continue;
   }
-  const via = a.id === "unity" && b.id === "colour-rush" ? dockWalk : [];
+  const via =
+    a.id === "loop" && b.id === "today-i-love-you"
+      ? [
+          [-222.5, -699.3],
+          [-149.3, -594],
+          [-120.3, -563.2],
+          [-92.7, -529.2],
+          [-32.9, -457.7],
+          [-44.6, -448.2],
+        ]
+      : a.id === "unity" && b.id === "colour-rush"
+        ? dockWalk
+        : a.id === "today-i-love-you" && b.id === "invisible-cities"
+          ? [
+              [-254.2, -306.7],
+              [-332.8, -274.9],
+            ]
+          : [];
   const stops = [an.id, ...via.map(key), bn.id];
   const legs = stops.slice(1).map((stop, j) => route(stops[j], stop));
   const path = legs.every(Boolean)

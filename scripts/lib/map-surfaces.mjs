@@ -165,11 +165,19 @@ export function trailSurface(route, data, width = 4) {
     bounds: bounds(b.points),
   }));
   const water = data.water.map((b) => ({ ...b, bounds: bounds(b.points) }));
+  // Never round a crossing onto the carriageway or across a traffic island.
+  const crossingNodes = new Set(
+    data.roads
+      .filter((r) => ["crossing", "traffic_island"].includes(r.footway))
+      .flatMap((r) => r.points.map((p) => p.join(","))),
+  );
   const points = smoothRoute(
     route,
     (a, b) =>
       !crossesBuilding(a, b, buildings) &&
       ((onBridge(a) && onBridge(b)) || !crossesBuilding(a, b, water)),
+    2.5,
+    crossingNodes,
   );
   if (points.length < 2) return [];
   const half = width / 2;

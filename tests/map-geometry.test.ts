@@ -179,25 +179,30 @@ test("03 to 04 enters Old Churchyard and follows the courtyard beside the church
   );
 });
 
-test("04 to 05 crosses directly from the church to Pier Head", () => {
+test("04 to 05 uses mapped walking edges throughout, with no illustrative road shortcut", () => {
   const path = JSON.parse(readFileSync("public/data/trail.json", "utf8"))
     .segments[3];
-  const length = path.reduce(
-    (sum: number, p: number[], i: number) =>
-      sum + (i ? Math.hypot(p[0] - path[i - 1][0], p[1] - path[i - 1][1]) : 0),
-    0,
-  );
-  assert.ok(length < 280, `04 to 05 is ${length} metres`);
-  const exit = path.findIndex(
-    ([x, z]: number[]) => x === -195.5 && z === -285.9,
-  );
-  assert.ok(exit > 0);
-  assert.deepEqual(path.slice(exit), [
-    [-195.5, -285.9],
-    [-270.5, -259.55],
-    [-345.5, -233.2],
-    [-377.5, -219.8],
-  ]);
+  const map = JSON.parse(readFileSync("public/data/map.json", "utf8"));
+  const edges = new Set<string>();
+  for (const road of map.roads) {
+    if (
+      !road.walkable ||
+      !["footway", "pedestrian", "cycleway", "steps"].includes(road.kind)
+    )
+      continue;
+    for (let i = 1; i < road.points.length; i++) {
+      const a = road.points[i - 1].join(","),
+        b = road.points[i].join(",");
+      edges.add(`${a}:${b}`);
+      edges.add(`${b}:${a}`);
+    }
+  }
+  for (let i = 1; i < path.length; i++) {
+    assert.ok(
+      edges.has(`${path[i - 1].join(",")}:${path[i].join(",")}`),
+      `unmapped crossing at ${path[i]}`,
+    );
+  }
 });
 
 test("route corner rounding stays within the walking corridor and preserves endpoints", () => {

@@ -1,17 +1,5 @@
 [
   {
-    "id": "church-to-pier-head",
-    "source": "User-directed illustrative crossing from the church to Pier Head; verify access on site",
-    "kind": "footway",
-    "walkable": true,
-    "public": true,
-    "points": [
-      [-195.5, -285.9],
-      [-270.5, -259.55],
-      [-345.5, -233.2]
-    ]
-  },
-  {
     "id": "town-hall-clearance",
     "source": "Illustrative forecourt route clear of the detailed Town Hall model; verify access on site",
     "kind": "footway",
@@ -56,6 +44,22 @@
     "points": [
       [-174.4, -365.8],
       [-170.8, -358.7]
+    ]
+  },
+  {
+    "id": "old-hall-east-pavement",
+    "source": "User field-directed Rigby Street to Old Hall Street east pavement approach; fills the unmapped sidewalk beside OSM way 4186631 and joins the mapped sidewalk at way 1530543264. Approximate pavement alignment; verify access on site.",
+    "kind": "footway",
+    "footway": "sidewalk",
+    "walkable": true,
+    "public": true,
+    "points": [
+      [-182.7, -730.7],
+      [-222.5, -699.3],
+      [-193.3, -648.7],
+      [-179.6, -630.4],
+      [-171.7, -620],
+      [-149.3, -594]
     ]
   }
 ]

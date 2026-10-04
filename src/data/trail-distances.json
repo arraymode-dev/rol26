@@ -12,17 +12,17 @@
   {
     "from": "loop",
     "to": "today-i-love-you",
-    "metres": 579
+    "metres": 662
   },
   {
     "from": "today-i-love-you",
     "to": "invisible-cities",
-    "metres": 254
+    "metres": 376
   },
   {
     "from": "invisible-cities",
     "to": "coloured-peonies",
-    "metres": 344
+    "metres": 349
   },
   {
     "from": "coloured-peonies",

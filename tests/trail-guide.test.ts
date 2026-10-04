@@ -76,3 +76,65 @@ test("generated walking distances remain in sync with the displayed trail", () =
     assert.equal(legs[index].to, ids[index + 1]);
   });
 });
+
+test("03 to 04 follows Old Hall Street then Chapel Street instead of the back-street detour", () => {
+  const { segments } = JSON.parse(
+    readFileSync(new URL("../public/data/trail.json", import.meta.url), "utf8"),
+  );
+  const route = segments[2].map((p: number[]) => p.join(","));
+  const waypoints = [
+    [-222.5, -699.3],
+    [-149.3, -594],
+    [-120.3, -563.2],
+    [-92.7, -529.2],
+    [-32.9, -457.7],
+    [-44.6, -448.2],
+    [-170.7, -379.4],
+  ];
+  let previous = -1;
+  for (const point of waypoints) {
+    const index = route.indexOf(point.join(","));
+    assert.ok(
+      index > previous,
+      `missing or reversed pavement waypoint ${point}`,
+    );
+    previous = index;
+  }
+  assert.ok(!route.includes("-174.4,-486"), "no Fazakerley Street detour");
+  assert.equal(new Set(route).size, route.length, "no doubled-back route");
+});
+
+test("04 to 05 uses mapped crossings and the west-side Pier Head footpath", () => {
+  const { segments, links } = JSON.parse(
+    readFileSync(new URL("../public/data/trail.json", import.meta.url), "utf8"),
+  );
+  const route = segments[3].map((p: number[]) => p.join(","));
+  const waypoints = [
+    [-218.9, -321.6],
+    [-229, -317],
+    [-247.4, -309.6],
+    [-254.2, -306.7],
+    [-281.1, -332.8],
+    [-304.8, -296.6],
+    [-332.8, -274.9],
+    [-393.1, -250.4],
+    [-381.2, -228.4],
+  ];
+  let previous = -1;
+  for (const point of waypoints) {
+    const index = route.indexOf(point.join(","));
+    assert.ok(
+      index > previous,
+      `missing or reversed crossing waypoint ${point}`,
+    );
+    previous = index;
+  }
+  assert.equal(
+    new Set(route).size,
+    route.length,
+    "no doubling back from the west pavement",
+  );
+  assert.ok(
+    !links.some((link: { id: string }) => link.id === "church-to-pier-head"),
+  );
+});

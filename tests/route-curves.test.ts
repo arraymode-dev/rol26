@@ -63,3 +63,26 @@ test("generated ribbons have no folded quadrilaterals at tight corners", async (
     assert.ok(!crosses(a, b, c, d) && !crosses(b, c, d, a));
   }
 });
+
+test("crossings retain their exact alignment when neighbouring pavements are smoothed", () => {
+  const points = [
+    [0, 0],
+    [10, 1],
+    [10, 10],
+    [30, 10],
+    [30, 40],
+  ];
+  const pinned = new Set(["10,1", "10,10"]);
+  const result = smoothRoute(points, () => true, 2.5, pinned);
+  const start = result.findIndex((p: number[]) => p.join(",") === "10,1");
+  assert.ok(start > 0);
+  assert.deepEqual(
+    result[start + 1],
+    [10, 10],
+    "crossing remains a straight segment with exact endpoints",
+  );
+  assert.ok(
+    result.length > points.length,
+    "unpinned pavement bend still uses a curve",
+  );
+});
