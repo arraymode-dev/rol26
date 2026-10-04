@@ -2544,7 +2544,7 @@ kbd {
   font-size: 12px;
   color: #aebcc5;
 }
-.countdown-eyebrow + .countdown-caption {
+.countdown-eyebrow + .countdown-digits {
   margin-top: 16px;
 }
 .countdown-digits {

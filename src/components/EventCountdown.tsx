@@ -52,11 +52,9 @@ export function EventCountdown({ visible }: { visible: boolean }) {
       )}
       {time.phase !== "ended" && (
         <>
-          <p className="countdown-caption">
-            {time.phase === "upcoming"
-              ? "The lights come on in"
-              : "Time left to explore"}
-          </p>
+          {time.phase === "during" && (
+            <p className="countdown-caption">Time left to explore</p>
+          )}
           <div
             className="countdown-digits"
             role="timer"
