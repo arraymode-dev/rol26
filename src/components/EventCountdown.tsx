@@ -34,26 +34,22 @@ export function EventCountdown({ visible }: { visible: boolean }) {
             ? "THE FESTIVAL IS HERE"
             : "UNTIL NEXT TIME"}
       </div>
-      <h2>
-        {time.phase === "upcoming" ? (
-          <>
-            Together,
-            <br />
-            after dark.
-          </>
-        ) : time.phase === "during" ? (
-          <>
-            A city.
-            <br />A little wonder.
-          </>
-        ) : (
-          <>
-            Thanks for
-            <br />
-            exploring.
-          </>
-        )}
-      </h2>
+      {time.phase !== "upcoming" && (
+        <h2>
+          {time.phase === "during" ? (
+            <>
+              A city.
+              <br />A little wonder.
+            </>
+          ) : (
+            <>
+              Thanks for
+              <br />
+              exploring.
+            </>
+          )}
+        </h2>
+      )}
       {time.phase !== "ended" && (
         <>
           <p className="countdown-caption">
