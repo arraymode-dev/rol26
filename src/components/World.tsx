@@ -1,3 +1,4 @@
+import { DockBoats } from "./DockBoats";
 import { RiverFurniture } from "./RiverFurniture";
 import { GRASS_COLOUR } from "../lib/palette";
 import { BuildingPalette } from "./BuildingPalette";
@@ -88,6 +89,7 @@ export const World = memo(function World({
   selected,
   reducedMotion,
   animateRides,
+  lowQuality = false,
 }: {
   data: MapData & { coast: [number, number][] };
   night: boolean;
@@ -95,6 +97,7 @@ export const World = memo(function World({
   selected: string | null;
   reducedMotion: boolean;
   animateRides: boolean;
+  lowQuality?: boolean;
 }) {
   const lightFootprints = useMemo(() => {
     const centres = installations.map((i) => project(...i.coordinates));
@@ -277,7 +280,12 @@ export const World = memo(function World({
       focus={focus}
     >
       <mesh geometry={geometry.sea} receiveShadow>
-        <WaterMaterial night={night} moving reducedMotion={reducedMotion} />
+        <WaterMaterial
+          night={night}
+          moving={!lowQuality}
+          moonlight={!lowQuality && night}
+          reducedMotion={reducedMotion}
+        />
       </mesh>
       <mesh geometry={geometry.land} receiveShadow>
         <meshStandardMaterial
@@ -287,7 +295,12 @@ export const World = memo(function World({
         />
       </mesh>
       <mesh geometry={geometry.water} receiveShadow>
-        <WaterMaterial night={night} />
+        <WaterMaterial
+          night={night}
+          moving={false}
+          moonlight={!lowQuality && night}
+          reducedMotion={reducedMotion}
+        />
       </mesh>
       <mesh geometry={geometry.quayWalls} receiveShadow>
         <meshStandardMaterial
@@ -370,6 +383,7 @@ export const World = memo(function World({
         <StPaulsSquare night={night} />
         <AnchorCourtyard />
       </GhostBuildings>
+      <DockBoats data={data} />
       <DockRides night={night} reducedMotion={!animateRides} />
       <RiverFurniture data={data} night={night} />
       <ChurchGardens night={night} />

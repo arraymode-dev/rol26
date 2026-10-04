@@ -2381,3 +2381,31 @@ kbd {
     );
   }
 }
+
+/* Match every map control to the bottom action touch targets. */
+.topbar .quality-toggle,
+.topbar .info-button {
+  height: 44px;
+  min-height: 44px;
+  margin-top: 0;
+  font-size: 13px;
+  font-weight: 400;
+  padding: 12px 16px;
+  gap: 9px;
+}
+.topbar .info-button {
+  width: 44px;
+  padding: 12px;
+}
+.topbar .info-button svg,
+.topbar .quality-toggle svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+@media (max-width: 700px) {
+  .topbar .quality-toggle {
+    width: 44px;
+    padding: 12px;
+  }
+}

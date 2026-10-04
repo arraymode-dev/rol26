@@ -172,6 +172,39 @@ for (let i = 1; i < installations.length; i++) {
     });
   } else gaps.push([a.id, b.id]);
 }
+// Join adjacent legs before drawing so artwork stops do not introduce a seam
+// or two disconnected square caps into an otherwise continuous ribbon.
+const displayRoutes = [];
+for (const segment of segments) {
+  const previous = displayRoutes.at(-1);
+  if (previous && key(previous.at(-1)) === key(segment[0]))
+    previous.push(...segment.slice(1));
+  else displayRoutes.push([...segment]);
+}
+// A visit followed by a genuine out-and-back needs two caps, not a Bezier
+// hairpin with zero radius. Keep these reversals separate from ordinary bends.
+const displayRuns = displayRoutes.flatMap((points) => {
+  const runs = [];
+  let start = 0;
+  for (let i = 1; i < points.length - 1; i++) {
+    const a = points[i - 1],
+      b = points[i],
+      c = points[i + 1];
+    const ux = b[0] - a[0],
+      uz = b[1] - a[1],
+      vx = c[0] - b[0],
+      vz = c[1] - b[1];
+    if (
+      (ux * vx + uz * vz) / (Math.hypot(ux, uz) * Math.hypot(vx, vz)) <
+      -0.9
+    ) {
+      runs.push(points.slice(start, i + 1));
+      start = i;
+    }
+  }
+  runs.push(points.slice(start));
+  return runs;
+});
 writeFileSync(
   "public/data/trail.json",
   JSON.stringify({
@@ -180,7 +213,7 @@ writeFileSync(
       "OpenStreetMap walking network with an illustrative local connections; access and crossings require site checks",
     segments,
     links: authoredLinks,
-    ribbons: segments.map((points) => trailSurface(points, data)),
+    ribbons: displayRuns.map((points) => trailSurface(points, data)),
     gaps,
   }),
 );
