@@ -11,7 +11,8 @@
     "data:prepare": "node scripts/prepare-map.mjs",
     "data:fetch": "node scripts/fetch-map.mjs",
     "data:trail": "node --experimental-strip-types scripts/prepare-trail.mjs",
-    "photos:import": "node --experimental-strip-types scripts/import-photo.mjs"
+    "photos:import": "node --experimental-strip-types scripts/import-photo.mjs",
+    "credits:prepare": "node scripts/prepare-credits.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.0.0",

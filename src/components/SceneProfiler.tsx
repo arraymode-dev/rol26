@@ -124,6 +124,9 @@ export function SceneProfiler() {
             shaderCompilations: (gl.info.programs ?? []).filter(
               (p) => !state.initialPrograms.has(p.cacheKey),
             ).length,
+            newPrograms: (gl.info.programs ?? [])
+              .filter((p) => !state.initialPrograms.has(p.cacheKey))
+              .map((p) => p.cacheKey),
             samples: state.samples.length,
             transition: state.transition,
             frameMax: Math.max(...state.samples.map((s) => s.frame)),

@@ -165,3 +165,7 @@ The renderer uses logarithmic depth to keep closely stacked ground surfaces stab
 Open river water uses slow, world-scale lighting ripples with distance filtering to avoid shimmer. Enclosed dock polygons and the recessed Pier Head canal use the same water material palette without animation. Water remains opaque and depth-tested; waves do not displace the surface through bridges or quays. Dock basins are cut out of the land and recessed to an illustrative -1.2 m surface with quay walls; the photo-informed canal retains its existing -2.05 m level. These are visual model elevations, not surveyed tides or bathymetry. Reduced-motion mode freezes the river ripples, and the 30fps water invalidation timer sleeps while the document is hidden.
 
 Stop 09 now uses the user-marked Salthouse Quay position (135, 487) for its sculpture, marker, lights, camera and walking route. Stop 05 is back at its original Pier Head position.
+
+### Credits and licence notices
+
+About includes a fixed-height, keyboard-scrollable credits panel with map, font, image, artist, service and library credits. Full notices live in `public/credits/`. Run `npm run credits:prepare` after dependency updates, then review the generated inventory and any missing-notice warnings. See [the credits audit](docs/credits-audit.md) for provenance and remaining upstream notice gaps, and [the final performance check](docs/performance-audit-2026-10-04.md) for measured scene performance.

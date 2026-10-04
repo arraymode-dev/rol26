@@ -1,0 +1,5 @@
+maath 0.10.8
+Declared licence: MIT
+Source: https://www.npmjs.com/package/maath
+The installed package declares this licence but includes no standalone copyright/licence notice. See its upstream project.
+

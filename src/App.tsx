@@ -1,3 +1,4 @@
+import { Credits } from "./components/Credits";
 import { track } from "./lib/analytics";
 import { useExperienceAnalytics } from "./lib/use-experience-analytics";
 import { lastSeenArtwork } from "./lib/trail-guide";
@@ -749,16 +750,7 @@ export default function App() {
               >
                 Visit the official event website <ArrowUpRight size={18} />
               </a>
-              <div className="legal-disclaimer">
-                <strong>Unofficial project disclaimer</strong>
-                <p>
-                  This project is not affiliated with, endorsed by, sponsored by
-                  or authorised by Liverpool City Council, Culture Liverpool,
-                  Arts Council England, the River of Light organisers or the
-                  participating artists. Artwork images, names and trademarks
-                  belong to their respective owners.
-                </p>
-              </div>
+              <Credits />
             </div>
           </section>
         </div>

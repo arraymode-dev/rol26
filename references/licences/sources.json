@@ -1,0 +1,9 @@
+{
+  "dm-sans": "https://raw.githubusercontent.com/google/fonts/main/ofl/dmsans/OFL.txt",
+  "manrope": "https://raw.githubusercontent.com/google/fonts/main/ofl/manrope/OFL.txt",
+  "fiber": "https://raw.githubusercontent.com/pmndrs/react-three-fiber/v9.8.1/LICENSE",
+  "draco3d": "https://raw.githubusercontent.com/google/draco/1.5.7/LICENSE",
+  "mediapipe": "https://raw.githubusercontent.com/google-ai-edge/mediapipe/master/LICENSE",
+  "boost": "https://www.boost.org/LICENSE_1_0.txt",
+  "jsbn": "https://raw.githubusercontent.com/andyperlitch/jsbn/master/LICENSE"
+}

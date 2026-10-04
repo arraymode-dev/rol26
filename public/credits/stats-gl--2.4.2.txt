@@ -1,0 +1,6 @@
+stats-gl 2.4.2
+Declared licence: MIT
+Package author: Renaud ROHLINGER (https://github.com/RenaudRohlinger)
+Source: https://github.com/RenaudRohlinger/stats-gl
+The installed package declares this licence but includes no standalone copyright/licence notice. See its upstream project.
+

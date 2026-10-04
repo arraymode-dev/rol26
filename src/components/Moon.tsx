@@ -41,13 +41,13 @@ function moonShader(shader: THREE.WebGLProgramParametersWithUniforms) {
         float fine = moonMottle(p * 13.0 + vec2(11.2, 1.7));
         float detail = 1.0 - smoothstep(0.3, 1.0, length(fwidth(p * 13.0)));
         float roundness = sqrt(max(0.0, 1.0 - dot(p, p)));
-        float surface = 0.90 + (broad - 0.5) * 0.22 + (fine - 0.5) * 0.045 * detail;
+        float surface = 0.97 + (broad - 0.5) * 0.22 + (fine - 0.5) * 0.045 * detail;
         diffuseColor.rgb *= surface * mix(0.88, 1.0, roundness);
       }
       float halo = exp(-radius * radius * 1.35) * 0.045;
       halo *= 1.0 - smoothstep(2.4, 3.5, radius);
       // Soft atmospheric loss on the lower rim, without applying the city's distance fog.
-      float haze = mix(0.63, 0.86, smoothstep(-1.1, 1.2, p.y));
+      float haze = mix(0.68, 0.92, smoothstep(-1.1, 1.2, p.y));
       float surfaceAlpha = disc * haze;
       float alpha = surfaceAlpha + halo * (1.0 - surfaceAlpha);
       vec3 haloColour = vec3(0.60, 0.69, 0.76);
@@ -89,7 +89,7 @@ export const Moon = memo(function Moon({ night }: { night: boolean }) {
     >
       <planeGeometry args={[size, size]} />
       <meshBasicMaterial
-        color="#f7e6c5"
+        color="#fff0d1"
         transparent
         opacity={1}
         depthTest
@@ -99,7 +99,7 @@ export const Moon = memo(function Moon({ night }: { night: boolean }) {
         fog={false}
         toneMapped={false}
         onBeforeCompile={moonShader}
-        customProgramCacheKey={() => "mersey-full-moon-v2"}
+        customProgramCacheKey={() => "mersey-full-moon-v3"}
       />
     </mesh>
   );

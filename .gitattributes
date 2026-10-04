@@ -1,0 +1,3 @@
+# Preserve upstream legal notices verbatim, including their original whitespace.
+public/credits/*.txt -whitespace
+references/licences/*.txt -whitespace
