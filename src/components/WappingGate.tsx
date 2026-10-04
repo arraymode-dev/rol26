@@ -4,7 +4,7 @@ import {
   TOGETHER_HEIGHT_SCALE,
   TOGETHER_BASE,
 } from "../lib/together-placement";
-import { GRASS_COLOUR, PATH_COLOURS } from "../lib/palette";
+import { GRASS_COLOUR, PATH_COLOURS, GROUND_COLOURS } from "../lib/palette";
 import { memo, useMemo, useEffect } from "react";
 import { useThree } from "@react-three/fiber";
 import { Detailed } from "@react-three/drei";
@@ -244,39 +244,7 @@ function build() {
   }
   // Slabs and setts stay within the mapped pedestrian polygon and outside the dock water.
   projectArtwork = false;
-  const inside = (x: number, z: number) => {
-    let yes = false;
-    const ps = site.pavement.points;
-    for (let i = 0, j = ps.length - 1; i < ps.length; j = i++) {
-      const a = ps[i],
-        b = ps[j];
-      if (
-        a[1] > z !== b[1] > z &&
-        x < ((b[0] - a[0]) * (z - a[1])) / (b[1] - a[1]) + a[0]
-      )
-        yes = !yes;
-    }
-    return yes;
-  };
-  for (let v = -55; v < 8; v += 0.8)
-    for (let u = -13; u < 10; u += 0.8) {
-      const p = local(u, 0.515, v);
-      if (!inside(p[0], p[2])) continue;
-      if (Math.abs(u) < 3) box(p, [0.775, 0.035, 0.775], "detail-flag", angle);
-      else {
-        box(p, [0.79, 0.025, 0.79], "joint", angle);
-        for (let k = 0; k < 4; k++)
-          lb(
-            u + ((k % 2) - 0.5) * 0.39,
-            0.544,
-            v + (Math.floor(k / 2) - 0.5) * 0.39,
-            [0.34, 0.025, 0.33],
-            k % 3 ? "detail-cobble" : "detail-stone",
-          );
-      }
-    }
-  for (const u of [-3.1, 3.1])
-    lb(u, 0.55, -23.5, [0.1, 0.025, 63], "stoneDark");
+  // Continuous dock paving is rendered by DockPromenade.
   for (const u of [-6, 6])
     for (const v of [-1.2, 1.2])
       cyl(local(u, 0.56, v), 0.15, 0.15, 0.035, "detail-lamp");
@@ -292,16 +260,12 @@ function build() {
     cyl([x, 4.48, z], 0.23, 0.11, 0.18, "iron");
   };
   for (const [u, v] of [
-    [-4, -1.2],
     [-10, -23],
     [-10, -44],
   ]) {
     const p = local(u, 0, v);
     lamp(p[0], p[2]);
   }
-  lb(-6, 0.99, -1, [2.6, 0.85, 0.55], "iron");
-  for (let i = 0; i < 3; i++)
-    lb(-6.85 + i * 0.85, 1, -1.29, [0.015, 0.65, 0.02], "detail-trim");
   site.benches.forEach(([x, z]) => {
     // Bench length follows the dock edge; seats face west towards the water.
     const a = angle - Math.PI / 2,
@@ -338,9 +302,12 @@ function build() {
       cyl(at(j / n, height + 0.06), 0, 0.07, 0.18, m, 4);
     }
   };
-  site.fences.forEach((f) =>
-    f.points.slice(1).forEach((q, i) => fence(f.points[i], q, 2.65, "iron")),
-  );
+  // Leave the artwork forecourt clear; retain the railings further along the dock.
+  site.fences
+    .filter((f) => f.id !== "1512913651")
+    .forEach((f) =>
+      f.points.slice(1).forEach((q, i) => fence(f.points[i], q, 2.65, "iron")),
+    );
   site.chains.points.slice(1).forEach((q, i) => {
     const p = site.chains.points[i],
       len = Math.hypot(q[0] - p[0], q[1] - p[1]),
@@ -521,9 +488,12 @@ export const WappingGate = memo(function WappingGate({
     black: "#161d1c",
     gold: "#c0a35c",
     soil: "#535748",
-    cobble: "#b9b4a5",
+    cobble: GROUND_COLOURS[night ? "night" : "day"],
+    pavingJoint: new THREE.Color(GROUND_COLOURS[night ? "night" : "day"])
+      .multiplyScalar(0.9)
+      .getStyle(),
     stone: "#c2b7a2",
-    flag: "#aaa18d",
+    flag: GROUND_COLOURS[night ? "night" : "day"],
     iron: "#2c3738",
     lamp: "#e4dabe",
     orange: "#ed8640",

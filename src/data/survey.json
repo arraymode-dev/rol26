@@ -623,7 +623,12 @@
       "coordinates": [-2.9977405515358697, 53.405812152486924]
     }
   ],
-  "buildingOverrides": [],
+  "buildingOverrides": [
+    { "id": "1334995459", "hidden": true },
+    { "id": "983798539", "hidden": true },
+    { "id": "983798540", "hidden": true },
+    { "id": "1122693513", "hidden": true }
+  ],
   "additionalTrees": [],
   "notes": "Batches 01–10 received. See references/*-batch-*.json. Site images inform approximate surroundings and galleries. Final artwork placements and actual installation images will be supplied later. Camera GPS is not subject coordinates."
 }

@@ -1,4 +1,4 @@
-import { GRASS_COLOUR, PATH_COLOURS } from "../lib/palette";
+import { GRASS_COLOUR, PATH_COLOURS, GROUND_COLOURS } from "../lib/palette";
 import { markBuildingGeometry } from "../lib/ghost-geometry";
 import { memo, useMemo, useEffect } from "react";
 import { Detailed } from "@react-three/drei";
@@ -272,9 +272,11 @@ export const KingsParade = memo(function KingsParade({
     [parts],
   );
   const colors: Record<string, string> = {
-    joint: "#797a6b",
-    cobble: "#b9b4a5",
-    stone: "#c2b7a2",
+    joint: new THREE.Color(GROUND_COLOURS[night ? "night" : "day"])
+      .multiplyScalar(0.88)
+      .getStyle(),
+    cobble: GROUND_COLOURS[night ? "night" : "day"],
+    stone: GROUND_COLOURS[night ? "night" : "day"],
     flag: "#aaa18d",
     iron: "#2c3738",
     lamp: "#e4dabe",

@@ -253,9 +253,9 @@ export function buildSculpture(id: string, detailed = true) {
         );
         ball(
           [
-            x + Math.sin(a) * 1.13 + tangent[0] * 0.34,
+            x - Math.sin(a) * 1.13 + tangent[0] * 0.34,
             7.35,
-            z + Math.cos(a) * 1.13 + tangent[2] * 0.34,
+            z - Math.cos(a) * 1.13 + tangent[2] * 0.34,
           ],
           [0.15, 0.2, 0.15],
           "#172736",

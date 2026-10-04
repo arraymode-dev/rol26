@@ -7,3 +7,4 @@ export const BUILDING_PROXIMITY = 55;
 
 export const GRASS_COLOUR = "#304b46";
 export const PATH_COLOURS = { night: "#476069", day: "#c9c7bc" };
+export const GROUND_COLOURS = { night: "#3b5059", day: "#e9e3d3" };

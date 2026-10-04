@@ -237,7 +237,9 @@ export default function App() {
   };
   useEffect(() => {
     if (selected && detailsOpen)
-      (minimised ? summaryRef : closeRef).current?.focus({ preventScroll: true });
+      (minimised ? summaryRef : closeRef).current?.focus({
+        preventScroll: true,
+      });
   }, [selected, detailsOpen, minimised]);
   useEffect(() => {
     const listener = (e: KeyboardEvent) => {
@@ -354,9 +356,13 @@ export default function App() {
           onClick={overview}
           aria-label="River of Light, return to full map"
         >
-          <span className="brand-mark">
-            R<span>∿</span>L
-          </span>
+          <img
+            className="brand-mark"
+            src="/logo-rol26.svg"
+            width="48"
+            height="48"
+            alt=""
+          />
           <span className="brand-name">
             RIVER OF LIGHT<small>LIVERPOOL · 2026</small>
           </span>
@@ -451,14 +457,6 @@ export default function App() {
                   rel="noreferrer"
                 >
                   Official page <ArrowUpRight size={18} />
-                </a>
-                <a
-                  className="directions-link"
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${active.coordinates[1]},${active.coordinates[0]}&travelmode=walking`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Footprints size={17} /> Walking directions
                 </a>
               </div>
               <div className="location-card">

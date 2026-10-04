@@ -123,19 +123,10 @@ button:active {
   padding: 0;
 }
 .brand-mark {
-  font-family: Georgia, serif;
-  font-size: 39px;
-  font-weight: bold;
-  letter-spacing: -7px;
-  width: 62px;
-  color: var(--accent);
-}
-.brand-mark > span {
-  font-weight: 400;
-  font-size: 28px;
-  position: relative;
-  top: -3px;
-  padding-right: 4px;
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
 }
 .brand-name {
   font-family: Manrope, Arial, sans-serif;
@@ -858,12 +849,8 @@ kbd {
     flex-wrap: wrap;
   }
   .brand-mark {
-    font-size: 33px;
-    width: 48px;
-    letter-spacing: -6px;
-  }
-  .brand-mark > span {
-    font-size: 22px;
+    width: 36px;
+    height: 36px;
   }
   .brand-name {
     font-size: 11px;

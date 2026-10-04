@@ -1,6 +1,7 @@
+import { DockPromenade, docksideTreePosition } from "./DockPromenade";
 import { DockBoats } from "./DockBoats";
 import { RiverFurniture } from "./RiverFurniture";
-import { GRASS_COLOUR } from "../lib/palette";
+import { GRASS_COLOUR, GROUND_COLOURS } from "../lib/palette";
 import { BuildingPalette } from "./BuildingPalette";
 import { installations } from "../data/installations";
 import { BUILDING_PROXIMITY } from "../lib/palette";
@@ -276,16 +277,18 @@ export const World = memo(function World({
   );
   const treePoints = useMemo(
     () =>
-      data.trees.filter(
-        ([x, z]) =>
-          !inChurchGarden(x, z) &&
-          !isPierTree([x, z]) &&
-          !isCunardTree([x, z]) &&
-          !isPumpTree([x, z]) &&
-          !isKingsTree([x, z]) &&
-          !isWappingTree([x, z]) &&
-          !isAnchorTree([x, z]),
-      ),
+      data.trees
+        .filter(
+          ([x, z]) =>
+            !inChurchGarden(x, z) &&
+            !isPierTree([x, z]) &&
+            !isCunardTree([x, z]) &&
+            !isPumpTree([x, z]) &&
+            !isKingsTree([x, z]) &&
+            !isWappingTree([x, z]) &&
+            !isAnchorTree([x, z]),
+        )
+        .map(docksideTreePosition) as [number, number][],
     [data],
   );
   return (
@@ -306,7 +309,7 @@ export const World = memo(function World({
       </mesh>
       <mesh geometry={geometry.land} receiveShadow>
         <meshStandardMaterial
-          color={night ? "#3b5059" : "#e9e3d3"}
+          color={GROUND_COLOURS[night ? "night" : "day"]}
           roughness={1}
           side={THREE.DoubleSide}
         />
@@ -337,7 +340,7 @@ export const World = memo(function World({
       </mesh>
       <mesh geometry={geometry.plazas} receiveShadow>
         <meshStandardMaterial
-          color={night ? "#3b5059" : "#e9e3d3"}
+          color={GROUND_COLOURS[night ? "night" : "day"]}
           side={THREE.DoubleSide}
         />
       </mesh>
@@ -397,6 +400,7 @@ export const World = memo(function World({
       />
       <RiverFurniture data={data} night={night} />
       <ChurchGardens night={night} />
+      <DockPromenade night={night} />
       <WappingGate night={night} />
       <MapLabel
         coordinates={[-2.9996, 53.4038]}

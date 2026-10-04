@@ -44,6 +44,13 @@ export function riverFurnitureLayout(data: MapData) {
         insideRing(p, b.points),
     ) &&
     !bridges.some(([a, b]) => distance(p, a, b) < 3);
+  const shoreEdges = [data.coast, ...data.water.map((w) => w.points)].flatMap(
+    (ps) => ps.slice(1).map((b, i) => [ps[i], b] as const),
+  );
+  // At concave corners, the normal of one segment can place the lamp beyond
+  // the neighbouring railing. Check the entire shoreline, including its base.
+  const clearLamp = (p: Point) =>
+    clear(p) && shoreEdges.every(([a, b]) => distance(p, a, b) >= 1.1 - 1e-6);
   const chains: [Point, Point][] = [];
   const dockLamps: Point[] = [];
   const groups: { lamp: Point; bin: Point; ring: Point; angle: number }[] = [];
@@ -79,7 +86,7 @@ export function riverFurnitureLayout(data: MapData) {
       if (
         inExtent(lamp) &&
         !(lamp[1] > 210 && lamp[1] < 275) &&
-        clear(lamp) &&
+        clearLamp(lamp) &&
         clear(bin) &&
         clear(ring)
       )
@@ -170,9 +177,11 @@ export function riverFurnitureLayout(data: MapData) {
           chains.push([p, q]);
       }
       while (nextLamp < walked + length) {
-        const lamp = point((nextLamp - walked) / length, 1.25);
+        const lamp = [1.25, 1.75, 2.25, 3]
+          .map((inset) => point((nextLamp - walked) / length, inset))
+          .find(clearLamp);
         if (
-          clear(lamp) &&
+          lamp &&
           ![...existingLamps, ...dockLamps].some(
             (p) => Math.hypot(p[0] - lamp[0], p[1] - lamp[1]) < 8,
           )

@@ -125,3 +125,15 @@ test("quay railings follow rendered shorelines and keep the bridge corridor open
     );
   }
 });
+
+test("lamp bases stay inland of every adjacent shoreline, including recessed corners", () => {
+  const { groups, dockLamps } = riverFurnitureLayout(map);
+  const edges = shorelines.flatMap((ps) =>
+    ps.slice(1).map((b, i) => [ps[i], b]),
+  );
+  for (const p of [...groups.map((g) => g.lamp), ...dockLamps])
+    assert.ok(
+      edges.every(([a, b]) => distance(p, a, b) >= 1.1 - 1e-6),
+      `lamp too close to quay corner: ${p}`,
+    );
+});
