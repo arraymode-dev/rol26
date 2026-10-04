@@ -2492,3 +2492,139 @@ kbd {
 .library-credit summary span {
   color: #a9b3c1;
 }
+
+.event-countdown {
+  position: absolute;
+  left: 36px;
+  bottom: 104px;
+  z-index: 20;
+  width: min(320px, calc(100vw - 48px));
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition:
+    opacity 350ms ease,
+    transform 350ms ease,
+    visibility 0s 350ms;
+  color: #f1edf8;
+  text-shadow: 0 2px 24px #06172166;
+}
+.event-countdown.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 180ms, 180ms, 0s;
+}
+.countdown-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 1.6px;
+  color: #bcb0eb;
+}
+.countdown-eyebrow > span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #927aff;
+}
+.event-countdown h2 {
+  font-family: Georgia, serif;
+  font-size: clamp(32px, 3.2vw, 48px);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -1.7px;
+  margin: 16px 0 22px;
+}
+.countdown-caption {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #aebcc5;
+}
+.countdown-digits {
+  display: flex;
+  gap: 23px;
+  width: max-content;
+}
+.countdown-unit {
+  position: relative;
+  min-width: 49px;
+  text-align: center;
+}
+.countdown-unit + .countdown-unit::before {
+  content: ":";
+  position: absolute;
+  left: -15px;
+  top: -2px;
+  font-size: 30px;
+  font-weight: 400;
+  color: #9589bc;
+}
+.countdown-unit > span {
+  display: block;
+  font-family: Manrope, sans-serif;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+}
+.countdown-unit small {
+  display: block;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #9cabb8;
+  margin-top: 8px;
+}
+.countdown-dates {
+  margin: 20px 0 0;
+  font-size: 11px;
+  line-height: 1.8;
+  color: #c2cbd2;
+}
+.countdown-dates span {
+  color: #8f9fac;
+}
+@media (max-width: 700px) {
+  .event-countdown {
+    left: max(26px, env(safe-area-inset-left, 0px));
+    bottom: calc(
+      100px + env(safe-area-inset-bottom, 0px) + var(--browser-toolbar-gap)
+    );
+    width: min(242px, calc(100vw - 48px));
+  }
+  .countdown-eyebrow {
+    font-size: 8px;
+    letter-spacing: 1.1px;
+  }
+  .event-countdown h2 {
+    font-size: 36px;
+    margin: 14px 0 18px;
+  }
+  .countdown-unit > span {
+    font-size: 32px;
+  }
+  .countdown-dates {
+    margin-top: 17px;
+  }
+}
+@media (max-height: 650px) {
+  .event-countdown h2 {
+    font-size: 30px;
+    margin: 10px 0 12px;
+  }
+  .countdown-dates {
+    margin-top: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .event-countdown,
+  .event-countdown.is-visible {
+    transform: none;
+    transition: none;
+  }
+}

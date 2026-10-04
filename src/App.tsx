@@ -1,3 +1,4 @@
+import { EventCountdown } from "./components/EventCountdown";
 import { Credits } from "./components/Credits";
 import { track } from "./lib/analytics";
 import { useExperienceAnalytics } from "./lib/use-experience-analytics";
@@ -172,6 +173,8 @@ export default function App() {
   const deselectFromZoom = useCallback(() => {
     setSelected(null);
   }, []);
+  const [overviewCopy, setOverviewCopy] = useState(true);
+  const dismissOverviewCopy = useCallback(() => setOverviewCopy(false), []);
   const [command, setCommand] = useState<Command>({
     kind: "overview",
     sequence: 0,
@@ -199,6 +202,7 @@ export default function App() {
   const selectedIdRef = useRef(selected);
   selectedIdRef.current = selected;
   const choose = useCallback((id: string, step = false, showDetails = true) => {
+    setOverviewCopy(false);
     setDetailsOpen(showDetails);
     setMinimised(false);
     setList(false);
@@ -225,11 +229,16 @@ export default function App() {
   }, []);
   const loaded = useCallback(() => setReady(true), []);
   const issue = (kind: Command["kind"]) => {
+    if (kind !== "overview") setOverviewCopy(false);
     track("Map command", { control: kind });
     setCommand((c) => ({ kind, sequence: c.sequence + 1 }));
   };
   const overview = () => {
     setSelected(null);
+    setList(false);
+    setTrail(false);
+    setTrailGuide(false);
+    setOverviewCopy(true);
     issue("overview");
   };
   const closeDetails = () => {
@@ -338,6 +347,7 @@ export default function App() {
                 trailLocation={trailLocation}
                 command={command}
                 reducedMotion={reducedMotion}
+                onExplore={dismissOverviewCopy}
                 onSelect={choose}
                 selectionSequence={selectionSequence}
                 stepNavigation={stepNavigation}
@@ -351,6 +361,18 @@ export default function App() {
         )}
       </div>
       <div className="vignette" />
+      <EventCountdown
+        visible={
+          ready &&
+          !failed &&
+          overviewCopy &&
+          !selected &&
+          !list &&
+          !trail &&
+          !info &&
+          !certificate
+        }
+      />
       <header className="topbar">
         <button
           className="brand"

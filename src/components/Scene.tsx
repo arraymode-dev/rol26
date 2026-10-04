@@ -1,3 +1,4 @@
+import { attachOverviewDismiss } from "../lib/event-countdown";
 import { Moon } from "./Moon";
 import { warmScene } from "../lib/scene-warmup";
 import { attachMapAnalytics } from "../lib/map-analytics";
@@ -70,6 +71,7 @@ export interface SceneProps {
   command: Command;
   reducedMotion: boolean;
   onSelect: (id: string) => void;
+  onExplore?: () => void;
   selectionSequence: number;
   stepNavigation: boolean;
   onDeselect: () => void;
@@ -282,6 +284,7 @@ function FirstPaint({
   return null;
 }
 function CameraRig({
+  onExplore,
   selected,
   detailsOpen,
   trail,
@@ -295,6 +298,11 @@ function CameraRig({
   const controls = useRef<OrbitType>(null);
   const [trailMaxDistance, setTrailMaxDistance] = useState(3600);
   const { camera, invalidate, gl, size } = useThree();
+  useEffect(
+    () =>
+      onExplore ? attachOverviewDismiss(gl.domElement, onExplore) : undefined,
+    [gl, onExplore, command.sequence],
+  );
   const idleOrbit = useIdleOrbit(
     selected,
     selectionSequence,
