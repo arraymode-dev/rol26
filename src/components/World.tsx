@@ -384,7 +384,7 @@ export const World = memo(function World({
         <AnchorCourtyard />
       </GhostBuildings>
       <DockBoats data={data} />
-      <DockRides night={night} reducedMotion={!animateRides} />
+      <DockRides night={night} reducedMotion={!animateRides} lowQuality={lowQuality} />
       <RiverFurniture data={data} night={night} />
       <ChurchGardens night={night} />
       <WappingGate night={night} />

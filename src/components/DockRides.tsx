@@ -1,3 +1,4 @@
+import { WheelPassenger } from "./WheelPassenger";
 import { memo, useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as T from "three";
@@ -15,10 +16,12 @@ const Ride = memo(function Ride({
   kind,
   night,
   reducedMotion,
+  lowQuality,
 }: {
   kind: RideKind;
   night: boolean;
   reducedMotion: boolean;
+  lowQuality: boolean;
 }) {
   const invalidate = useThree((s) => s.invalidate);
   const rotor = useRef<T.Group>(null);
@@ -131,7 +134,7 @@ const Ride = memo(function Ride({
         timer.current = null;
         invalidate();
       }, 33);
-  });
+  }, -1);
   const mesh = (layer: string) =>
     assets.batches
       .filter((b) => b.layer === layer)
@@ -151,6 +154,9 @@ const Ride = memo(function Ride({
       }
       rotation-y={kind === "wheel" ? kings.wheel.angle : 0}
     >
+      {kind === "wheel" && !lowQuality && (
+        <WheelPassenger angle={angle} night={night} />
+      )}
       {mesh("static")}
       <group ref={rotor}>{mesh("rotor")}</group>
       {assets.cabins.map((m, i) => (
@@ -162,14 +168,26 @@ const Ride = memo(function Ride({
 export function DockRides({
   night,
   reducedMotion,
+  lowQuality,
 }: {
   night: boolean;
   reducedMotion: boolean;
+  lowQuality: boolean;
 }) {
   return (
     <>
-      <Ride kind="wheel" night={night} reducedMotion={reducedMotion} />
-      <Ride kind="carousel" night={night} reducedMotion={reducedMotion} />
+      <Ride
+        kind="wheel"
+        night={night}
+        reducedMotion={reducedMotion}
+        lowQuality={lowQuality}
+      />
+      <Ride
+        kind="carousel"
+        night={night}
+        reducedMotion={reducedMotion}
+        lowQuality={lowQuality}
+      />
     </>
   );
 }
