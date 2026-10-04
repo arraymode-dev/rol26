@@ -2549,7 +2549,7 @@ kbd {
 }
 .countdown-digits {
   display: flex;
-  gap: 19px;
+  gap: 13px;
   width: max-content;
 }
 .countdown-unit {
@@ -2560,7 +2560,7 @@ kbd {
 .countdown-unit + .countdown-unit::before {
   content: ":";
   position: absolute;
-  left: -13px;
+  left: -10px;
   top: -2px;
   font-size: 30px;
   font-family: Georgia, serif;
@@ -2595,13 +2595,13 @@ kbd {
 }
 @media (min-width: 701px) {
   .countdown-digits {
-    gap: 38px;
+    gap: 26px;
   }
   .countdown-unit {
     min-width: 98px;
   }
   .countdown-unit + .countdown-unit::before {
-    left: -26px;
+    left: -20px;
     top: -4px;
     font-size: 60px;
   }
