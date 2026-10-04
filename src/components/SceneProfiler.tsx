@@ -10,6 +10,7 @@ type Sample = {
   gpu?: number;
   calls: number;
   triangles: number;
+  programs: number;
 };
 /** Opt-in development benchmark. Timings cover both scene render passes. */
 export function SceneProfiler() {
@@ -17,6 +18,8 @@ export function SceneProfiler() {
   const [report, setReport] = useState("Ready");
   const run = useRef<{
     start: number;
+    transition: boolean;
+    initialPrograms: Set<string>;
     previous: number;
     samples: Sample[];
     camera: THREE.Vector3 | null;
@@ -46,7 +49,7 @@ export function SceneProfiler() {
   }, [gl, gpu]);
   useFrame(({ camera, controls }, delta) => {
     const state = run.current;
-    if (!state || !controls) return;
+    if (!state || !controls || state.transition) return;
     const orbit = controls as OrbitControls;
     if (!state.camera) {
       state.camera = camera.position.clone();
@@ -79,6 +82,7 @@ export function SceneProfiler() {
       cpu: 0,
       calls: 0,
       triangles: 0,
+      programs: 0,
     };
     state.previous = now;
     gl.info.reset();
@@ -100,9 +104,10 @@ export function SceneProfiler() {
     }
     p.calls = gl.info.render.calls;
     p.triangles = gl.info.render.triangles;
+    p.programs = gl.info.programs?.length ?? 0;
     const elapsed = performance.now() - state.start;
-    if (elapsed > 1000) state.samples.push(p);
-    if (elapsed >= 7000) {
+    if (state.transition || elapsed > 1000) state.samples.push(p);
+    if (elapsed >= (state.transition ? 4000 : 7000)) {
       const percentile = (key: keyof Sample, fraction: number) => {
         const ns = state.samples
           .flatMap((s) => (typeof s[key] === "number" ? [s[key]!] : []))
@@ -116,7 +121,29 @@ export function SceneProfiler() {
       setReport(
         JSON.stringify(
           {
+            shaderCompilations: (gl.info.programs ?? []).filter(
+              (p) => !state.initialPrograms.has(p.cacheKey),
+            ).length,
             samples: state.samples.length,
+            transition: state.transition,
+            frameMax: Math.max(...state.samples.map((s) => s.frame)),
+            over50ms: state.samples.filter((s) => s.frame > 50).length,
+            slowFrames: state.samples.flatMap((s, i) =>
+              s.frame > 16.7
+                ? [
+                    {
+                      index: i,
+                      programs: state.samples[i - 1]?.programs,
+                      previousPrograms: state.samples[i - 2]?.programs,
+                      frame: +s.frame.toFixed(1),
+                      previousCPU: +(state.samples[i - 1]?.cpu ?? 0).toFixed(1),
+                    },
+                  ]
+                : [],
+            ),
+            firstFrames: state.samples
+              .slice(0, 12)
+              .map((s) => +s.frame.toFixed(1)),
             viewport: [gl.domElement.clientWidth, gl.domElement.clientHeight],
             dpr: gl.getPixelRatio(),
             fps: +(
@@ -164,7 +191,7 @@ export function SceneProfiler() {
           fontSize: 11,
           width: 230,
           maxWidth: "calc(100vw - 32px)",
-          maxHeight: 380,
+          maxHeight: 460,
           overflow: "auto",
           pointerEvents: "auto",
         }}
@@ -181,6 +208,10 @@ export function SceneProfiler() {
             const now = performance.now();
             run.current = {
               start: now,
+              transition: false,
+              initialPrograms: new Set(
+                (gl.info.programs ?? []).map((p) => p.cacheKey),
+              ),
               previous: now,
               samples: [],
               camera: null,
@@ -191,6 +222,26 @@ export function SceneProfiler() {
           }}
         >
           Run scene profile
+        </button>
+        <button
+          onClick={() => {
+            const now = performance.now();
+            run.current = {
+              start: now,
+              previous: now,
+              samples: [],
+              camera: null,
+              target: null,
+              transition: true,
+              initialPrograms: new Set(
+                (gl.info.programs ?? []).map((p) => p.cacheKey),
+              ),
+            };
+            setReport("Recording transition… select an artwork");
+            invalidate();
+          }}
+        >
+          Record next transition
         </button>
         <pre aria-label="Scene profile results">{report}</pre>
       </aside>

@@ -1,3 +1,4 @@
+import { warmScene } from "../lib/scene-warmup";
 import {
   createContext,
   useContext,
@@ -26,6 +27,7 @@ export function BoundaryDepth({
   lowQuality: boolean;
 }) {
   const cleared = useRef(false);
+  const prepared = useRef(false);
   const state = useMemo(() => {
     const target = new THREE.WebGLRenderTarget(1, 1);
     target.depthTexture = new THREE.DepthTexture(1, 1, THREE.UnsignedIntType);
@@ -43,13 +45,14 @@ export function BoundaryDepth({
   useFrame(({ gl, scene, camera }) => {
     gl.getDrawingBufferSize(state.size);
     const scale = lowQuality ? 0.5 : 1;
-    const width = active ? Math.max(1, Math.floor(state.size.x * scale)) : 1;
-    const height = active ? Math.max(1, Math.floor(state.size.y * scale)) : 1;
+    const width = Math.max(1, Math.floor(state.size.x * scale));
+    const height = Math.max(1, Math.floor(state.size.y * scale));
     if (state.target.width !== width || state.target.height !== height) {
       state.target.setSize(width, height);
       cleared.current = false;
     }
-    // No ghost buildings in overview: keep an empty depth texel instead of
+    // Keep the prepared target resident: no framebuffer allocation on selection.
+    // No ghost buildings in overview: keep an empty depth target instead of
     // traversing and rendering another scene pass on every frame.
     if (!active && cleared.current) {
       gl.render(scene, camera);
@@ -69,7 +72,10 @@ export function BoundaryDepth({
       gl.autoClear = true;
       gl.setRenderTarget(state.target);
       gl.clear();
-      if (active) gl.render(scene, camera);
+      if (!prepared.current) {
+        warmScene(scene, () => gl.render(scene, camera));
+        prepared.current = true;
+      } else if (active) gl.render(scene, camera);
       cleared.current = !active;
     } finally {
       camera.layers.mask = mask;

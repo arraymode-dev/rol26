@@ -5,9 +5,16 @@ export function applyCameraClearance(
   root: THREE.Object3D,
   focus: [number, number] | null,
 ) {
+  const focusUniform = {
+    value: new THREE.Vector3(focus?.[0] ?? 0, focus ? 1 : 0, focus?.[1] ?? 0),
+  };
   const restore: (() => void)[] = [];
   const meshes: THREE.Mesh[] = [];
-  const transitions: { mesh: THREE.Mesh; bounds: THREE.Box3 }[] = [];
+  const transitions: {
+    mesh: THREE.Mesh;
+    source: THREE.Mesh;
+    bounds: THREE.Box3;
+  }[] = [];
   root.updateWorldMatrix(true, true);
   root.traverse((object) => {
     if (object instanceof THREE.Mesh) meshes.push(object);
@@ -41,13 +48,7 @@ export function applyCameraClearance(
       ) => {
         target.onBeforeCompile = (shader, renderer) => {
           previous.call(material, shader, renderer);
-          shader.uniforms.clearanceFocus = {
-            value: new THREE.Vector3(
-              focus?.[0] ?? 0,
-              focus ? 1 : 0,
-              focus?.[1] ?? 0,
-            ),
-          };
+          shader.uniforms.clearanceFocus = focusUniform;
           shader.vertexShader = shader.vertexShader
             .replace(
               "#include <common>",
@@ -131,15 +132,21 @@ export function applyCameraClearance(
         ? (object.computeBoundingBox(), object.boundingBox!.clone())
         : object.geometry.boundingBox!.clone();
     bounds.applyMatrix4(object.matrixWorld);
-    transitions.push({ mesh: overlay, bounds });
+    overlay.userData.cameraClearanceOverlay = true;
+    transitions.push({ mesh: overlay, source: object, bounds });
     object.add(overlay);
     restore.push(() => object.remove(overlay));
   }
   return Object.assign(() => restore.reverse().forEach((fn) => fn()), {
+    setFocus(point: [number, number] | null) {
+      focusUniform.value.set(point?.[0] ?? 0, point ? 1 : 0, point?.[1] ?? 0);
+    },
     update(cameraPosition: THREE.Vector3) {
       // No extra fade draw calls for distant buildings or the overview.
-      for (const { mesh, bounds } of transitions)
+      for (const { mesh, source, bounds } of transitions) {
+        mesh.geometry = source.geometry;
         mesh.visible = bounds.distanceToPoint(cameraPosition) < 90;
+      }
     },
   });
 }

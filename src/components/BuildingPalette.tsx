@@ -30,6 +30,10 @@ export function BuildingPalette({
   );
   useFrame(({ camera }) => clearance.current?.update(camera.position));
   useLayoutEffect(() => {
+    clearance.current?.setFocus(focus);
+    invalidate();
+  }, [focus, invalidate]);
+  useLayoutEffect(() => {
     const group = root.current!;
     group.updateWorldMatrix(true, true);
     const restore: (() => void)[] = [];
@@ -42,6 +46,7 @@ export function BuildingPalette({
         return;
       const mesh = object;
       const geometry = mesh.geometry;
+      if (!geometry.getAttribute("position")) return;
       let buildingOnly = false;
       let owner: Footprint | undefined;
       for (
@@ -162,6 +167,9 @@ export function BuildingPalette({
     });
     invalidate();
     return () => restore.reverse().forEach((fn) => fn());
-  }, [night, footprints, revision, buildings, focus, invalidate]);
+    // Selection updates only the shared clearance uniform; geometry and material
+    // ownership stay stable for the complete camera flight.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [night, footprints, revision, buildings, invalidate]);
   return <group ref={root}>{children}</group>;
 }

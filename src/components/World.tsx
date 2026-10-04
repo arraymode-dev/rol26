@@ -4,7 +4,6 @@ import { GRASS_COLOUR } from "../lib/palette";
 import { BuildingPalette } from "./BuildingPalette";
 import { installations } from "../data/installations";
 import { BUILDING_PROXIMITY } from "../lib/palette";
-import { GHOST_DEPTH_LAYER } from "./BoundaryDepth";
 import { WaterMaterial, WATER_LEVEL, RIVER_LEVEL } from "./WaterMaterial";
 import { memo, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { Html } from "@react-three/drei";
@@ -12,11 +11,7 @@ import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import type { MapData } from "../types";
 import { project } from "../lib/geo";
-import {
-  circleIntersectsFootprint,
-  nearFootprint,
-  type Footprint,
-} from "../lib/attraction-boundary";
+import { nearFootprint, type Footprint } from "../lib/attraction-boundary";
 import { GhostBuildings } from "./GhostBuildings";
 import { AnchorCourtyard } from "./AnchorCourtyard";
 import { DockRides } from "./DockRides";
@@ -33,7 +28,7 @@ import { PumpHouse, PUMP_BUILDINGS, isPumpTree } from "./PumpHouse";
 import { WappingGate, isWappingTree } from "./WappingGate";
 import { KingsParade, KINGS_BUILDINGS, isKingsTree } from "./KingsParade";
 import { GeorgesDock } from "./GeorgesDock";
-import { TownHall } from "./TownHall";
+import { TownHall, TOWN_HALL_FORECOURT } from "./TownHall";
 import { ExchangeFlags } from "./ExchangeFlags";
 import { StPaulsSquare, ST_PAULS_BUILDINGS } from "./StPaulsSquare";
 
@@ -110,8 +105,7 @@ export const World = memo(function World({
       centres.some((p) => nearFootprint(p, b, BUILDING_PROXIMITY)),
     );
   }, [data]);
-  const ghostFootprints = useMemo(() => {
-    if (!focus) return [];
+  const ghostSelections = useMemo(() => {
     const footprints: Footprint[] = [
       ...data.buildings.filter((b) => b.id !== dockFootprint.building.id),
       {
@@ -123,11 +117,21 @@ export const World = memo(function World({
         holes: [dockFootprint.building.hole as [number, number][]],
       },
     ];
-    return footprints.filter((b) => nearFootprint(focus, b, ATTRACTION_RADIUS));
-  }, [data, focus]);
-  const geometry = useMemo(() => {
+    return installations.map((item) => {
+      const point =
+        item.id === "the-anooki"
+          ? ([TOWN_HALL_FORECOURT.x, TOWN_HALL_FORECOURT.z] as [number, number])
+          : project(...item.coordinates);
+      return {
+        id: item.id,
+        footprints: footprints.filter((b) =>
+          nearFootprint(point, b, ATTRACTION_RADIUS),
+        ),
+      };
+    });
+  }, [data]);
+  const buildings = useMemo(() => {
     const quiet: THREE.BufferGeometry[] = [],
-      near: THREE.BufferGeometry[] = [],
       special: THREE.BufferGeometry[] = [];
     for (const b of data.buildings) {
       if (
@@ -163,13 +167,15 @@ export const World = memo(function World({
           1,
         ),
       );
-      (focus && circleIntersectsFootprint(focus, b.points)
-        ? near
-        : landmark
-          ? special
-          : quiet
-      ).push(g);
+      (landmark ? special : quiet).push(g);
     }
+    return { quiet: combine(quiet), special: combine(special) };
+  }, [data, lightFootprints]);
+  useEffect(
+    () => () => Object.values(buildings).forEach((g) => g.dispose()),
+    [buildings],
+  );
+  const geometry = useMemo(() => {
     const coast = data.coast;
     const land = polygon(
       [
@@ -189,9 +195,6 @@ export const World = memo(function World({
       ],
     );
     return {
-      quiet: combine(quiet),
-      near: combine(near),
-      special: combine(special),
       land,
       sea: polygon(
         [
@@ -266,16 +269,30 @@ export const World = memo(function World({
         ),
       ),
     };
-  }, [data, focus, lightFootprints]);
+  }, [data]);
   useEffect(
     () => () => Object.values(geometry).forEach((g) => g.dispose()),
     [geometry],
+  );
+  const treePoints = useMemo(
+    () =>
+      data.trees.filter(
+        ([x, z]) =>
+          !inChurchGarden(x, z) &&
+          !isPierTree([x, z]) &&
+          !isCunardTree([x, z]) &&
+          !isPumpTree([x, z]) &&
+          !isKingsTree([x, z]) &&
+          !isWappingTree([x, z]) &&
+          !isAnchorTree([x, z]),
+      ),
+    [data],
   );
   return (
     <BuildingPalette
       night={night}
       footprints={lightFootprints}
-      revision={geometry}
+      revision={buildings}
       buildings={data.buildings}
       focus={focus}
     >
@@ -330,45 +347,34 @@ export const World = memo(function World({
           side={THREE.DoubleSide}
         />
       </mesh>
-      <mesh geometry={geometry.quiet} castShadow receiveShadow>
-        <meshStandardMaterial
-          color={night ? "#61727a" : "#ddd9cf"}
-          roughness={0.96}
-          flatShading
-        />
-      </mesh>
-      <mesh geometry={geometry.special} castShadow receiveShadow>
-        <meshStandardMaterial
-          color={night ? "#a6b2ac" : "#f4ead8"}
-          roughness={0.9}
-        />
-      </mesh>
-      <mesh
-        geometry={geometry.near}
-        renderOrder={2}
-        onUpdate={(mesh) => mesh.layers.enable(GHOST_DEPTH_LAYER)}
-      >
-        <meshStandardMaterial
-          color={night ? "#809a9e" : "#d4cfc1"}
-          transparent
-          opacity={0.18}
-          depthWrite={false}
-        />
-      </mesh>
-      <Trees
-        points={data.trees.filter(
-          ([x, z]) =>
-            !inChurchGarden(x, z) &&
-            !isPierTree([x, z]) &&
-            !isCunardTree([x, z]) &&
-            !isPumpTree([x, z]) &&
-            !isKingsTree([x, z]) &&
-            !isWappingTree([x, z]) &&
-            !isAnchorTree([x, z]),
-        )}
+      <GhostBuildings
+        selections={ghostSelections}
+        selected={selected}
         night={night}
-      />
-      <GhostBuildings footprints={ghostFootprints} night={night}>
+        opacity={0.18}
+      >
+        <group userData={{ ghostBuilding: true }}>
+          <mesh geometry={buildings.quiet} castShadow receiveShadow>
+            <meshStandardMaterial
+              color={night ? "#61727a" : "#ddd9cf"}
+              roughness={0.96}
+              flatShading
+            />
+          </mesh>
+          <mesh geometry={buildings.special} castShadow receiveShadow>
+            <meshStandardMaterial
+              color={night ? "#a6b2ac" : "#f4ead8"}
+              roughness={0.9}
+            />
+          </mesh>
+        </group>
+      </GhostBuildings>
+      <Trees points={treePoints} night={night} />
+      <GhostBuildings
+        selections={ghostSelections}
+        selected={selected}
+        night={night}
+      >
         <PierHead night={night} />
         <CunardForecourt night={night} />
         <GeorgesDock night={night} />
@@ -376,7 +382,7 @@ export const World = memo(function World({
         <KingsParade night={night} />
         <WaterfrontLinks night={night} data={data} />
         <WaterfrontLandmarks buildings={data.buildings} night={night} />
-        <group userData={{ ghostPreserve: selected === "the-anooki" }}>
+        <group userData={{ ghostPreserveFor: "the-anooki" }}>
           <TownHall night={night} />
         </group>
         <ExchangeFlags night={night} />
@@ -384,7 +390,11 @@ export const World = memo(function World({
         <AnchorCourtyard />
       </GhostBuildings>
       <DockBoats data={data} />
-      <DockRides night={night} reducedMotion={!animateRides} lowQuality={lowQuality} />
+      <DockRides
+        night={night}
+        reducedMotion={!animateRides}
+        lowQuality={lowQuality}
+      />
       <RiverFurniture data={data} night={night} />
       <ChurchGardens night={night} />
       <WappingGate night={night} />

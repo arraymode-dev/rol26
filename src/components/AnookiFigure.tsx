@@ -1,3 +1,4 @@
+import { updateStablePointLight } from "../lib/stable-light";
 import { useEffect, useMemo, useRef, type RefObject } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
@@ -167,8 +168,10 @@ export function AnookiFigure({
   useFrame(() => {
     const lift = flight.current.progress;
     if (spill.current) {
-      spill.current.intensity = night ? 15 * (1 - lift) : 0;
-      spill.current.visible = night && lift < 0.95;
+      const lit = night && lift < 0.95;
+      // Keep the light/shadow shader layout stable as the figures rise. Toggling
+      // Light.visible recompiles every scene material during a camera flight.
+      updateStablePointLight(spill.current, lit ? 15 * (1 - lift) : 0);
     }
     if (sleeve.current) {
       sleeve.current.visible = lift < 0.98;

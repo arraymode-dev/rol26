@@ -12,14 +12,14 @@ function colourEmission(shader: THREE.WebGLProgramParametersWithUniforms) {
 }
 export const Sculpture = memo(function Sculpture({
   id,
-  detailed,
   night,
 }: {
   id: string;
-  detailed: boolean;
   night: boolean;
 }) {
-  const model = useMemo(() => buildSculpture(id, detailed), [id, detailed]);
+  // Keep the full model resident: crossing a camera-distance threshold must
+  // never rebuild meshes or introduce a visible detail swap during a flight.
+  const model = useMemo(() => buildSculpture(id, true), [id]);
   useEffect(() => () => model.forEach((g) => g.dispose()), [model]);
   if (id === "paradigm") return <Paradigm night={night} />;
   return (

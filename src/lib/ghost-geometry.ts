@@ -25,11 +25,17 @@ export function splitGhostGeometry(
   footprints: readonly Footprint[],
   buildingOnly = false,
   wholeBuilding = false,
+  shareAttributes = false,
 ) {
   if (buildingOnly && wholeBuilding && footprints.length) {
-    const solid = geometry.clone();
+    const solid = shareAttributes
+      ? geometryView(geometry, [])
+      : geometry.clone();
     solid.setDrawRange(0, 0);
-    return { solid, ghost: geometry.clone() };
+    return {
+      solid,
+      ghost: shareAttributes ? geometryView(geometry) : geometry.clone(),
+    };
   }
   const building = geometry.getAttribute("building");
   if (!buildingOnly && !building) return null;
@@ -78,6 +84,7 @@ export function splitGhostGeometry(
   }
   if (!ghost.length) return null;
   const subset = (ids: number[]) => {
+    if (shareAttributes) return geometryView(geometry, ids);
     const result = new THREE.BufferGeometry();
     for (const [name, attr] of Object.entries(geometry.attributes)) {
       const values = new Float32Array(ids.length * attr.itemSize);
@@ -94,4 +101,29 @@ export function splitGhostGeometry(
     return result;
   };
   return { solid: subset(solid), ghost: subset(ghost) };
+}
+
+/** Selection changes indices only. Vertex buffers are shared and uploaded once. */
+export function geometryView(source: THREE.BufferGeometry, indices?: number[]) {
+  const view = new THREE.BufferGeometry();
+  syncGeometryAttributes(view, source);
+  if (indices) view.setIndex(indices);
+  else if (source.index) view.setIndex(source.index.clone());
+  source.computeBoundingBox();
+  source.computeBoundingSphere();
+  view.boundingBox = source.boundingBox!.clone();
+  view.boundingSphere = source.boundingSphere!.clone();
+  return view;
+}
+export function syncGeometryAttributes(
+  view: THREE.BufferGeometry,
+  source: THREE.BufferGeometry,
+) {
+  for (const [name, attribute] of Object.entries(source.attributes))
+    view.setAttribute(name, attribute);
+}
+export function disposeGeometryView(view: THREE.BufferGeometry) {
+  // Three deletes GPU buffers on dispose, even when another geometry shares them.
+  for (const name of Object.keys(view.attributes)) view.deleteAttribute(name);
+  view.dispose();
 }

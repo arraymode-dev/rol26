@@ -1,3 +1,4 @@
+import { warmScene } from "../lib/scene-warmup";
 import { attachMapAnalytics } from "../lib/map-analytics";
 import { track } from "../lib/analytics";
 import { UserLocationMarker } from "./UserLocationMarker";
@@ -26,7 +27,7 @@ import { BoundaryDepth } from "./BoundaryDepth";
 import { Trail, type TrailData } from "./Trail";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, PerformanceMonitor } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import type { OrbitControls as OrbitType } from "three-stdlib";
 import * as THREE from "three";
 import { World } from "./World";
@@ -78,7 +79,7 @@ export default function Scene(props: SceneProps) {
   const [mobile] = useState(
     () => matchMedia("(max-width: 700px), (pointer: coarse)").matches,
   );
-  const [dpr, setDpr] = useState(mobile ? 1.25 : 1.5);
+  const dpr = mobile ? 1.25 : 1.5;
   useEffect(() => {
     let cancelled = false;
     loadMap()
@@ -138,9 +139,7 @@ export default function Scene(props: SceneProps) {
         shadows={!props.lowQuality}
         mobile={mobile}
       />
-      <PerformanceMonitor onDecline={() => setDpr(1)}>
-        <Content data={data} mobile={mobile} {...props} />
-      </PerformanceMonitor>
+      <Content data={data} mobile={mobile} {...props} />
     </Canvas>
   );
 }
@@ -189,7 +188,11 @@ function Content({
   }, [props.trail, route.segments.length]);
   return (
     <BoundaryDepth active={!!focus} lowQuality={props.lowQuality || mobile}>
-      <FirstPaint onReady={props.onReady} />
+      <FirstPaint
+        onReady={props.onReady}
+        onError={props.onError}
+        lightingKey={`${props.night}:${props.lowQuality}`}
+      />
       <World
         data={data}
         night={props.night}
@@ -232,10 +235,39 @@ function Content({
   );
 }
 // Runs after BoundaryDepth's render pass; readiness means pixels, not just a canvas.
-function FirstPaint({ onReady }: { onReady: () => void }) {
+function FirstPaint({
+  onReady,
+  onError,
+  lightingKey,
+}: {
+  onReady: () => void;
+  onError: () => void;
+  lightingKey: string;
+}) {
+  const { gl, scene, camera, invalidate } = useThree();
+  const prepared = useRef(false);
   const rendered = useRef(false);
+  useEffect(() => {
+    let cancelled = false;
+    // Compile the persistent solid, ghost and clearance materials while the
+    // loading cover is present, rather than stalling on the first approach.
+    gl.compileAsync(scene, camera)
+      .then(() => {
+        if (!cancelled) {
+          warmScene(scene, () => gl.render(scene, camera));
+          prepared.current = true;
+          invalidate();
+        }
+      })
+      .catch(() => {
+        if (!cancelled) onError();
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [gl, scene, camera, invalidate, onError, lightingKey]);
   useFrame(() => {
-    if (!rendered.current) {
+    if (prepared.current && !rendered.current) {
       rendered.current = true;
       requestAnimationFrame(onReady);
     }

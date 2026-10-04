@@ -3,82 +3,131 @@ import { useLayoutEffect, useRef, type ReactNode } from "react";
 import { useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import type { Footprint } from "../lib/attraction-boundary";
-import { splitGhostGeometry } from "../lib/ghost-geometry";
+import {
+  splitGhostGeometry,
+  syncGeometryAttributes,
+  disposeGeometryView,
+} from "../lib/ghost-geometry";
 
-/** Applies the same footprint mask to every custom model, including its windows. */
+type Selection = { id: string; footprints: readonly Footprint[] };
+/** Prepare index-only cutaways at scene creation, never during a camera flight.
+ * Windows, walls and furniture retain the exact same triangles and materials. */
 export function GhostBuildings({
-  footprints,
+  selections,
+  selected,
   night,
+  opacity = 0.12,
   children,
 }: {
-  footprints: readonly Footprint[];
+  selections: readonly Selection[];
+  selected: string | null;
   night: boolean;
+  opacity?: number;
   children: ReactNode;
 }) {
   const root = useRef<THREE.Group>(null);
   const invalidate = useThree((s) => s.invalidate);
+  const activate = useRef<(id: string | null) => void>(() => {});
   useLayoutEffect(() => {
     const group = root.current!;
     group.updateWorldMatrix(true, true);
     const restore: (() => void)[] = [];
+    const switches: ((id: string | null) => void)[] = [];
     const meshes: THREE.Mesh[] = [];
     group.traverse((object) => {
       if (
         object instanceof THREE.Mesh &&
-        !(object instanceof THREE.InstancedMesh)
+        !(object instanceof THREE.InstancedMesh) &&
+        !object.userData.cameraClearanceOverlay
       )
         meshes.push(object);
     });
-    if (footprints.length)
-      for (const mesh of meshes) {
-        if (Array.isArray(mesh.material)) continue;
-        const original = mesh.geometry;
+    for (const mesh of meshes) {
+      if (Array.isArray(mesh.material)) continue;
+      const original = mesh.geometry;
+      if (!original.getAttribute("position")) continue;
+      let buildingOnly = false,
+        preserve = false;
+      let preserveFor: string | undefined, owner: Footprint | undefined;
+      for (
         let parent: THREE.Object3D | null = mesh;
-        let buildingOnly = false;
-        let preserve = false;
-        let ownedFootprint: Footprint | undefined;
-        while (parent && parent !== group) {
-          preserve ||= parent.userData.ghostPreserve === true;
-          buildingOnly ||= parent.userData.ghostBuilding === true;
-          ownedFootprint ??= parent.userData.ghostFootprint;
-          parent = parent.parent;
-        }
-        if (preserve) continue;
-        // A single landmark owns its body, towers and facade details. Use its
-        // footprint once, rather than fading each attachment independently.
-        if (ownedFootprint && !footprints.includes(ownedFootprint)) continue;
+        parent && parent !== group;
+        parent = parent.parent
+      ) {
+        buildingOnly ||= parent.userData.ghostBuilding === true;
+        preserve ||= parent.userData.ghostPreserve === true;
+        preserveFor ??= parent.userData.ghostPreserveFor;
+        owner ??= parent.userData.ghostFootprint;
+      }
+      if (preserve) continue;
+      const variants = new Map<
+        string,
+        NonNullable<ReturnType<typeof splitGhostGeometry>>
+      >();
+      for (const selection of selections) {
+        if (
+          selection.id === preserveFor ||
+          (owner && !selection.footprints.includes(owner))
+        )
+          continue;
         const split = splitGhostGeometry(
           original,
           mesh.matrixWorld,
-          footprints,
+          selection.footprints,
           buildingOnly,
-          !!ownedFootprint,
+          !!owner,
+          true,
         );
-        if (!split) continue;
-        const material = new THREE.MeshStandardMaterial({
-          color: night ? "#809a9e" : "#c5c4b9",
-          transparent: true,
-          opacity: 0.12,
-          depthWrite: false,
-        });
-        const ghost = new THREE.Mesh(split.ghost, material);
-        ghost.renderOrder = 2;
-        ghost.layers.enable(GHOST_DEPTH_LAYER);
-        ghost.raycast = () => {}; // The original artwork retains its click target.
-        mesh.geometry = split.solid;
-        mesh.add(ghost);
-        restore.push(() => {
-          mesh.remove(ghost);
-          mesh.geometry = original;
-          split.solid.dispose();
-          split.ghost.dispose();
-          material.dispose();
-        });
+        if (split) variants.set(selection.id, split);
       }
-    invalidate();
+      if (!variants.size) continue;
+      const material = new THREE.MeshStandardMaterial({
+        color: night ? "#809a9e" : "#c5c4b9",
+        transparent: true,
+        opacity,
+        depthWrite: false,
+      });
+      const ghost = new THREE.Mesh(
+        variants.values().next().value!.ghost,
+        material,
+      );
+      ghost.visible = false;
+      ghost.renderOrder = 2;
+      ghost.layers.enable(GHOST_DEPTH_LAYER);
+      ghost.raycast = () => {};
+      mesh.add(ghost);
+      switches.push((id) => {
+        const split = id ? variants.get(id) : undefined;
+        mesh.geometry = split?.solid ?? original;
+        ghost.visible = !!split;
+        if (split) {
+          // Palette attributes are installed by the parent after this layout effect.
+          syncGeometryAttributes(split.solid, original);
+          syncGeometryAttributes(split.ghost, original);
+          ghost.geometry = split.ghost;
+        }
+      });
+      restore.push(() => {
+        mesh.remove(ghost);
+        mesh.geometry = original;
+        variants.forEach((split) => {
+          disposeGeometryView(split.solid);
+          disposeGeometryView(split.ghost);
+        });
+        material.dispose();
+      });
+    }
+    activate.current = (id) => {
+      switches.forEach((fn) => fn(id));
+      invalidate();
+    };
     return () => {
+      activate.current = () => {};
       restore.forEach((fn) => fn());
     };
-  }, [footprints, night, invalidate]);
+  }, [selections, night, opacity, invalidate]);
+  useLayoutEffect(() => {
+    activate.current(selected);
+  }, [selected, selections, night, opacity]);
   return <group ref={root}>{children}</group>;
 }

@@ -240,17 +240,17 @@ export const Artwork = memo(function Artwork({
               position={[ST_PAULS.x - x, 0, ST_PAULS.z - z]}
               rotation={[0, ST_PAULS.rotation, 0]}
             >
-              <Sculpture id={item.id} detailed={near} night={night} />
+              <Sculpture id={item.id} night={night} />
             </group>
           ) : item.id === "flower-power" ? (
             <group
               position={[EXCHANGE.x - x, 0, EXCHANGE.z - z]}
               rotation={[0, EXCHANGE.rotation, 0]}
             >
-              <Sculpture id={item.id} detailed={near} night={night} />
+              <Sculpture id={item.id} night={night} />
             </group>
           ) : (
-            <Sculpture id={item.id} detailed={near} night={night} />
+            <Sculpture id={item.id} night={night} />
           )}
         </group>
       )}
