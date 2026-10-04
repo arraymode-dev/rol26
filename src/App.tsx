@@ -731,6 +731,16 @@ export default function App() {
                 refine the scene. Check the official event website for current
                 access and visitor information.
               </p>
+              <p className="creator-credit">
+                Made by{" "}
+                <a
+                  href="https://www.instagram.com/obwez/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  @obwez
+                </a>
+              </p>
               <a
                 className="primary-button"
                 href="https://www.visitliverpool.com/river-of-light-2026/"

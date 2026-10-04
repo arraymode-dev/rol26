@@ -2427,3 +2427,9 @@ kbd {
     padding: 12px;
   }
 }
+
+.creator-credit a {
+  color: var(--accent-light, #baa9ff);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
