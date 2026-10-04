@@ -2592,6 +2592,28 @@ kbd {
 .countdown-dates span {
   color: #8f9fac;
 }
+@media (min-width: 701px) {
+  .countdown-digits {
+    gap: 46px;
+  }
+  .countdown-unit {
+    min-width: 98px;
+  }
+  .countdown-unit + .countdown-unit::before {
+    left: -30px;
+    top: -4px;
+    font-size: 60px;
+  }
+  .countdown-unit > span {
+    font-size: 72px;
+    letter-spacing: -2px;
+  }
+  .countdown-unit small {
+    font-size: 16px;
+    letter-spacing: 3px;
+    margin-top: 16px;
+  }
+}
 @media (max-width: 700px) {
   .event-countdown {
     left: max(26px, env(safe-area-inset-left, 0px));
