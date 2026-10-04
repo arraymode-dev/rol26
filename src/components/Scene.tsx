@@ -423,7 +423,10 @@ function CameraRig({
     controls.current.update();
     invalidate();
   }, [trail, size.width, size.height]);
-  const overviewTarget = new THREE.Vector3(-40, 0, -70);
+  const overviewTarget =
+    gl.domElement.clientWidth < 700
+      ? new THREE.Vector3(-100, 0, 200)
+      : new THREE.Vector3(-40, 0, -70);
   const move = (to: THREE.Vector3, lookTo: THREE.Vector3) => {
     if (!controls.current) return;
     const offset = to.clone().sub(lookTo);
@@ -563,7 +566,9 @@ function CameraRig({
     if (command.kind === "overview")
       move(
         gl.domElement.clientWidth < 700
-          ? new THREE.Vector3(-150, 2100, 1800)
+          // Look diagonally along the waterfront, leaving open water at lower
+          // left for the countdown in the portrait overview.
+          ? new THREE.Vector3(-860, 1600, 2670)
           : new THREE.Vector3(-1030, 1250, 1320),
         overviewTarget,
       );
