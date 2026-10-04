@@ -210,8 +210,10 @@ function facades(
       dx = p[0] - a[0],
       dz = p[1] - a[1],
       len = Math.hypot(dx, dz);
-    if (len < 8) return;
-    const count = Math.floor(len / spacing),
+    // Narrow stepped bays still need windows; the old 8m cutoff blanked
+    // most of the Liver Building's segmented front elevation.
+    if (len < 4) return;
+    const count = Math.max(1, Math.floor(len / spacing)),
       angle = -Math.atan2(dz, dx);
     // The paired thin faces make the window band visible irrespective of polygon winding.
     for (let row = 0; row < Math.floor((top - 8) / 4.5); row++)

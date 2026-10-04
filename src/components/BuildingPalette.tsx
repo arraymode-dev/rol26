@@ -1,3 +1,4 @@
+import { isDarkBuildingSurface } from "../lib/building-surface";
 import { applyCameraClearance } from "../lib/camera-clearance";
 import { applyEventSurfaceLighting } from "../lib/event-lighting";
 import type { MapFeature } from "../types";
@@ -95,8 +96,8 @@ export function BuildingPalette({
       const original = mesh.material;
       const material = original.clone();
       const colours = BUILDING_COLOURS[night ? "night" : "day"];
-      // Dark glazing and roof details use the darker of the same two tones.
-      const detail = original.color.getHSL({ h: 0, s: 0, l: 0 }).l < 0.09;
+      // Glazing stays dark; roof surfaces keep the same light tone as masonry.
+      const detail = isDarkBuildingSurface(mesh);
       material.onBeforeCompile = (shader) => {
         shader.uniforms.buildingNear = { value: new THREE.Color(colours.near) };
         shader.uniforms.buildingFar = { value: new THREE.Color(colours.far) };

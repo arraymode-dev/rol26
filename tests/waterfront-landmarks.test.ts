@@ -77,3 +77,36 @@ test("Liver courtyard blocks sightlines through all four inner walls and its flo
   parts.forEach((p) => p.geometry.dispose());
   material.dispose();
 });
+
+test("Liver's narrow facade bays retain window geometry instead of blank walls", () => {
+  const footprint = map.buildings.find(
+    (b: { id: string }) => b.id === "24611033",
+  );
+  const parts = buildWaterfrontLandmark(footprint);
+  const material = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide });
+  const glass = new THREE.Mesh(
+    parts.find((p) => p.material === "glass")!.geometry,
+    material,
+  );
+  let checked = 0;
+  footprint.points.slice(1).forEach((b: number[], i: number) => {
+    const a = footprint.points[i];
+    const dx = b[0] - a[0],
+      dz = b[1] - a[1],
+      length = Math.hypot(dx, dz);
+    if (length < 4 || length >= 8) return;
+    const centre = new THREE.Vector3((a[0] + b[0]) / 2, 7, (a[1] + b[1]) / 2);
+    const normal = new THREE.Vector3(-dz / length, 0, dx / length);
+    const hits = new THREE.Raycaster(
+      centre.clone().addScaledVector(normal, 1),
+      normal.clone().negate(),
+      0,
+      2,
+    ).intersectObject(glass);
+    assert.ok(hits.length, "a narrow facade bay has a real window");
+    checked++;
+  });
+  assert.ok(checked > 10);
+  parts.forEach((p) => p.geometry.dispose());
+  material.dispose();
+});

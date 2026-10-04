@@ -18,7 +18,13 @@ const Landmark = memo(function Landmark({
   return (
     <group userData={{ ghostBuilding: true, ghostFootprint: footprint }}>
       {parts.map(({ material, geometry }) => (
-        <mesh key={material} geometry={geometry} castShadow receiveShadow>
+        <mesh
+          key={material}
+          geometry={geometry}
+          userData={{ buildingSurface: material }}
+          castShadow
+          receiveShadow
+        >
           {material === "clock" ? (
             <meshBasicMaterial color={night ? "#f1e8ca" : "#fcf6e6"} />
           ) : (

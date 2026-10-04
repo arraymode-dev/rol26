@@ -34,7 +34,7 @@ test("courtyard geometry remains finite and within the mobile geometry budget", 
     );
     assert.ok(
       m.batches.filter((b) => !b.detail).length <= 7,
-      "overview omits window and furniture batches",
+      "base building and ground stay within seven material batches",
     );
     let vertices = 0;
     for (const { geometry } of m.batches) {

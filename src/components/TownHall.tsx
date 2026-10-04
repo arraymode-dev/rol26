@@ -171,7 +171,13 @@ export const TownHall = memo(function TownHall({ night }: { night: boolean }) {
       rotation={[0, TOWN_HALL.rotation, 0]}
     >
       {parts.map(({ material, geometry }) => (
-        <mesh key={material} geometry={geometry} castShadow receiveShadow>
+        <mesh
+          key={material}
+          geometry={geometry}
+          userData={{ buildingSurface: material.replace("detail-", "") }}
+          castShadow
+          receiveShadow
+        >
           <meshStandardMaterial color={colors[material]} roughness={0.9} />
         </mesh>
       ))}

@@ -1,3 +1,4 @@
+import { isGlazingSurface } from "./building-surface.ts";
 import { TOWN_HALL_FORECOURT } from "./site-positions.ts";
 import * as THREE from "three";
 import { installations } from "../data/installations.ts";
@@ -162,6 +163,8 @@ export function applyEventSurfaceLighting(
         ) && bounds.max.y > 2,
     );
     if (!pools.length && !walls.length && !squareWalls.length) return;
+    // Glass should retain its dark recess instead of receiving the masonry wash.
+    if (isGlazingSurface(object)) return;
     const original = object.material;
     const material = original.clone();
     const previousCompile = original.onBeforeCompile.bind(original);

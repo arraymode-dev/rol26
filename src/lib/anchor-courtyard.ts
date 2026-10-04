@@ -115,13 +115,24 @@ export function buildAnchorCourtyard() {
       );
       const count = Math.floor(length / 4.8);
       for (let j = 0; j < count; j++) {
-        const t = (j + 0.5) / count,
-          p = position(t, 0);
-        // Detailed brick warehouse windows appear only around the courtyard.
-        if (Math.hypot(p[0] - 89, p[2] - 488) > 70) continue;
+        const t = (j + 0.5) / count;
+        const p = position(t, 0);
+        const courtyardDetail = Math.hypot(p[0] - 89, p[2] - 488) <= 70;
+        // Keep windows on every warehouse elevation, including across the dock.
         for (let row = 0; row < (building.height > 10 ? 5 : 1); row++) {
           const y = 2.6 + row * 4.35;
           const w = j % 3 === 1 ? 2.1 : 1.4;
+          if (!courtyardDetail) {
+            // Flat far-wing panes extend the facade at two triangles per window.
+            add(
+              new T.PlaneGeometry(w, 2.65),
+              position(t, y, 0.2),
+              "glass",
+              angle,
+              true,
+            );
+            continue;
+          }
           box(position(t, y), [w, 2.65, 0.16], "glass", angle, true);
           box(
             position(t, y - 1.42, 0.25),
@@ -140,7 +151,7 @@ export function buildAnchorCourtyard() {
               true,
             );
         }
-        if (j % 3 === 1) {
+        if (courtyardDetail && j % 3 === 1) {
           const arch = new T.Shape();
           arch.moveTo(-1.2, 0);
           arch.lineTo(1.2, 0);
@@ -287,6 +298,9 @@ export function buildAnchorCourtyard() {
     return {
       geometry,
       detail: level === "detail",
+      architectural: Array.from(geometry.getAttribute("building").array).some(
+        (v) => v === 1,
+      ),
       colour: colours[material],
       material,
     };

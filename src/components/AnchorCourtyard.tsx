@@ -11,9 +11,15 @@ export const AnchorCourtyard = memo(function AnchorCourtyard() {
   );
   const meshes = (detail: boolean) =>
     batches
-      .filter((b) => b.detail === detail)
+      .filter((b) => (b.detail && !b.architectural) === detail)
       .map((b, i) => (
-        <mesh key={i} geometry={b.geometry} castShadow receiveShadow>
+        <mesh
+          key={i}
+          geometry={b.geometry}
+          userData={{ buildingSurface: b.material }}
+          castShadow
+          receiveShadow
+        >
           <meshStandardMaterial
             color={b.colour}
             roughness={0.9}

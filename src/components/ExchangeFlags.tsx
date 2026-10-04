@@ -202,7 +202,13 @@ export const ExchangeFlags = memo(function ExchangeFlags({
     parts
       .filter((p) => p.material.startsWith("detail-") === detail)
       .map(({ material, geometry }) => (
-        <mesh key={material} geometry={geometry} castShadow receiveShadow>
+        <mesh
+          key={material}
+          geometry={geometry}
+          userData={{ buildingSurface: material.replace("detail-", "") }}
+          castShadow
+          receiveShadow
+        >
           <meshStandardMaterial
             color={colors[material]}
             roughness={0.9}

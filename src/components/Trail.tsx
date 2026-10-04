@@ -1,3 +1,6 @@
+import { useBoundaryDepth } from "./BoundaryDepth";
+import { hiddenTrailOpacity } from "../lib/trail-visibility";
+import type { OrbitControls } from "three-stdlib";
 import { PRIMARY } from "../lib/palette";
 import { useEffect, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -51,6 +54,7 @@ export function Trail({
   night: boolean;
 }) {
   const invalidate = useThree((s) => s.invalidate);
+  const depth = useBoundaryDepth();
   const geometry = useMemo(() => {
     const parts: THREE.BufferGeometry[] = [];
     data.ribbons.flat().forEach((piece) =>
@@ -86,6 +90,9 @@ export function Trail({
         uniforms: {
           time: { value: 0 },
           alpha: { value: 1 },
+          hiddenAlpha: { value: 0 },
+          cutawayDepth: { value: depth.target.depthTexture },
+          viewport: { value: depth.size },
           base: { value: new THREE.Color(PRIMARY) },
           stripe: { value: new THREE.Color(night ? "#c8c3ff" : "#b6afff") },
         },
@@ -101,26 +108,39 @@ export function Trail({
         fragmentShader: `
       #include <logdepthbuf_pars_fragment>
       uniform float alpha; uniform float time; uniform vec3 base; uniform vec3 stripe; varying vec2 route;
+      uniform sampler2D cutawayDepth; uniform vec2 viewport; uniform float hiddenAlpha;
       void main(){
       #include <logdepthbuf_fragment>
+      float fragmentDepth = gl_FragCoord.z;
+      #ifdef USE_LOGARITHMIC_DEPTH_BUFFER
+        fragmentDepth = gl_FragDepth;
+      #endif
+      float behind = step(texture2D(cutawayDepth, gl_FragCoord.xy / viewport).r + 0.000005, fragmentDepth);
+      float routeAlpha = alpha * mix(1.0, hiddenAlpha, behind);
+      if (routeAlpha <= 0.001) discard;
       float phase=fract((route.x-time*3.5+route.y*1.2)/12.0);
       float zebra=smoothstep(0.60,0.63,phase)-smoothstep(0.92,0.95,phase);
       vec3 colour=mix(base,stripe,zebra);
       colour=mix(colour,vec3(0.84,0.94,0.95),smoothstep(0.87,0.99,abs(route.y)));
-      gl_FragColor=vec4(colour,alpha);
+      gl_FragColor=vec4(colour,routeAlpha);
       #include <tonemapping_fragment>
       #include <colorspace_fragment>
       }`,
         side: THREE.DoubleSide,
         depthWrite: false,
+        transparent: true,
       }),
-    [night],
+    [night, depth],
   );
   // Draw a faint second pass only where scene depth hides the route.
   const hiddenMaterial = useMemo(() => {
     const hidden = material.clone();
     hidden.uniforms.time = material.uniforms.time;
-    hidden.uniforms.alpha.value = 0.2;
+    hidden.uniforms.alpha.value = 0;
+    // Already depth-tested against solid geometry: do not dim a second time.
+    hidden.uniforms.hiddenAlpha.value = 1;
+    hidden.uniforms.viewport = material.uniforms.viewport;
+    hidden.uniforms.cutawayDepth = material.uniforms.cutawayDepth;
     hidden.transparent = true;
     hidden.depthFunc = THREE.GreaterDepth;
     return hidden;
@@ -132,7 +152,13 @@ export function Trail({
     material.uniforms.time.value = 0;
     invalidate();
   }, [reducedMotion, material, invalidate]);
-  useFrame((_, delta) => {
+  useFrame(({ camera, controls }, delta) => {
+    const distance = controls
+      ? camera.position.distanceTo((controls as OrbitControls).target)
+      : camera.position.y;
+    const opacity = hiddenTrailOpacity(distance);
+    material.uniforms.hiddenAlpha.value = opacity;
+    hiddenMaterial.uniforms.alpha.value = opacity;
     if (!reducedMotion) {
       material.uniforms.time.value += Math.min(delta, 0.1);
       invalidate();

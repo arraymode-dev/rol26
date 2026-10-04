@@ -187,7 +187,10 @@ function Content({
     return () => controller.abort();
   }, [props.trail, route.segments.length]);
   return (
-    <BoundaryDepth active={!!focus} lowQuality={props.lowQuality || mobile}>
+    <BoundaryDepth
+      active={!!focus || props.trail}
+      lowQuality={props.lowQuality || mobile}
+    >
       <FirstPaint
         onReady={props.onReady}
         onError={props.onError}

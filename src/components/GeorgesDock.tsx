@@ -280,7 +280,13 @@ export const GeorgesDock = memo(function GeorgesDock({
     glass: "#667f81",
   };
   const mesh = (m: string, g: THREE.BufferGeometry) => (
-    <mesh key={m} geometry={g} castShadow receiveShadow>
+    <mesh
+      key={m}
+      geometry={g}
+      userData={{ buildingSurface: m.replace("detail-", "") }}
+      castShadow
+      receiveShadow
+    >
       <meshStandardMaterial
         color={colors[m.replace("detail-", "")]}
         side={THREE.DoubleSide}

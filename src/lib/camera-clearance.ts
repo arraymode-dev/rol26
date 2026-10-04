@@ -1,3 +1,4 @@
+import { GHOST_DEPTH_LAYER } from "./scene-layers.ts";
 import * as THREE from "three";
 
 /** Smooth proximity cutaway, with opaque depth retained outside the transition. */
@@ -133,6 +134,8 @@ export function applyCameraClearance(
         : object.geometry.boundingBox!.clone();
     bounds.applyMatrix4(object.matrixWorld);
     overlay.userData.cameraClearanceOverlay = true;
+    // The depth-only pass keeps fading trees/walls opaque to the close-up route.
+    overlay.layers.enable(GHOST_DEPTH_LAYER);
     transitions.push({ mesh: overlay, source: object, bounds });
     object.add(overlay);
     restore.push(() => object.remove(overlay));

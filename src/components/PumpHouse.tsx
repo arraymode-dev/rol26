@@ -334,7 +334,13 @@ export const PumpHouse = memo(function PumpHouse({
     timber: "#837058",
   };
   const mesh = (m: string, g: THREE.BufferGeometry) => (
-    <mesh key={m} geometry={g} castShadow receiveShadow>
+    <mesh
+      key={m}
+      geometry={g}
+      userData={{ buildingSurface: m.replace("detail-", "") }}
+      castShadow
+      receiveShadow
+    >
       <meshStandardMaterial
         color={colors[m.replace("detail-", "")]}
         roughness={0.9}

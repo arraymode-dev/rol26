@@ -437,7 +437,13 @@ export const ChurchGardens = memo(function ChurchGardens({
     joint: "#a3957b",
   };
   const mesh = (m: string, g: THREE.BufferGeometry) => (
-    <mesh key={m} geometry={g} castShadow receiveShadow>
+    <mesh
+      key={m}
+      geometry={g}
+      userData={{ buildingSurface: m.replace("detail-", "") }}
+      castShadow
+      receiveShadow
+    >
       <meshStandardMaterial
         color={colors[m.replace("detail-", "")]}
         roughness={0.94}

@@ -1,3 +1,5 @@
+import { GHOST_DEPTH_LAYER } from "../lib/scene-layers";
+export { GHOST_DEPTH_LAYER } from "../lib/scene-layers";
 import { warmScene } from "../lib/scene-warmup";
 import {
   createContext,
@@ -12,11 +14,13 @@ import * as THREE from "three";
 
 // A separate depth-only view of ghost buildings lets rings recede behind them
 // without making the buildings opaque to the artworks in the main render.
-export const GHOST_DEPTH_LAYER = 2;
 const DepthContext = createContext<{
   target: THREE.WebGLRenderTarget;
   size: THREE.Vector2;
 } | null>(null);
+export function useBoundaryDepth() {
+  return useContext(DepthContext)!;
+}
 export function BoundaryDepth({
   children,
   active,
