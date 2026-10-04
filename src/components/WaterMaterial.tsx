@@ -1,3 +1,4 @@
+import { MOON_DIRECTION } from "../lib/moon";
 import { useEffect, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
@@ -68,7 +69,7 @@ export function WaterMaterial({
           shader.fragmentShader = shader.fragmentShader.replace(
             "#include <opaque_fragment>",
             `// One distant moon direction for all water, evaluated on the ripple normal.
-          vec3 moonDirection = normalize(mat3(viewMatrix) * normalize(vec3(-0.5, 0.8, -0.35)));
+          vec3 moonDirection = normalize(mat3(viewMatrix) * normalize(vec3(${MOON_DIRECTION.join(", ")})));
           vec3 moonHalf = normalize(moonDirection + geometryViewDir);
           float moonGlint = pow(max(dot(normal, moonHalf), 0.0), 55.0);
           float moonSheen = pow(max(dot(normal, moonHalf), 0.0), 9.0);
@@ -77,7 +78,7 @@ export function WaterMaterial({
           );
       };
       material.customProgramCacheKey = () =>
-        `water-ripples-moon-v3-${moonlight}-${moving}`;
+        `water-ripples-moon-v4-${moonlight}-${moving}`;
     }
     return { material, time };
   }, [night, moving, moonlight]);

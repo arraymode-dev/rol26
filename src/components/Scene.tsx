@@ -1,3 +1,4 @@
+import { Moon } from "./Moon";
 import { warmScene } from "../lib/scene-warmup";
 import { attachMapAnalytics } from "../lib/map-analytics";
 import { track } from "../lib/analytics";
@@ -232,6 +233,7 @@ function Content({
       )}
       {props.trail && <UserLocationMarker store={props.trailLocation} />}
       <CameraRig {...props} />
+      <Moon night={props.night} />
       {import.meta.env.DEV &&
         new URLSearchParams(location.search).has("profile") && (
           <SceneProfiler />
