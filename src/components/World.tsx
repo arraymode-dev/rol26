@@ -1,3 +1,5 @@
+import { ChavassePark } from "./ChavassePark";
+import { chavasseHeight, inChavassePark } from "../lib/chavasse-terrain";
 import { DockPromenade, docksideTreePosition } from "./DockPromenade";
 import { DockBoats } from "./DockBoats";
 import { RiverFurniture } from "./RiverFurniture";
@@ -159,6 +161,18 @@ export const World = memo(function World({
       // Extend the walls through the ground and raised paving layers while
       // preserving the existing roof elevation.
       const g = polygon(b.points, h + 0.7, -0.1);
+      // Small park fixtures (including the upper fountain) rest on the lawn.
+      // Surrounding shopping blocks retain their existing street-level bases.
+      const xs = b.points.map((p) => p[0]),
+        zs = b.points.map((p) => p[1]);
+      const cx = (Math.min(...xs) + Math.max(...xs)) / 2,
+        cz = (Math.min(...zs) + Math.max(...zs)) / 2;
+      if (
+        Math.max(...xs) - Math.min(...xs) < 18 &&
+        Math.max(...zs) - Math.min(...zs) < 18 &&
+        inChavassePark(cx, cz)
+      )
+        g.translate(0, chavasseHeight(cx, cz), 0);
       g.setAttribute(
         "buildingTone",
         new THREE.BufferAttribute(
@@ -253,7 +267,11 @@ export const World = memo(function World({
           return wall;
         }),
       ),
-      parks: combine(data.parks.map((f) => polygon(f.points, 0, 0.36))),
+      parks: combine(
+        data.parks
+          .filter((f) => f.id !== "24626860")
+          .map((f) => polygon(f.points, 0, 0.36)),
+      ),
       roads: combine(
         data.surfaces.roads.map(([outer, ...holes]) =>
           polygon(outer, 0, 0.3, holes),
@@ -400,6 +418,7 @@ export const World = memo(function World({
       />
       <RiverFurniture data={data} night={night} />
       <ChurchGardens night={night} />
+      <ChavassePark night={night} />
       <DockPromenade night={night} />
       <WappingGate night={night} />
       <MapLabel
