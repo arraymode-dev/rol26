@@ -28,13 +28,42 @@ test("camera cutaway composes shader hooks, supports instancing and restores sha
   assert.equal(calls, 1);
   assert.ok(shader.vertexShader.includes("instanceMatrix * clearancePosition"));
   assert.ok(shader.fragmentShader.includes("cameraPosition, clearanceWorld"));
-  assert.ok(shader.fragmentShader.includes("coverage >= visibility"));
+  assert.ok(shader.fragmentShader.includes("if (visibility < 0.999) discard;"));
   assert.match(
     material.customProgramCacheKey(),
     /^existing-palette-camera-clearance/,
   );
   assert.equal(material.transparent, false);
+  const mesh = root.children[0] as THREE.Mesh;
+  const overlay = mesh.children[0] as THREE.Mesh;
+  const fade = overlay.material as THREE.MeshStandardMaterial;
+  assert.equal(fade.transparent, true);
+  assert.equal(fade.depthWrite, false);
+  assert.equal(overlay.geometry, mesh.geometry);
+  restore.update(new THREE.Vector3(0, 1000, 0));
+  assert.equal(overlay.visible, false);
+  restore.update(new THREE.Vector3(0, 20, 0));
+  assert.equal(overlay.visible, true);
+  const fadeShader = {
+    vertexShader: THREE.ShaderLib.standard.vertexShader,
+    fragmentShader: THREE.ShaderLib.standard.fragmentShader,
+    uniforms: {},
+  };
+  fade.onBeforeCompile(
+    fadeShader as THREE.WebGLProgramParametersWithUniforms,
+    {} as THREE.WebGLRenderer,
+  );
+  assert.match(fadeShader.fragmentShader, /diffuseColor.a \*= visibility/);
+  assert.doesNotMatch(fadeShader.fragmentShader, /gl_FragCoord/);
+  assert.match(fadeShader.fragmentShader, /visibility >= 0.999/);
+  const instanced = root.children[1] as THREE.InstancedMesh;
+  assert.equal(
+    (instanced.children[0] as THREE.InstancedMesh).instanceMatrix,
+    instanced.instanceMatrix,
+  );
   restore();
+  assert.equal(mesh.children.length, 0);
+  assert.equal(instanced.children.length, 0);
   assert.equal(material.onBeforeCompile, previous);
   assert.equal(material.customProgramCacheKey, originalKey);
 });
@@ -64,7 +93,7 @@ test("Together artwork vertices bypass proximity fading even without an active s
   assert.match(shader.vertexShader, /clearanceProtected = cameraProtected/);
   assert.match(
     shader.fragmentShader,
-    /if \(clearanceProtected < 0.5 && visibility < 0.999 && coverage >= visibility\) discard/,
+    /if \(clearanceProtected > 0.5\) visibility = 1.0/,
   );
   assert.equal(
     (shader.uniforms as Record<string, { value: THREE.Vector3 }>).clearanceFocus

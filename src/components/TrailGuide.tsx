@@ -144,7 +144,7 @@ export function TrailGuide({
             </button>
             <button className="trail-seen" onClick={() => onSeen(next.id)}>
               <Check size={17} />{" "}
-              {seen.has(next.id) ? "Continue from here" : "I’ve seen it"}
+              {seen.has(next.id) ? "Continue" : "I’ve seen it"}
             </button>
           </div>
           <a

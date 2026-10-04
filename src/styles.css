@@ -2140,12 +2140,17 @@ kbd {
   display: flex;
   gap: 8px;
 }
-.trail-buttons button {
-  flex: 1;
+.trail-guide .trail-buttons button {
+  flex: 1 1 0;
+  white-space: nowrap;
+  gap: 7px;
   justify-content: center;
   min-height: 44px;
   font-size: 13px;
   padding: 12px 10px;
+}
+.trail-buttons button svg {
+  flex-shrink: 0;
 }
 .trail-seen {
   border: 1px solid #ffffff20;

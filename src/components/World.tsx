@@ -368,8 +368,8 @@ export const World = memo(function World({
         </group>
         <ExchangeFlags night={night} />
         <StPaulsSquare night={night} />
+        <AnchorCourtyard />
       </GhostBuildings>
-      <AnchorCourtyard />
       <DockRides night={night} reducedMotion={!animateRides} />
       <RiverFurniture data={data} night={night} />
       <ChurchGardens night={night} />

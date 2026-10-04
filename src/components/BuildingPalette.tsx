@@ -2,7 +2,7 @@ import { applyCameraClearance } from "../lib/camera-clearance";
 import { applyEventSurfaceLighting } from "../lib/event-lighting";
 import type { MapFeature } from "../types";
 import { useLayoutEffect, useRef, type ReactNode } from "react";
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { BUILDING_COLOURS } from "../lib/palette";
 import { type Footprint } from "../lib/attraction-boundary";
@@ -25,6 +25,10 @@ export function BuildingPalette({
 }) {
   const root = useRef<THREE.Group>(null);
   const invalidate = useThree((s) => s.invalidate);
+  const clearance = useRef<ReturnType<typeof applyCameraClearance> | null>(
+    null,
+  );
+  useFrame(({ camera }) => clearance.current?.update(camera.position));
   useLayoutEffect(() => {
     const group = root.current!;
     group.updateWorldMatrix(true, true);
@@ -150,7 +154,12 @@ export function BuildingPalette({
       });
     });
     if (night) restore.push(applyEventSurfaceLighting(group, buildings));
-    restore.push(applyCameraClearance(group, focus));
+    const cutaway = applyCameraClearance(group, focus);
+    clearance.current = cutaway;
+    restore.push(() => {
+      clearance.current = null;
+      cutaway();
+    });
     invalidate();
     return () => restore.reverse().forEach((fn) => fn());
   }, [night, footprints, revision, buildings, focus, invalidate]);
