@@ -2,7 +2,6 @@ import { track } from "../lib/analytics";
 import { useEffect, useRef } from "react";
 import {
   ArrowLeft,
-  ArrowUpRight,
   Check,
   ChevronRight,
   Footprints,
@@ -147,14 +146,6 @@ export function TrailGuide({
               {seen.has(next.id) ? "Continue" : "I’ve seen it"}
             </button>
           </div>
-          <a
-            className="trail-directions"
-            target="_blank"
-            rel="noreferrer"
-            href={`https://www.google.com/maps/dir/?api=1&destination=${next.coordinates[1]},${next.coordinates[0]}&travelmode=walking`}
-          >
-            Walking directions <ArrowUpRight size={16} />
-          </a>
         </>
       ) : complete ? (
         <>
