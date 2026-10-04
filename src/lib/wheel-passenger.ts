@@ -37,6 +37,8 @@ export function passengerMaterial(texture: T.Texture, night: boolean) {
     depthTest: true,
     side: T.FrontSide,
     vertexShader: `
+      #include <common>
+      #include <logdepthbuf_pars_vertex>
       varying vec2 windowUv;
       varying vec3 eyeLocal;
       void main() {
@@ -48,14 +50,19 @@ export function passengerMaterial(texture: T.Texture, night: boolean) {
                         dot(eye, normalize(modelMatrix[1].xyz)),
                         dot(eye, normalize(modelMatrix[2].xyz)));
         gl_Position = projectionMatrix * viewMatrix * world;
+        #include <logdepthbuf_vertex>
       }`,
     fragmentShader: `
+      #include <logdepthbuf_pars_fragment>
       uniform sampler2D portrait;
       uniform float fade;
       uniform float illumination;
       varying vec2 windowUv;
       varying vec3 eyeLocal;
       void main() {
+        // Match the city renderer's logarithmic depth so the opaque cabin
+        // glazing cannot incorrectly occlude this slightly inset overlay.
+        #include <logdepthbuf_fragment>
         vec3 V = normalize(eyeLocal);
         // Clamp grazing views: two depth layers, no raymarch or depth texture.
         vec2 slope = clamp(V.xy / max(V.z, 0.3), vec2(-1.5), vec2(1.5));

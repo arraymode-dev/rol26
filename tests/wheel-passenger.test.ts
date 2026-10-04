@@ -43,6 +43,12 @@ test("single window pass uses normal alpha blending and preserves scene depth", 
   assert.equal(material.depthWrite, false);
   assert.equal(material.depthTest, true);
   assert.equal(material.side, T.FrontSide);
+  // The main city uses logarithmic depth; both stages must participate or
+  // the cabin glass hides the portrait despite it sitting in front of it.
+  assert.match(material.vertexShader, /#include <logdepthbuf_pars_vertex>/);
+  assert.match(material.vertexShader, /#include <logdepthbuf_vertex>/);
+  assert.match(material.fragmentShader, /#include <logdepthbuf_pars_fragment>/);
+  assert.match(material.fragmentShader, /#include <logdepthbuf_fragment>/);
   material.dispose();
   texture.dispose();
 });
