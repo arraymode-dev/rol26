@@ -1,13 +1,7 @@
 import { track } from "../lib/analytics";
 import { useEffect, useRef } from "react";
-import {
-  ArrowLeft,
-  Check,
-  ChevronRight,
-  Footprints,
-  MapPin,
-  Trophy,
-} from "lucide-react";
+import { Check, Footprints, MapPin, Minus, Sparkles, X } from "lucide-react";
+import { PanelSummary } from "./PanelSummary";
 import type { Installation } from "../types";
 import { nextTrailArtwork, trailWalk } from "../lib/trail-guide";
 import legs from "../data/trail-distances.json";
@@ -18,6 +12,7 @@ export function TrailGuide({
   open,
   onOpen,
   onClose,
+  onDismiss,
   onView,
   onSeen,
   onCertificate,
@@ -29,6 +24,7 @@ export function TrailGuide({
   open: boolean;
   onOpen: () => void;
   onClose: () => void;
+  onDismiss: () => void;
   onView: (id: string) => void;
   onSeen: (id: string) => void;
   onCertificate: () => void;
@@ -56,21 +52,30 @@ export function TrailGuide({
   const complete = seen.size === items.length;
   if (!open)
     return (
-      <button ref={returnRef} className="trail-resume" onClick={onOpen}>
-        <Footprints size={17} />
-        <span>
-          {next
-            ? `Next: ${next.name}`
-            : complete
-              ? "Every light collected"
-              : "End of the trail"}
-          <small>
-            {walk ? `About ${walk.minutes} min · ` : ""}
-            {seen.size} of {items.length} seen
-          </small>
-        </span>
-        <ChevronRight size={18} />
-      </button>
+      <div className="trail-resume popup-shell">
+        <PanelSummary
+          buttonRef={returnRef}
+          badge={<Footprints size={18} />}
+          label="Expand suggested trail"
+          onExpand={onOpen}
+          title={
+            next
+              ? `Next: ${next.name}`
+              : complete
+                ? "Every light collected"
+                : "End of the trail"
+          }
+          subtitle={`${walk ? `About ${walk.minutes} min · ` : ""}${seen.size} of ${items.length} seen`}
+        />
+        <button
+          className="icon-button panel-dismiss"
+          aria-label="End suggested trail"
+          title="End suggested trail"
+          onClick={onDismiss}
+        >
+          <X size={22} />
+        </button>
+      </div>
     );
   return (
     <section
@@ -79,17 +84,33 @@ export function TrailGuide({
       data-artwork-id={nextId ?? undefined}
       aria-labelledby="trail-title"
     >
-      <button ref={returnRef} className="trail-back" onClick={onClose}>
-        <ArrowLeft size={17} /> Back to map
+      <button
+        ref={returnRef}
+        className="icon-button trail-minimise"
+        aria-label="Minimise suggested trail"
+        title="Back to map"
+        onClick={onClose}
+      >
+        <Minus size={20} />
       </button>
-      <div className="eyebrow">YOUR NIGHT OF LIGHT</div>
-      <h2 id="trail-title">
-        {next
-          ? "Your next light."
-          : complete
-            ? "Every light, collected."
-            : "You reached the last light."}
-      </h2>
+      <button
+        className="icon-button panel-dismiss"
+        aria-label="End suggested trail"
+        title="End suggested trail"
+        onClick={onDismiss}
+      >
+        <X size={22} />
+      </button>
+      <div className="trail-heading">
+        <div className="eyebrow">YOUR NIGHT OF LIGHT</div>
+        <h2 id="trail-title">
+          {next
+            ? "Your next light."
+            : complete
+              ? "Every light, collected."
+              : "You reached the last light."}
+        </h2>
+      </div>
       <div className="trail-progress" aria-live="polite">
         <span>
           {seen.size} of {items.length} seen
@@ -153,8 +174,11 @@ export function TrailGuide({
             You found all {items.length} artworks. Take your golden certificate
             home.
           </p>
-          <button className="primary-button" onClick={onCertificate}>
-            <Trophy size={18} /> Your certificate
+          <button
+            className="collection-certificate-button"
+            onClick={onCertificate}
+          >
+            <Sparkles size={16} /> Your golden certificate
           </button>
         </>
       ) : (

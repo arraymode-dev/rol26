@@ -5,6 +5,7 @@ import { installations } from "../src/data/installations.ts";
 import { project } from "../src/lib/geo.ts";
 import {
   trailCameraPose,
+  trailZoomLimit,
   shouldRestoreTrailView,
   type CameraPose,
 } from "../src/lib/trail-camera.ts";
@@ -24,6 +25,8 @@ test("trail view fits all artwork markers in landscape and portrait with a near 
     const offset = camera.position.clone().sub(new Vector3(...pose.target));
     assert.ok(offset.angleTo(new Vector3(0, 1, 0)) < 0.25);
     assert.ok(offset.length() < 10000);
+    assert.ok(trailZoomLimit(pose) >= offset.length());
+    assert.ok(trailZoomLimit(pose) <= offset.length() * 1.081);
   }
 });
 

@@ -217,7 +217,7 @@ kbd {
 }
 .top-meta {
   position: absolute;
-  top: 109px;
+  top: 84px;
   left: 38px;
   right: 38px;
   display: flex;
@@ -225,6 +225,7 @@ kbd {
   letter-spacing: 2px;
   font-size: 8px;
   font-weight: 600;
+  text-transform: uppercase;
   color: var(--muted);
   pointer-events: none;
 }
@@ -1882,33 +1883,17 @@ kbd {
   }
   .detail-panel.is-minimised {
     height: 64px;
+    left: max(18px, env(safe-area-inset-left, 0px));
+    right: max(18px, env(safe-area-inset-right, 0px));
   }
   .detail-panel.is-minimised .detail-scroll,
-  .detail-panel.is-minimised .detail-pagination {
+  .detail-panel.is-minimised .detail-pagination,
+  .detail-panel.is-minimised .detail-minimise {
     display: none;
   }
   .detail-panel.is-minimised .detail-summary {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    height: 100%;
-    width: calc(100% - 108px);
-    padding: 10px 12px;
-    background: none;
-    border: 0;
-    text-align: left;
-    font-size: 14px;
-    line-height: 1.2;
-    color: #f4f0ff;
-  }
-  .detail-summary span {
-    display: grid;
-    place-items: center;
-    flex: 0 0 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--accent);
-    font-size: 12px;
+    width: calc(100% - 54px);
   }
 }
 @media (max-width: 700px) {
@@ -1916,15 +1901,9 @@ kbd {
     aspect-ratio: 2.3;
     max-height: 150px;
   }
-  .detail-panel .photo-thumbnails {
-    padding-top: 8px;
-  }
-  .detail-panel .photo-thumbnails button {
-    flex-basis: 62px;
-    height: 44px;
-  }
+  .detail-panel .photo-thumbnails,
   .detail-panel .photo-credit {
-    margin-top: 5px;
+    display: none;
   }
   .detail-panel .detail-copy {
     padding-top: 14px;
@@ -1944,10 +1923,7 @@ kbd {
   }
 }
 @media (max-width: 700px) and (max-height: 740px) {
-  /* Keep the artwork name visible on shorter phones; arrows still browse every photo. */
-  .detail-panel .photo-thumbnails {
-    display: none;
-  }
+  /* Keep the artwork name visible on shorter phones. */
   .detail-panel .art-photo {
     max-height: 120px;
   }
@@ -1974,6 +1950,11 @@ kbd {
   .detail-panel.popup-shell {
     bottom: calc(
       68px + env(safe-area-inset-bottom, 0px) + var(--browser-toolbar-gap)
+    );
+  }
+  .detail-panel.popup-shell.is-minimised {
+    bottom: calc(
+      70px + env(safe-area-inset-bottom, 0px) + var(--browser-toolbar-gap)
     );
   }
   .list-panel.popup-shell {
@@ -2057,17 +2038,21 @@ kbd {
   line-height: 1.15;
   margin: 12px 0 20px;
 }
-.trail-back {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  border: 1px solid #ffffff16;
-  border-radius: 30px;
-  background: #ffffff08;
-  color: #ded9ef;
-  padding: 10px 13px;
-  min-height: 44px;
-  margin: 0 0 24px;
+.trail-heading {
+  padding-right: 90px;
+}
+.trail-minimise,
+.panel-dismiss {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 42px;
+  height: 42px;
+  background: #202c3aec;
+  border: 1px solid #c7b9e526;
+}
+.trail-minimise {
+  right: 62px;
 }
 .trail-progress {
   display: flex;
@@ -2172,23 +2157,60 @@ kbd {
   line-height: 1.6;
 }
 .trail-resume {
+  overflow: hidden;
   position: absolute;
   bottom: calc(100% + 12px);
   left: 0;
-  border: 1px solid #ffffff25;
-  border-radius: 22px;
-  background: #152633e8;
-  backdrop-filter: blur(20px);
-  color: #ece7fa;
-  padding: 12px 16px;
+  padding: 0;
   display: flex;
   align-items: center;
-  gap: 13px;
+  width: min(390px, calc(100vw - 36px));
   max-width: calc(100vw - 36px);
   text-align: left;
   font-size: 13px;
-  min-height: 56px;
-  box-shadow: 0 8px 35px #03142150;
+  height: 64px;
+  pointer-events: auto;
+}
+.panel-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: calc(100% - 54px);
+  min-width: 0;
+  height: 64px;
+  padding: 10px 12px;
+  background: none;
+  border: 0;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #f4f0ff;
+}
+.panel-summary.detail-summary {
+  display: none;
+}
+.panel-summary-badge {
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  font-size: 12px;
+}
+.panel-summary-copy {
+  min-width: 0;
+  flex: 1;
+}
+.panel-summary-copy > span,
+.panel-summary-copy > small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.panel-summary > svg {
+  flex-shrink: 0;
 }
 @media (max-width: 700px) {
   .trail-guide {
@@ -2200,15 +2222,34 @@ kbd {
   .trail-guide h2 {
     font-size: 30px;
   }
-  .trail-back {
-    margin-bottom: 19px;
-  }
   .trail-resume {
     width: 100%;
     max-width: none;
   }
-  .trail-resume > span {
-    flex: 1;
+}
+
+/* Both collection and trail open from the footer that owns their trigger. */
+.bottom-bar > .list-panel.popup-shell {
+  top: auto;
+  bottom: calc(100% + 14px + var(--keyboard-inset, 0px));
+  left: 0;
+  right: auto;
+  height: min(740px, calc(100dvh - 180px - var(--keyboard-inset, 0px)));
+  max-height: calc(100dvh - 180px - var(--keyboard-inset, 0px));
+  pointer-events: auto;
+  touch-action: pan-y;
+}
+@media (max-width: 700px) {
+  .bottom-bar > .list-panel.popup-shell {
+    width: 100%;
+    height: calc(
+      100dvh - 185px - env(safe-area-inset-bottom, 0px) -
+        var(--keyboard-inset, 0px)
+    );
+    max-height: calc(
+      100dvh - 185px - env(safe-area-inset-bottom, 0px) -
+        var(--keyboard-inset, 0px)
+    );
   }
 }
 

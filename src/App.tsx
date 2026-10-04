@@ -4,6 +4,7 @@ import { lastSeenArtwork } from "./lib/trail-guide";
 import { createTrailLocation } from "./lib/trail-location";
 import { TrailLocationTracker } from "./components/TrailLocationTracker";
 import { TrailGuide } from "./components/TrailGuide";
+import { PanelSummary } from "./components/PanelSummary";
 import { loadMap } from "./lib/map-loader";
 import { PRIMARY } from "./lib/palette";
 import { CollectionCertificate } from "./components/CollectionCertificate";
@@ -37,7 +38,6 @@ import {
   List,
   MapPin,
   Minus,
-  Plus,
   Search,
   Sparkles,
   X,
@@ -162,6 +162,7 @@ export default function App() {
   const [trailGuide, setTrailGuide] = useState(false);
   const trailFrom = lastSeenArtwork(seen);
   const [minimised, setMinimised] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [loadingStage, setLoadingStage] = useState(
     "Downloading Liverpool’s map…",
   );
@@ -179,6 +180,7 @@ export default function App() {
   );
   const searchRef = useRef<HTMLInputElement>(null),
     closeRef = useRef<HTMLButtonElement>(null),
+    summaryRef = useRef<HTMLButtonElement>(null),
     listButtonRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     if (list) {
@@ -195,7 +197,11 @@ export default function App() {
   }, []);
   const selectedIdRef = useRef(selected);
   selectedIdRef.current = selected;
-  const choose = useCallback((id: string, step = false) => {
+  const choose = useCallback((id: string, step = false, showDetails = true) => {
+    setDetailsOpen(showDetails);
+    setMinimised(false);
+    setList(false);
+    setTrailGuide(false);
     // A repeated hit on the selected artwork must not restart its camera flight.
     if (selectedIdRef.current === id) return;
     track("Artwork selection requested", {
@@ -204,7 +210,6 @@ export default function App() {
     });
     selectedIdRef.current = id;
     searchRef.current?.blur();
-    setMinimised(false);
     setSelected(id);
     setStepNavigation(step);
     setSelectionSequence((n) => n + 1);
@@ -231,8 +236,9 @@ export default function App() {
     listButtonRef.current?.focus();
   };
   useEffect(() => {
-    if (selected) closeRef.current?.focus();
-  }, [selected]);
+    if (selected && detailsOpen)
+      (minimised ? summaryRef : closeRef).current?.focus({ preventScroll: true });
+  }, [selected, detailsOpen, minimised]);
   useEffect(() => {
     const listener = (e: KeyboardEvent) => {
       if (e.defaultPrevented) return;
@@ -268,7 +274,9 @@ export default function App() {
     window.addEventListener("keydown", listener);
     return () => window.removeEventListener("keydown", listener);
   }, [selected, info, certificate, gpsDebug]);
-  const active = installations.find((i) => i.id === selected);
+  const active = detailsOpen
+    ? installations.find((i) => i.id === selected)
+    : undefined;
   const filtered = installations.filter((i) =>
     `${i.name} ${i.location} ${i.artist}`
       .toLowerCase()
@@ -276,6 +284,7 @@ export default function App() {
   );
   useExperienceAnalytics({
     selected,
+    detailsOpen: !!active,
     trail,
     list,
     info,
@@ -320,6 +329,7 @@ export default function App() {
                 lowQuality={lowQuality}
                 night={true}
                 selected={selected}
+                detailsOpen={!!active}
                 seen={seen}
                 trail={trail}
                 trailLocation={trailLocation}
@@ -373,7 +383,7 @@ export default function App() {
       {trail && <TrailLocationTracker store={trailLocation} />}
       <div className="top-meta" hidden={trail}>
         <span>
-          <span className="live-dot" /> A CITY BROUGHT TOGETHER
+          <span className="live-dot" /> Unofficial Guide
         </span>
       </div>
       {!ready && (
@@ -409,16 +419,16 @@ export default function App() {
             aria-controls="artwork-detail-content"
             onClick={() => setMinimised((value) => !value)}
           >
-            {minimised ? <Plus size={20} /> : <Minus size={20} />}
+            <Minus size={20} />
           </button>
-          <button
+          <PanelSummary
+            buttonRef={summaryRef}
             className="detail-summary"
-            onClick={() => setMinimised(false)}
-            aria-label={`Expand ${active.name} details`}
-          >
-            <span>{String(active.number).padStart(2, "0")}</span>
-            {active.name}
-          </button>
+            onExpand={() => setMinimised(false)}
+            label={`Expand ${active.name} details`}
+            badge={String(active.number).padStart(2, "0")}
+            title={active.name}
+          />
           <div
             className="detail-scroll"
             id="artwork-detail-content"
@@ -485,108 +495,6 @@ export default function App() {
           </div>
         </section>
       )}
-      {list && (
-        <section
-          className="list-panel popup-shell"
-          style={{ "--keyboard-inset": `${keyboardInset}px` } as CSSProperties}
-          data-analytics-surface="artwork-list"
-          id="artwork-list"
-          tabIndex={-1}
-        >
-          <div className="list-heading">
-            <div className="eyebrow">THE COMPLETE COLLECTION</div>
-            <button
-              className="icon-button detail-close"
-              aria-label="Close artwork list"
-              onClick={() => {
-                setList(false);
-                listButtonRef.current?.focus();
-              }}
-            >
-              <X size={20} />
-            </button>
-            <h2>Find your light.</h2>
-            <div className="collection-progress">
-              <span role="status">
-                {seen.size} of {installations.length} seen
-                {seen.size === installations.length ? " — well done!" : ""}
-              </span>
-              <button
-                disabled={!seen.size}
-                onClick={() => {
-                  track("Collection reset", { seen_count: seen.size });
-                  setSeen(new Set());
-                }}
-              >
-                Reset all
-              </button>
-            </div>
-            {complete && (
-              <button
-                className="collection-certificate-button"
-                onClick={() => setCertificate(true)}
-              >
-                <Sparkles size={16} /> Your golden certificate
-              </button>
-            )}
-          </div>
-          <div className="search-wrap collection-search">
-            <Search size={18} />
-            <input
-              ref={searchRef}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && query && filtered[0])
-                  choose(filtered[0].id);
-              }}
-              placeholder="Find an artwork or a place"
-              aria-label="Find an artwork or a place"
-              aria-controls="collection-results"
-            />
-            <kbd>/</kbd>
-          </div>
-          {failed && (
-            <p className="fallback-notice">
-              The 3D view is unavailable on this device. Explore every artwork
-              and its directions below.
-            </p>
-          )}
-          <div className="artwork-list" id="collection-results">
-            {!filtered.length && (
-              <p className="no-results" role="status">
-                No artworks found. Try a place or artist.
-              </p>
-            )}
-            {filtered.map((i) => (
-              <div
-                className={`list-entry${seen.has(i.id) ? " is-seen" : ""}`}
-                key={i.id}
-                data-artwork-id={i.id}
-              >
-                <button className="list-item" onClick={() => choose(i.id)}>
-                  <span className="list-number">
-                    {String(i.number).padStart(2, "0")}
-                  </span>
-                  <span>
-                    <strong>{i.name}</strong>
-                    <small>{i.location}</small>
-                  </span>
-                  <ArrowUpRight size={18} />
-                </button>
-                <button
-                  className="seen-toggle list-seen-toggle"
-                  aria-pressed={seen.has(i.id)}
-                  aria-label={`Mark ${i.name} as seen`}
-                  onClick={() => toggleSeen(i.id)}
-                >
-                  <Check size={20} />
-                </button>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
       <div className="map-corner">
         <div className="attribution">
           <a
@@ -640,7 +548,111 @@ export default function App() {
             <Expand size={16} />
           </button>
         </nav>
-        {trail && !list && !selected && !info && !gpsDebug && (
+        {list && (
+          <section
+            className="list-panel popup-shell"
+            style={
+              { "--keyboard-inset": `${keyboardInset}px` } as CSSProperties
+            }
+            data-analytics-surface="artwork-list"
+            id="artwork-list"
+            tabIndex={-1}
+          >
+            <div className="list-heading">
+              <div className="eyebrow">THE COMPLETE COLLECTION</div>
+              <button
+                className="icon-button detail-close"
+                aria-label="Close artwork list"
+                onClick={() => {
+                  setList(false);
+                  listButtonRef.current?.focus();
+                }}
+              >
+                <X size={20} />
+              </button>
+              <h2>Find your light.</h2>
+              <div className="collection-progress">
+                <span role="status">
+                  {seen.size} of {installations.length} seen
+                  {seen.size === installations.length ? " — well done!" : ""}
+                </span>
+                <button
+                  disabled={!seen.size}
+                  onClick={() => {
+                    track("Collection reset", { seen_count: seen.size });
+                    setSeen(new Set());
+                  }}
+                >
+                  Reset all
+                </button>
+              </div>
+              {complete && (
+                <button
+                  className="collection-certificate-button"
+                  onClick={() => setCertificate(true)}
+                >
+                  <Sparkles size={16} /> Your golden certificate
+                </button>
+              )}
+            </div>
+            <div className="search-wrap collection-search">
+              <Search size={18} />
+              <input
+                ref={searchRef}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && query && filtered[0])
+                    choose(filtered[0].id);
+                }}
+                placeholder="Find an artwork or a place"
+                aria-label="Find an artwork or a place"
+                aria-controls="collection-results"
+              />
+              <kbd>/</kbd>
+            </div>
+            {failed && (
+              <p className="fallback-notice">
+                The 3D view is unavailable on this device. Explore every artwork
+                and its directions below.
+              </p>
+            )}
+            <div className="artwork-list" id="collection-results">
+              {!filtered.length && (
+                <p className="no-results" role="status">
+                  No artworks found. Try a place or artist.
+                </p>
+              )}
+              {filtered.map((i) => (
+                <div
+                  className={`list-entry${seen.has(i.id) ? " is-seen" : ""}`}
+                  key={i.id}
+                  data-artwork-id={i.id}
+                >
+                  <button className="list-item" onClick={() => choose(i.id)}>
+                    <span className="list-number">
+                      {String(i.number).padStart(2, "0")}
+                    </span>
+                    <span>
+                      <strong>{i.name}</strong>
+                      <small>{i.location}</small>
+                    </span>
+                    <ArrowUpRight size={18} />
+                  </button>
+                  <button
+                    className="seen-toggle list-seen-toggle"
+                    aria-pressed={seen.has(i.id)}
+                    aria-label={`Mark ${i.name} as seen`}
+                    onClick={() => toggleSeen(i.id)}
+                  >
+                    <Check size={20} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+        {trail && !list && !active && !info && !gpsDebug && (
           <TrailGuide
             items={installations}
             seen={seen}
@@ -648,7 +660,12 @@ export default function App() {
             open={trailGuide}
             onOpen={() => setTrailGuide(true)}
             onClose={() => setTrailGuide(false)}
-            onView={choose}
+            onDismiss={() => {
+              setTrailGuide(false);
+              setTrail(false);
+              issue("trail-off");
+            }}
+            onView={(id) => choose(id, false, false)}
             onSeen={(id) => setSeen((current) => markArtworkSeen(current, id))}
             onReview={() => {
               setList(true);

@@ -5,6 +5,13 @@ export interface CameraPose {
   target: [number, number, number];
 }
 
+/** Allow a little breathing room beyond the fitted route, not an empty city view. */
+export function trailZoomLimit(pose: CameraPose): number {
+  return (
+    new Vector3(...pose.position).distanceTo(new Vector3(...pose.target)) * 1.08
+  );
+}
+
 /** Fit the whole route with space around its markers, including portrait screens. */
 export function trailCameraPose(
   points: [number, number][],

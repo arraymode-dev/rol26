@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { setAnalyticsContext, track } from "./analytics";
 type State = {
   selected: string | null;
+  detailsOpen: boolean;
   trail: boolean;
   list: boolean;
   info: boolean;
@@ -33,10 +34,13 @@ export function useExperienceAnalytics(state: State) {
       track("Experience opened");
       return;
     }
-    if (old.selected !== state.selected) {
-      if (state.selected)
+    if (
+      old.selected !== state.selected ||
+      old.detailsOpen !== state.detailsOpen
+    ) {
+      if (state.selected && state.detailsOpen)
         track("Artwork opened", { previous_artwork_id: old.selected });
-      else if (old.selected)
+      else if (old.selected && old.detailsOpen)
         track("Artwork closed", { artwork_id: old.selected });
     }
     for (const key of [
@@ -51,7 +55,11 @@ export function useExperienceAnalytics(state: State) {
     if (old.trail !== state.trail)
       track("Trail toggled", { enabled: state.trail });
     if (old.lowQuality !== state.lowQuality) track("Rendering quality changed");
-    if (old.minimised !== state.minimised && state.selected)
+    if (
+      old.minimised !== state.minimised &&
+      state.selected &&
+      state.detailsOpen
+    )
       track("Artwork panel resized", { open: !state.minimised });
     if (!old.ready && state.ready && !state.failed)
       track("Map ready", { load_ms: Math.round(performance.now()) });

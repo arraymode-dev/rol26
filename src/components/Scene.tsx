@@ -8,6 +8,7 @@ import { useTouchCamera } from "../lib/use-touch-camera";
 import { panelViewOffset } from "../lib/touch-camera";
 import {
   trailCameraPose,
+  trailZoomLimit,
   shouldRestoreTrailView,
   type CameraPose,
 } from "../lib/trail-camera";
@@ -61,6 +62,7 @@ export interface SceneProps {
   lowQuality: boolean;
   night: boolean;
   selected: string | null;
+  detailsOpen?: boolean;
   seen: ReadonlySet<string>;
   trail: boolean;
   trailLocation: TrailLocationStore;
@@ -279,6 +281,7 @@ function FirstPaint({
 }
 function CameraRig({
   selected,
+  detailsOpen,
   trail,
   selectionSequence,
   stepNavigation,
@@ -288,7 +291,8 @@ function CameraRig({
   onError,
 }: SceneProps) {
   const controls = useRef<OrbitType>(null);
-  const { camera, invalidate, gl } = useThree();
+  const [trailMaxDistance, setTrailMaxDistance] = useState(3600);
+  const { camera, invalidate, gl, size } = useThree();
   const idleOrbit = useIdleOrbit(
     selected,
     selectionSequence,
@@ -369,10 +373,55 @@ function CameraRig({
       window.visualViewport?.removeEventListener("resize", update);
       perspective.clearViewOffset();
     };
-  }, [camera, gl, selected, invalidate]);
+  }, [camera, gl, selected, detailsOpen, invalidate]);
+  const fittedTrailView = () => {
+    const canvas = gl.domElement;
+    const headerBottom =
+      document.querySelector(".topbar")?.getBoundingClientRect().bottom ?? 0;
+    const footerTop =
+      document.querySelector(".bottom-bar")?.getBoundingClientRect().top ??
+      canvas.clientHeight;
+    const visibleHeight =
+      canvas.clientWidth <= 700
+        ? Math.max(160, footerTop - headerBottom - 24)
+        : canvas.clientHeight;
+    const visibleFov = THREE.MathUtils.radToDeg(
+      2 *
+        Math.atan(
+          (Math.tan(
+            THREE.MathUtils.degToRad(
+              (camera as THREE.PerspectiveCamera).fov / 2,
+            ),
+          ) *
+            visibleHeight) /
+            canvas.clientHeight,
+        ),
+    );
+    return trailCameraPose(
+      installations.map((item) => project(...item.coordinates)),
+      canvas.clientWidth / visibleHeight,
+      visibleFov,
+    );
+  };
+  useEffect(() => {
+    if (!trail || !controls.current) return;
+    const limit = trailZoomLimit(fittedTrailView());
+    controls.current.maxDistance = limit;
+    setTrailMaxDistance(limit);
+    if (wheelDistance.current !== null)
+      wheelDistance.current = Math.min(wheelDistance.current, limit);
+    controls.current.update();
+    invalidate();
+  }, [trail, size.width, size.height]);
   const overviewTarget = new THREE.Vector3(-40, 0, -70);
   const move = (to: THREE.Vector3, lookTo: THREE.Vector3) => {
     if (!controls.current) return;
+    const offset = to.clone().sub(lookTo);
+    offset.clampLength(
+      controls.current.minDistance,
+      controls.current.maxDistance,
+    );
+    to = lookTo.clone().add(offset);
     wheelDistance.current = null;
     targetMotion.current = null;
     if (reducedMotion) {
@@ -471,33 +520,10 @@ function CameraRig({
     if (command.kind === "out") userZoom.current = true;
     const t = controls.current.target.clone();
     if (command.kind === "trail-on") {
-      const canvas = gl.domElement;
-      const headerBottom =
-        document.querySelector(".topbar")?.getBoundingClientRect().bottom ?? 0;
-      const footerTop =
-        document.querySelector(".bottom-bar")?.getBoundingClientRect().top ??
-        canvas.clientHeight;
-      const visibleHeight =
-        canvas.clientWidth <= 700
-          ? Math.max(160, footerTop - headerBottom - 24)
-          : canvas.clientHeight;
-      const visibleFov = THREE.MathUtils.radToDeg(
-        2 *
-          Math.atan(
-            (Math.tan(
-              THREE.MathUtils.degToRad(
-                (camera as THREE.PerspectiveCamera).fov / 2,
-              ),
-            ) *
-              visibleHeight) /
-              canvas.clientHeight,
-          ),
-      );
-      const birdseye = trailCameraPose(
-        installations.map((item) => project(...item.coordinates)),
-        canvas.clientWidth / visibleHeight,
-        visibleFov,
-      );
+      const birdseye = fittedTrailView();
+      const limit = trailZoomLimit(birdseye);
+      controls.current.maxDistance = limit;
+      setTrailMaxDistance(limit);
       trailView.current = { previous: cameraPose(), birdseye };
       userZoom.current = false;
       move(
@@ -707,7 +733,7 @@ function CameraRig({
       enableDamping={!reducedMotion}
       dampingFactor={0.065}
       minDistance={70}
-      maxDistance={trail ? 10000 : 3600}
+      maxDistance={trail ? trailMaxDistance : 3600}
       minPolarAngle={0.15}
       maxPolarAngle={Math.PI * 0.43}
       screenSpacePanning={false}

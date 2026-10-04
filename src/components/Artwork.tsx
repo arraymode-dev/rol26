@@ -185,7 +185,7 @@ export const Artwork = memo(function Artwork({
         renderOrder={1}
         onClick={(e) => {
           e.stopPropagation();
-          if (!selected && e.delta <= 5) onSelect(item.id);
+          if (e.delta <= 5) onSelect(item.id);
         }}
       >
         <circleGeometry args={[ATTRACTION_RADIUS, 96]} />
@@ -226,7 +226,7 @@ export const Artwork = memo(function Artwork({
           ]}
           onClick={(e) => {
             e.stopPropagation();
-            if (!selected && e.delta <= 5) onSelect(item.id);
+            if (e.delta <= 5) onSelect(item.id);
           }}
         >
           {item.id === "the-anooki" ? (

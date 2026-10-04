@@ -78,7 +78,8 @@ function LightText() {
   }, []);
   useEffect(() => () => texture.dispose(), [texture]);
   return (
-    <mesh position={[0, 3.4, 0.06]}>
+    // Composite the neon after scenery cutaways, while retaining solid occlusion.
+    <mesh position={[0, 3.4, 0.06]} renderOrder={4}>
       <planeGeometry args={[24, 3]} />
       <meshBasicMaterial
         map={texture}
