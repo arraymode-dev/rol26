@@ -13,10 +13,11 @@ export function rideActive(
   return !reducedMotion && visible && distance < limit;
 }
 export function rideAngle(angle: number, delta: number, kind: RideKind) {
+  // Negative Y rotation carries the carousel horses forward along their +Z heading.
   // Resuming a demand-rendered scene must never jump after an idle interval.
   return (
     (angle +
-      Math.min(Math.max(delta, 0), 0.05) * (kind === "wheel" ? 0.055 : 0.13)) %
+      Math.min(Math.max(delta, 0), 0.05) * (kind === "wheel" ? 0.055 : -0.13)) %
     (Math.PI * 2)
   );
 }
