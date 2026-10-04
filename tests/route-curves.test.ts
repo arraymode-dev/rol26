@@ -64,7 +64,7 @@ test("generated ribbons have no folded quadrilaterals at tight corners", async (
   }
 });
 
-test("crossings retain their exact alignment when neighbouring pavements are smoothed", () => {
+test("crossing corners use gentle bounded curves while retaining the straight crossing", () => {
   const points = [
     [0, 0],
     [10, 1],
@@ -72,17 +72,44 @@ test("crossings retain their exact alignment when neighbouring pavements are smo
     [30, 10],
     [30, 40],
   ];
-  const pinned = new Set(["10,1", "10,10"]);
-  const result = smoothRoute(points, () => true, 2.5, pinned);
-  const start = result.findIndex((p: number[]) => p.join(",") === "10,1");
-  assert.ok(start > 0);
-  assert.deepEqual(
-    result[start + 1],
-    [10, 10],
-    "crossing remains a straight segment with exact endpoints",
+  const result = smoothRoute(points, () => true, 2.5);
+  assert.ok(result.length > 30, "crossing corners are curved too");
+  const straight = result.filter(
+    ([x, y]: number[]) => Math.abs(x - 10) < 1e-6 && y >= 3 && y <= 8,
   );
   assert.ok(
-    result.length > points.length,
-    "unpinned pavement bend still uses a curve",
+    straight.length >= 2,
+    "central crossing stays on its mapped alignment",
   );
+  for (const [x, y] of result as number[][]) {
+    if (y > 1 && y < 10)
+      assert.ok(
+        Math.min(Math.abs(x - 10), Math.abs(y - 10), Math.abs(y - 1)) <= 2.5,
+        "fillet stays within crossing and pavement corridor",
+      );
+  }
+});
+
+test("the entire generated trail retains smoothly sampled bends", async () => {
+  const { readFileSync } = await import("node:fs");
+  const data = JSON.parse(
+    readFileSync(new URL("../public/data/trail.json", import.meta.url), "utf8"),
+  );
+  for (const run of data.ribbons) {
+    const points = run.map(({ corners }: { corners: number[][] }) => [
+      (corners[0][0] + corners[3][0]) / 2,
+      (corners[0][1] + corners[3][1]) / 2,
+    ]);
+    for (let i = 1; i < points.length - 1; i++) {
+      const [a, b, c] = [points[i - 1], points[i], points[i + 1]];
+      const u = [b[0] - a[0], b[1] - a[1]],
+        v = [c[0] - b[0], c[1] - b[1]];
+      const cosine =
+        (u[0] * v[0] + u[1] * v[1]) / (Math.hypot(...u) * Math.hypot(...v));
+      assert.ok(
+        cosine >= Math.cos(Math.PI / 12),
+        `sharp corner in full trail at ${b}`,
+      );
+    }
+  }
 });

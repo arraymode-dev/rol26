@@ -14,25 +14,11 @@ function deviation(p, a, b) {
 }
 /** Keep the surveyed route corridor, removing small mapping zigzags only when
  * the replacement is clear. Round retained turns with densely sampled Beziers. */
-export function smoothRoute(
-  input,
-  clear = () => true,
-  tolerance = 2.5,
-  pinned = new Set(),
-) {
+export function smoothRoute(input, clear = () => true, tolerance = 2.5) {
   const points = input.filter((p, i) => !i || distance(p, input[i - 1]) > 0.01);
   if (points.length < 3) return points;
   function simplify(ps) {
     if (ps.length < 3) return ps;
-    // Crossing nodes stay exact, even when they lie within the simplification tolerance.
-    const fixed = ps.findIndex(
-      (p, i) => i > 0 && i < ps.length - 1 && pinned.has(p.join(",")),
-    );
-    if (fixed > 0)
-      return [
-        ...simplify(ps.slice(0, fixed + 1)).slice(0, -1),
-        ...simplify(ps.slice(fixed)),
-      ];
     let max = -1,
       split = 1;
     for (let i = 1; i < ps.length - 1; i++) {
@@ -54,10 +40,6 @@ export function smoothRoute(
     const a = anchors[i - 1],
       b = anchors[i],
       c = anchors[i + 1];
-    if (pinned.has(b.join(","))) {
-      result.push(b);
-      continue;
-    }
     const la = distance(a, b),
       lc = distance(b, c);
     let trim = Math.min(8, la * 0.4, lc * 0.4),
@@ -72,7 +54,15 @@ export function smoothRoute(
           (v, j) => (1 - t) ** 2 * v + 2 * (1 - t) * t * b[j] + t * t * end[j],
         );
       });
-      if (curve.slice(1).every((p, j) => clear(curve[j], p))) break;
+      if (
+        curve.slice(1).every((p, j) => clear(curve[j], p)) &&
+        curve.every((p) =>
+          points
+            .slice(1)
+            .some((b, j) => deviation(p, points[j], b) <= tolerance),
+        )
+      )
+        break;
       trim *= 0.5;
       curve = [];
     }
