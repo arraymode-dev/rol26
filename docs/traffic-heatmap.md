@@ -9,11 +9,11 @@ guard. The basemap has no pan, zoom, hover or selection handlers.
 ## Data and interpretation
 
 `public/data/heap-traffic.json` is a saved snapshot of Heap **Production**
-(`442235230`), read on 4 October 2026. All three queries used **Unique users**,
-**Entire range**, **Past 7 days** (28 September–4 October), and the event property
+(`442235230`), read on 5 October 2026. All three queries used **Unique users**,
+**Entire range**, **Past 7 days** (29 September–5 October), and the event property
 filter **environment equals production**, excluding local-preview events.
 
-- Denominator: unique users who did **Experience opened** (5).
+- Denominator: unique users who did **Experience opened** (10).
 - Exploration numerator: unique users who did **Artwork opened**, grouped by `artwork_id`.
 - Seen numerator: unique users who did **Artwork marked seen**, grouped by `artwork_id`.
 - Missing groups in a completed query are stored as zero, with all 13 artworks represented.
