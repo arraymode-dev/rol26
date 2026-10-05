@@ -295,8 +295,24 @@ export default function App() {
     : undefined;
   useEffect(() => {
     const content = detailScrollRef.current;
-    if (!active || minimised || detailsExpanded || !content) return;
-    return expandOnScroll(content, () => setDetailsExpanded(true));
+    if (!active || !content) return;
+    const mobile = matchMedia("(max-width: 700px)");
+    let detach: (() => void) | undefined;
+    const update = () => {
+      detach?.();
+      detach = undefined;
+      if (!mobile.matches) {
+        setDetailsExpanded(false);
+      } else if (!minimised && !detailsExpanded) {
+        detach = expandOnScroll(content, () => setDetailsExpanded(true));
+      }
+    };
+    update();
+    mobile.addEventListener("change", update);
+    return () => {
+      detach?.();
+      mobile.removeEventListener("change", update);
+    };
   }, [active?.id, minimised, detailsExpanded]);
   const filtered = installations.filter((i) =>
     `${i.name} ${i.location} ${i.artist}`

@@ -1229,11 +1229,6 @@ kbd {
   box-shadow: 0 24px 70px #030b1655;
   z-index: 42;
 }
-.detail-panel.is-expanded {
-  top: 24px;
-  bottom: 100px;
-  max-height: none;
-}
 .detail-panel::before {
   content: "";
   position: absolute;
