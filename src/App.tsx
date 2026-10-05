@@ -303,7 +303,7 @@ export default function App() {
       detach = undefined;
       if (!mobile.matches) {
         setDetailsExpanded(false);
-      } else if (!minimised && !detailsExpanded) {
+      } else if (!minimised) {
         detach = expandOnScroll(content, () => setDetailsExpanded(true));
       }
     };
@@ -313,7 +313,7 @@ export default function App() {
       detach?.();
       mobile.removeEventListener("change", update);
     };
-  }, [active?.id, minimised, detailsExpanded]);
+  }, [active?.id, minimised]);
   const filtered = installations.filter((i) =>
     `${i.name} ${i.location} ${i.artist}`
       .toLowerCase()
