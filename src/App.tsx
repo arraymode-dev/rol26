@@ -1,4 +1,5 @@
 import { EventCountdown } from "./components/EventCountdown";
+import { expandOnScroll } from "./lib/expand-on-scroll";
 import { Credits } from "./components/Credits";
 import { track } from "./lib/analytics";
 import { useExperienceAnalytics } from "./lib/use-experience-analytics";
@@ -164,6 +165,8 @@ export default function App() {
   const [trailGuide, setTrailGuide] = useState(false);
   const trailFrom = lastSeenArtwork(seen);
   const [minimised, setMinimised] = useState(false);
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
+  const detailScrollRef = useRef<HTMLDivElement>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [loadingStage, setLoadingStage] = useState(
     "Downloading Liverpool’s map…",
@@ -205,6 +208,7 @@ export default function App() {
     setOverviewCopy(false);
     setDetailsOpen(showDetails);
     setMinimised(false);
+    setDetailsExpanded(false);
     setList(false);
     setTrailGuide(false);
     // A repeated hit on the selected artwork must not restart its camera flight.
@@ -289,6 +293,11 @@ export default function App() {
   const active = detailsOpen
     ? installations.find((i) => i.id === selected)
     : undefined;
+  useEffect(() => {
+    const content = detailScrollRef.current;
+    if (!active || minimised || detailsExpanded || !content) return;
+    return expandOnScroll(content, () => setDetailsExpanded(true));
+  }, [active?.id, minimised, detailsExpanded]);
   const filtered = installations.filter((i) =>
     `${i.name} ${i.location} ${i.artist}`
       .toLowerCase()
@@ -426,7 +435,7 @@ export default function App() {
       )}
       {active && (
         <section
-          className={`detail-panel popup-shell${minimised ? " is-minimised" : ""}`}
+          className={`detail-panel popup-shell${minimised ? " is-minimised" : detailsExpanded ? " is-expanded" : ""}`}
           data-analytics-surface="artwork-details"
           data-artwork-id={active.id}
           aria-label={`${active.name} details`}
@@ -446,7 +455,10 @@ export default function App() {
             }
             aria-expanded={!minimised}
             aria-controls="artwork-detail-content"
-            onClick={() => setMinimised((value) => !value)}
+            onClick={() => {
+              setDetailsExpanded(false);
+              setMinimised((value) => !value);
+            }}
           >
             <Minus size={20} />
           </button>
@@ -459,6 +471,7 @@ export default function App() {
             title={active.name}
           />
           <div
+            ref={detailScrollRef}
             className="detail-scroll"
             id="artwork-detail-content"
             key={active.id}

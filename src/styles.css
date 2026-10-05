@@ -1229,6 +1229,11 @@ kbd {
   box-shadow: 0 24px 70px #030b1655;
   z-index: 42;
 }
+.detail-panel.is-expanded {
+  top: 24px;
+  bottom: 100px;
+  max-height: none;
+}
 .detail-panel::before {
   content: "";
   position: absolute;
@@ -2545,7 +2550,7 @@ kbd {
   color: #aebcc5;
 }
 .countdown-eyebrow + .countdown-digits {
-  margin-top: 16px;
+  margin-top: 8px;
 }
 .countdown-digits {
   display: flex;
@@ -2627,7 +2632,18 @@ kbd {
     margin: 14px 0 18px;
   }
   .countdown-unit > span {
-    font-size: 32px;
+    font-size: 64px;
+  }
+  .countdown-digits {
+    gap: 26px;
+  }
+  .countdown-unit {
+    min-width: 72px;
+  }
+  .countdown-unit + .countdown-unit::before {
+    font-size: 60px;
+    left: -20px;
+    top: -4px;
   }
   .countdown-dates {
     margin-top: 17px;
@@ -2640,6 +2656,24 @@ kbd {
   }
   .countdown-dates {
     margin-top: 12px;
+  }
+}
+@media (max-width: 700px) {
+  .detail-panel.popup-shell {
+    transition:
+      height 260ms ease,
+      max-height 260ms ease;
+  }
+  .detail-panel.popup-shell.is-expanded {
+    top: auto;
+    height: calc(
+      100dvh - 84px - env(safe-area-inset-top, 0px) -
+        env(safe-area-inset-bottom, 0px)
+    );
+    max-height: calc(
+      100dvh - 84px - env(safe-area-inset-top, 0px) -
+        env(safe-area-inset-bottom, 0px)
+    );
   }
 }
 @media (prefers-reduced-motion: reduce) {
