@@ -56,6 +56,7 @@ export function splitGhostGeometry(
   });
   if (!nearby.length) return null;
   const position = geometry.getAttribute("position");
+  const facadeDetail = geometry.getAttribute("facadeDetail");
   const index = geometry.index;
   const solid: number[] = [],
     ghost: number[] = [];
@@ -80,9 +81,17 @@ export function splitGhostGeometry(
     )
       ? ghost
       : solid;
+    // Keep the simplified building shell in a selected-site cutaway, without
+    // transparent window boxes stacking their faces over the installation.
+    if (
+      target === ghost &&
+      facadeDetail &&
+      ids.every((id) => facadeDetail.getX(id) === 1)
+    )
+      continue;
     target.push(...ids);
   }
-  if (!ghost.length) return null;
+  if (solid.length === count) return null;
   const subset = (ids: number[]) => {
     if (shareAttributes) return geometryView(geometry, ids);
     const result = new THREE.BufferGeometry();

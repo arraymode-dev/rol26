@@ -34,6 +34,17 @@ export function buildAnchorCourtyard() {
     g.rotateY(angle);
     g.translate(p[0] - site.origin[0], p[1], p[2] - site.origin[1]);
     markBuildingGeometry(g, architectural);
+    // Thin facade details should disappear with a cutaway, rather than leave
+    // floating panes, mullions and sills over the artwork.
+    g.setAttribute(
+      "facadeDetail",
+      new T.Float32BufferAttribute(
+        new Float32Array(g.getAttribute("position").count).fill(
+          architectural && detail ? 1 : 0,
+        ),
+        1,
+      ),
+    );
     const key = `${detail ? "detail" : "base"}:${material}`;
     if (!parts.has(key)) parts.set(key, []);
     parts.get(key)!.push(g);

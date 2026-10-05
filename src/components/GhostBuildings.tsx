@@ -11,7 +11,7 @@ import {
 
 type Selection = { id: string; footprints: readonly Footprint[] };
 /** Prepare index-only cutaways at scene creation, never during a camera flight.
- * Windows, walls and furniture retain the exact same triangles and materials. */
+ * Solid geometry stays intact; cutaways omit tagged facade details. */
 export function GhostBuildings({
   selections,
   selected,

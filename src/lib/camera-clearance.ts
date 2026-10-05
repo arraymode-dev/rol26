@@ -23,6 +23,7 @@ export function applyCameraClearance(
   const materials = new Map<THREE.Material, THREE.Material>();
   for (const object of meshes) {
     const artwork = object.geometry.hasAttribute("cameraProtected");
+    const facadeDetail = object.geometry.hasAttribute("facadeDetail");
     const originals = Array.isArray(object.material)
       ? object.material
       : [object.material];
@@ -55,6 +56,7 @@ export function applyCameraClearance(
               "#include <common>",
               `#include <common>
               varying vec3 clearanceWorld;
+              ${facadeDetail ? "attribute float facadeDetail; varying float clearanceFacadeDetail;" : ""}
               ${artwork ? "attribute float cameraProtected; varying float clearanceProtected;" : ""}`,
             )
             .replace(
@@ -65,6 +67,7 @@ export function applyCameraClearance(
                 clearancePosition = instanceMatrix * clearancePosition;
               #endif
               clearanceWorld = (modelMatrix * clearancePosition).xyz;
+              ${facadeDetail ? "clearanceFacadeDetail = facadeDetail;" : ""}
               ${artwork ? "clearanceProtected = cameraProtected;" : ""}`,
             );
           shader.fragmentShader = shader.fragmentShader
@@ -72,6 +75,7 @@ export function applyCameraClearance(
               "#include <common>",
               `#include <common>
               varying vec3 clearanceWorld; uniform vec3 clearanceFocus;
+              ${facadeDetail ? "varying float clearanceFacadeDetail;" : ""}
               ${artwork ? "varying float clearanceProtected;" : ""}`,
             )
             .replace(
@@ -79,10 +83,12 @@ export function applyCameraClearance(
               `#include <clipping_planes_fragment>
               // Preserve the ground and the selected installation's setting.
               float raised = smoothstep(1.5, 3.0, clearanceWorld.y);
+              ${facadeDetail ? "if (clearanceFacadeDetail > 0.5) raised = 1.0;" : ""}
               float protectedSite = clearanceFocus.y * (1.0 - smoothstep(11.0, 16.0, distance(clearanceWorld.xz, clearanceFocus.xz)));
               float proximity = smoothstep(18.0, 90.0, distance(cameraPosition, clearanceWorld));
               float visibility = mix(1.0, proximity, raised * (1.0 - protectedSite));
               ${artwork ? "if (clearanceProtected > 0.5) visibility = 1.0;" : ""}
+              ${facadeDetail ? "if (clearanceFacadeDetail > 0.5 && visibility < 0.999) discard;" : ""}
               ${pass === "solid" ? "if (visibility < 0.999) discard;" : pass === "fade" ? "if (visibility >= 0.999 || visibility <= 0.001) discard;" : "if (visibility <= 0.001) discard;"}`,
             );
           if (pass !== "solid")
@@ -92,7 +98,7 @@ export function applyCameraClearance(
             );
         };
         target.customProgramCacheKey = () =>
-          `${key}-camera-clearance-v3-${artwork}-${pass}`;
+          `${key}-camera-clearance-v4-${artwork}-${facadeDetail}-${pass}`;
         target.needsUpdate = true;
       };
       patch(material, alreadyTransparent ? "transparent" : "solid");
